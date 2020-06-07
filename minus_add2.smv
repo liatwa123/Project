@@ -1,5 +1,5 @@
 MODULE main
-            
+            /--number of matchsticks to add = 4, number of digits per number = 2, minus add--/
             /--state variables--/ 
             VAR
         dig1_1:0..9;
