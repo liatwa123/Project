@@ -1,0 +1,881 @@
+MODULE main
+        /--state variables--/
+        VAR
+        count_row1:0..14;
+        count_row2:0..14;
+        count_row3:0..14;
+        count_row4:0..14;
+        
+        
+        count_col1:0..14;
+        count_col2:0..14;
+        count_col3:0..14;
+        count_col4:0..14;
+        
+        
+        count_di1:0..10;
+        count_di2:0..10;
+        num_allowed:0..14;
+        
+        
+        row1: 0..7;
+        row2: 3..14;
+        row3: 10..21;
+        row4: 17..24;
+        
+        
+        rows_equal: boolean;
+        cols_equal: boolean;
+        dis_equal: boolean;
+        finished_count: boolean;
+        
+        
+        col1: {0,3,7,10,14,17,21,22};
+        col2: {0,1,4,7,8,11,14,15,18,21,22,23};
+        col3: {1,2,5,8,9,12,15,16,19,22,23,24};
+        col4: {2,6,9,13,16,20,23,24};
+        
+        
+        di1: {0,3,4,7,8,11,12,15,16,19,20,23,24};
+        di2: {2,5,6,8,9,11,12,15,14,17,18,21,22};
+        
+        
+        arr_rows:array 0..23 of 1..4;
+        arr_cols:array 0..23 of 1..4;
+        arr_dis:array 0..23 of 0..2;
+        state:{initial, calc_cons, correct, guess};
+        
+DEFINE
+            row_options:=[1,{1,2},2,{2,3},3,{3,4},4];
+            col_options:=row_options;
+            di_options:=[0,{0,1},{0,2},{1,2}];
+            
+        
+            match_rows:=[1, 1, 1, 2, 1, 1, 2, 2, 2, 2, 3, 2, 2, 2, 3, 3, 3, 4, 4, 3, 4, 4, 4, 4];
+            match_cols:=[1, 3, 3, 1, 2, 3, 4, 2, 2, 3, 1, 2, 3, 4, 2, 3, 4, 1, 2, 3, 4, 1, 3, 4];
+            match_dis:=[1, 0, 0, 0, 0, 0, 0, 1, 1, 2, 0, 1, 2, 0, 2, 1, 0, 2, 0, 1, 1, 2, 0, 1];
+ASSIGN
+        init(finished_count):=FALSE;
+        init(count_row1):=0;
+        init(count_row2):=0;
+        init(count_row3):=0;
+        init(count_row4):=0;
+        
+        
+        init(count_col1):=0;
+        init(count_col2):=0;
+        init(count_col3):=0;
+        init(count_col4):=0;
+        
+        
+        init(count_di1):=0;
+        init(count_di2):=0;
+        
+        
+        init(row1):=0;
+        init(row2):=3;
+        init(row3):=10;
+        init(row4):=17;
+        
+        
+        init(col1):=0;
+        init(col2):=0;
+        init(col3):=1;
+        init(col4):=2;
+        
+        
+        init(di1):=0;
+        init(di2):=2;
+        
+        
+        init(num_allowed):=6;
+        init(arr_rows):=match_rows;
+        init(arr_cols):=match_cols;
+        init(arr_dis):=match_dis;
+        init(state):=initial;
+        
+        
+        init(rows_equal):=count_row1 = num_allowed & count_row2 = num_allowed & count_row3 = num_allowed & count_row4 = num_allowed;
+        init(cols_equal):=count_col1 = num_allowed & count_col2 = num_allowed & count_col3 = num_allowed & count_col4 = num_allowed;
+        init(dis_equal):=count_di1 = num_allowed & count_di2 = num_allowed;
+        
+        
+        next(finished_count) := row1 = 7 & row2 = 14 & row3 = 21 & row4 = 24 & col1 = 22 & col2 = 23 & col3 = 24 & col4 = 24 & di1 = 24 & di2 = 22;
+        next(num_allowed):=num_allowed;
+        
+        
+        next(state):=case
+        finished_count & rows_equal & cols_equal & dis_equal: correct;
+        state = calc_cons & next(finished_count) & !(next(rows_equal) & next(cols_equal) & next(dis_equal)): guess;
+        state = guess & count_row1 != 0: guess;
+        state = correct: correct;
+        TRUE: calc_cons;
+        esac;
+        
+        
+        next(row1):=case
+        state = calc_cons & next(state) = calc_cons & row1 < 7: (row1 + 1)mod(8);
+        state = calc_cons & row1 = 7 & next(state) = calc_cons: 7;
+        state = calc_cons & row1 = 7 & next(state) = guess: 0;
+        state = calc_cons & row1 = 7 & next(state) = correct: 7;
+        state = guess: 0;
+        state = correct: 7;
+        state = initial: 0;
+        TRUE: 7;
+        esac;
+        
+        
+        next(row2):=case
+        state = calc_cons & next(state) = calc_cons & row2 < 14: 4 + (row2 - 3)mod(11);
+        state = calc_cons & row2 = 14 & next(state) = calc_cons: 14;
+        state = calc_cons & row2 = 14 & next(state) = guess: 3;
+        state = calc_cons & row2 = 14 & next(state) = correct: 14;
+        state = guess: 3;
+        state = correct: 14;
+        state = initial: 3;
+        TRUE: 14;
+        esac;
+        
+        next(row3):=case
+        state = calc_cons & next(state) = calc_cons & row3 < 21: 10 + (row3 - 9)mod(12);
+        state = calc_cons & row3 = 21 & next(state) = calc_cons: 21;
+        state = calc_cons & row3 = 21 & next(state) = guess: 10;
+        state = calc_cons & row3 = 21 & next(state) = correct: 21;
+        state = guess: 10;
+        state = correct: 21;
+        state = initial: 10;
+        TRUE: 21;
+        esac;
+        
+        
+        next(row4):=case
+        state = calc_cons & next(state) = calc_cons & row4 < 24: 17 + (row4 - 16)mod(8);
+        state = calc_cons & row4 = 24 & next(state) = calc_cons: 24;
+        state = calc_cons & row4 = 24 & next(state) = guess: 17;
+        state = calc_cons & row4 = 24 & next(state) = correct: 24;
+        state = guess: 17;
+        state = correct: 24;
+        state = initial: 17;
+        TRUE: 24;
+        esac;
+        
+        
+        /--0,3,7,10,14,17,21,22--/
+        next(col1):=case
+        state = calc_cons & next(state) = calc_cons & col1 = 0: 3;
+        state = calc_cons & next(state) = calc_cons & col1 = 3: 7;
+        state = calc_cons & next(state) = calc_cons & col1 = 7: 10;
+        state = calc_cons & next(state) = calc_cons & col1 = 10: 14;
+        state = calc_cons & next(state) = calc_cons & col1 = 14: 17;
+        state = calc_cons & next(state) = calc_cons & col1 = 17: 21;
+        state = calc_cons & col1 = 21 & next(state) = calc_cons: 22;
+        state = calc_cons & col1 = 22 & next(state) = guess: 0;
+        state = calc_cons & col1 = 22 & next(state) = correct: 22;
+        state = guess: 0;
+        state = correct: 22;
+        state = initial: 0;
+        TRUE: 22;
+        esac;
+        
+        
+        /--0,1,4,7,8,11,14,15,18,21,22,23--/
+        next(col2):=case
+        state = calc_cons & next(state) = calc_cons & col2 = 0: 1;
+        state = calc_cons & next(state) = calc_cons & col2 = 1: 4;
+        state = calc_cons & next(state) = calc_cons & col2 = 4: 7;
+        state = calc_cons & next(state) = calc_cons & col2 = 7: 8;
+        state = calc_cons & next(state) = calc_cons & col2 = 8: 11;
+        state = calc_cons & next(state) = calc_cons & col2 = 11: 14;
+        state = calc_cons & next(state) = calc_cons & col2 = 14: 15;
+        state = calc_cons & next(state) = calc_cons & col2 = 15: 18;
+        state = calc_cons & next(state) = calc_cons & col2 = 18: 21;
+        state = calc_cons & next(state) = calc_cons & col2 = 21: 22;
+        state = calc_cons & col2 = 22 & next(state) = calc_cons: 23;
+        state = calc_cons & col2 = 23 & next(state) = guess: 0;
+        state = calc_cons & col2 = 23 & next(state) = correct: 23;
+        state = guess: 0;
+        state = correct: 23;
+        state = initial: 0;
+        TRUE: 23;
+        esac;
+        
+        
+        /--1,2,5,8,9,12,15,16,19,22,23,24--/
+        next(col3):=case
+        state = calc_cons & next(state) = calc_cons & col3 = 1: 2;
+        state = calc_cons & next(state) = calc_cons & col3 = 2: 5;
+        state = calc_cons & next(state) = calc_cons & col3 = 5: 8;
+        state = calc_cons & next(state) = calc_cons & col3 = 8: 9;
+        state = calc_cons & next(state) = calc_cons & col3 = 9: 12;
+        state = calc_cons & next(state) = calc_cons & col3 = 12: 15;
+        state = calc_cons & next(state) = calc_cons & col3 = 15: 16;
+        state = calc_cons & next(state) = calc_cons & col3 = 16: 19;
+        state = calc_cons & next(state) = calc_cons & col3 = 19: 22;
+        state = calc_cons & next(state) = calc_cons & col3 = 22: 23;
+        state = calc_cons & col3 = 23 & next(state) = calc_cons: 24;
+        state = calc_cons & col3 = 24 & next(state) = guess: 1;
+        state = calc_cons & col3 = 24 & next(state) = correct: 24;
+        state = guess: 1;
+        state = correct: 24;
+        state = initial: 1;
+        TRUE: 24;
+        esac;
+        
+        
+        /--2,6,9,13,16,20,23,24--/
+        next(col4):=case
+        state = calc_cons & next(state) = calc_cons & col4 = 2: 6;
+        state = calc_cons & next(state) = calc_cons & col4 = 6: 9;
+        state = calc_cons & next(state) = calc_cons & col4 = 9: 13;
+        state = calc_cons & next(state) = calc_cons & col4 = 13: 16;
+        state = calc_cons & next(state) = calc_cons & col4 = 16: 20;
+        state = calc_cons & next(state) = calc_cons & col4 = 20: 23;
+        state = calc_cons & col4 = 23 & next(state) = calc_cons: 24;
+        state = calc_cons & col4 = 24 & next(state) = guess: 2;
+        state = calc_cons & col4 = 24 & next(state) = correct: 24;
+        state = guess: 2;
+        state = correct: 24;
+        state = initial: 2;
+        TRUE: 24;
+        esac;
+        
+        
+        /--0,3,4,7,8,11,12,15,16,19,20,23,24--/
+        next(di1):=case
+        state = calc_cons & next(state) = calc_cons & di1 = 0: 3;
+        state = calc_cons & next(state) = calc_cons & di1 = 3: 4;
+        state = calc_cons & next(state) = calc_cons & di1 = 4: 7;
+        state = calc_cons & next(state) = calc_cons & di1 = 7: 8;
+        state = calc_cons & next(state) = calc_cons & di1 = 8: 11;
+        state = calc_cons & next(state) = calc_cons & di1 = 11: 12;
+        state = calc_cons & next(state) = calc_cons & di1 = 12: 15;
+        state = calc_cons & next(state) = calc_cons & di1 = 15: 16;
+        state = calc_cons & next(state) = calc_cons & di1 = 16: 19;
+        state = calc_cons & next(state) = calc_cons & di1 = 19: 20;
+        state = calc_cons & next(state) = calc_cons & di1 = 20: 23;
+        state = calc_cons & di1 = 23 & next(state) = calc_cons: 24;
+        state = calc_cons & di1 = 24 & next(state) = guess: 0;
+        state = calc_cons & di1 = 24 & next(state) = correct: 24;
+        state = guess: 0;
+        state = correct: 24;
+        state = initial: 0;
+        TRUE: 24;
+        esac;
+        
+        
+        /--2,5,6,8,9,11,12,14,15,17,18,21,22--/
+        next(di2):=case
+        state = calc_cons & next(state) = calc_cons & di2 = 2: 5;
+        state = calc_cons & next(state) = calc_cons & di2 = 5: 6;
+        state = calc_cons & next(state) = calc_cons & di2 = 6: 8;
+        state = calc_cons & next(state) = calc_cons & di2 = 7: 8;
+        state = calc_cons & next(state) = calc_cons & di2 = 8: 9;
+        state = calc_cons & next(state) = calc_cons & di2 = 9: 11;
+        state = calc_cons & next(state) = calc_cons & di2 = 11: 12;
+        state = calc_cons & next(state) = calc_cons & di2 = 12: 14;
+        state = calc_cons & next(state) = calc_cons & di2 = 14: 15;
+        state = calc_cons & next(state) = calc_cons & di2 = 15: 17;
+        state = calc_cons & next(state) = calc_cons & di2 = 17: 18;
+        state = calc_cons & next(state) = calc_cons & di2 = 18: 21;
+        state = calc_cons & di2 = 21 & next(state) = calc_cons: 22;
+        state = calc_cons & di2 = 22 & next(state) = guess: 2;
+        state = calc_cons & di2 = 22 & next(state) = correct: 22;
+        state = guess: 2;
+        state = correct: 22;
+        state = initial: 2;
+        TRUE: 22;
+        esac;
+        
+        
+        next(rows_equal):=next(count_row1) = next(num_allowed) & next(count_row2) = next(num_allowed) & next(count_row3) = next(num_allowed) & next(count_row4) = next(num_allowed);
+        next(cols_equal):=next(count_col1) = next(num_allowed) & next(count_col2) = next(num_allowed) & next(count_col3) = next(num_allowed) & next(count_col4) = next(num_allowed);
+        next(dis_equal):=next(count_di1) = next(num_allowed) & next(count_di2) = next(num_allowed);
+        
+        
+        next(arr_rows[0]):=case
+        next(state) = calc_cons: arr_rows[0];
+        next(state) = correct: arr_rows[0];
+        next(state) = guess & state = calc_cons:row_options[0];
+        TRUE:arr_rows[0];
+        esac;
+        
+        next(arr_cols[0]):=case
+        next(state) = calc_cons: arr_cols[0];
+        next(state) = correct: arr_cols[0];
+        next(state) = guess & state = calc_cons:col_options[1];
+        TRUE:arr_cols[0];
+        esac;
+        
+        
+        next(arr_dis[0]):=case
+        next(state) = calc_cons: arr_dis[0];
+        next(state) = correct: arr_dis[0];
+        next(state) = guess & state = calc_cons & next(arr_cols[0]) = 1: 1;
+        next(state) = guess & next(arr_cols[0]) = 2: 0;
+        TRUE:arr_dis[0];
+        esac;
+        
+        
+        next(arr_rows[1]):=case
+        next(state) = calc_cons: arr_rows[1];
+        next(state) = correct: arr_rows[1];
+        next(state) = guess & state = calc_cons:row_options[0];
+        TRUE:arr_rows[1];
+        esac;
+        
+        
+        next(arr_cols[1]):=case
+        next(state) = calc_cons: arr_cols[1];
+        next(state) = correct: arr_cols[1];
+        next(state) = guess & state = calc_cons:col_options[3];
+        TRUE:arr_cols[1];
+        esac;
+        
+        
+        next(arr_dis[1]):=0;
+        
+        
+        next(arr_rows[2]):=case
+        next(state) = calc_cons: arr_rows[2];
+        next(state) = correct: arr_rows[2];
+        next(state) = guess & state = calc_cons:row_options[0];
+        TRUE:arr_rows[2];
+        esac;
+        
+        
+        next(arr_cols[2]):=case
+        next(state) = calc_cons: arr_cols[2];
+        next(state) = correct: arr_cols[2];
+        next(state) = guess & state = calc_cons:col_options[5];
+        TRUE:arr_cols[2];
+        esac;
+        
+        
+        next(arr_dis[2]):=case
+        next(state) = calc_cons: arr_dis[2];
+        next(state) = correct: arr_dis[2];
+        next(state) = guess & state = calc_cons & next(arr_cols[2]) = 3: 0;
+        next(state) = guess & state = calc_cons & next(arr_cols[2]) = 4: 2;
+        TRUE:arr_dis[2];
+        esac;
+        
+        
+        next(arr_rows[3]):=case
+        next(state) = calc_cons: arr_rows[3];
+        next(state) = correct: arr_rows[3];
+        next(state) = guess & state = calc_cons:row_options[1];
+        TRUE:arr_rows[3];
+        esac;
+        
+        
+        next(arr_cols[3]):=1;
+        
+        next(arr_dis[3]):=case
+        next(state) = calc_cons: arr_dis[3];
+        next(state) = correct: arr_dis[3];
+        next(state) = guess & state = calc_cons & next(arr_rows[3]) = 1: 1;
+        next(state) = guess & state = calc_cons & next(arr_rows[3]) = 2: 0;
+        TRUE:arr_dis[3];
+        esac;
+        
+        
+        next(arr_rows[4]):=case
+        next(state) = calc_cons: arr_rows[4];
+        next(state) = correct: arr_rows[4];
+        next(state) = guess & state = calc_cons:row_options[1];
+        TRUE:arr_rows[4];
+        esac;
+        
+        
+        next(arr_dis[4]):=case
+        next(state) = calc_cons: arr_dis[4];
+        next(state) = correct: arr_dis[4];
+        next(state) = guess & state = calc_cons & next(arr_rows[4]) = 2: 1;
+        next(state) = guess & state = calc_cons & next(arr_rows[4]) = 1: 0;
+        TRUE:arr_dis[4];
+        esac;
+        
+        
+        next(arr_cols[4]):=2;
+        
+        
+        next(arr_rows[5]):=case
+        next(state) = calc_cons: arr_rows[5];
+        next(state) = correct: arr_rows[5];
+        next(state) = guess & state = calc_cons:row_options[1];
+        TRUE:arr_rows[5];
+        esac;
+        
+        
+        next(arr_cols[5]):=3;
+        
+        
+        next(arr_dis[5]):=case
+        next(state) = calc_cons: arr_dis[5];
+        next(state) = correct: arr_dis[5];
+        next(state) = guess & state = calc_cons & next(arr_rows[5]) = 2: 2;
+        next(state) = guess & state = calc_cons & next(arr_rows[5]) = 1: 0;
+        TRUE:arr_dis[5];
+        esac;
+        
+        
+        next(arr_rows[6]):=case
+        next(state) = calc_cons: arr_rows[6];
+        next(state) = correct: arr_rows[6];
+        next(state) = guess & state = calc_cons:row_options[1];
+        TRUE:arr_rows[6];
+        esac;
+        
+        
+        next(arr_cols[6]):=4;
+        
+        
+        next(arr_dis[6]):=case
+        next(state) = calc_cons: arr_dis[6];
+        next(state) = correct: arr_dis[6];
+        next(state) = guess & state = calc_cons & next(arr_rows[6]) = 1: 2;
+        next(state) = guess & state = calc_cons & next(arr_rows[6]) = 2: 0;
+        TRUE:arr_dis[6];
+        esac;
+        
+        
+        next(arr_rows[7]):=case
+        next(state) = calc_cons: arr_rows[7];
+        next(state) = correct: arr_rows[7];
+        next(state) = guess & state = calc_cons:row_options[2];
+        TRUE:arr_rows[7];
+        esac;
+        
+        
+        next(arr_cols[7]):=case
+        next(state) = calc_cons: arr_cols[7];
+        next(state) = correct: arr_cols[7];
+        next(state) = guess & state = calc_cons:col_options[1];
+        TRUE:arr_cols[7];
+        esac;
+        
+        
+        next(arr_dis[7]):=case
+        next(state) = calc_cons: arr_dis[7];
+        next(state) = correct: arr_dis[7];
+        next(state) = guess & state = calc_cons & next(arr_cols[7]) = 1: 0;
+        next(state) = guess & state = calc_cons & next(arr_cols[7]) = 2: 1;
+        TRUE:arr_dis[7];
+        esac;
+        
+        
+        next(arr_rows[8]):=case
+        next(state) = calc_cons: arr_rows[8];
+        next(state) = correct: arr_rows[8];
+        next(state) = guess & state = calc_cons:row_options[2];
+        TRUE:arr_rows[8];
+        esac;
+        
+        
+        next(arr_cols[8]):=case
+        next(state) = calc_cons: arr_cols[8];
+        next(state) = correct: arr_cols[8];
+        next(state) = guess & state = calc_cons:col_options[3];
+        TRUE:arr_cols[8];
+        esac;
+        
+        
+        next(arr_dis[8]):=case
+        next(state) = calc_cons: arr_dis[8];
+        next(state) = correct: arr_dis[8];
+        next(state) = guess & state = calc_cons & next(arr_cols[8]) = 2: 1;
+        next(state) = guess & state = calc_cons & next(arr_cols[8]) = 3: 2;
+        TRUE:arr_dis[8];
+        esac;
+        
+        
+        next(arr_rows[9]):=case
+        next(state) = calc_cons: arr_rows[9];
+        next(state) = correct: arr_rows[9];
+        next(state) = guess & state = calc_cons:row_options[2];
+        TRUE:arr_rows[9];
+        esac;
+        
+        
+        next(arr_cols[9]):=case
+        next(state) = calc_cons: arr_cols[9];
+        next(state) = correct: arr_cols[9];
+        next(state) = guess & state = calc_cons:col_options[5];
+        TRUE:arr_cols[9];
+        esac;
+        
+        
+        next(arr_dis[9]):=case
+        next(state) = calc_cons: arr_dis[9];
+        next(state) = correct: arr_dis[9];
+        next(state) = guess & state = calc_cons & next(arr_cols[9]) = 3: 2;
+        next(state) = guess & state = calc_cons & next(arr_cols[9]) = 4: 0;
+        TRUE:arr_dis[9];
+        esac;
+        
+        
+        next(arr_rows[10]):=case
+        next(state) = calc_cons: arr_rows[10];
+        next(state) = correct: arr_rows[10];
+        next(state) = guess & state = calc_cons:row_options[3];
+        TRUE:arr_rows[10];
+        esac;
+        
+        
+        next(arr_cols[10]):=1;
+        
+        
+        next(arr_dis[10]):=0;
+        
+        
+        next(arr_rows[11]):=case
+        next(state) = calc_cons: arr_rows[11];
+        next(state) = correct: arr_rows[11];
+        next(state) = guess & state = calc_cons:row_options[3];
+        TRUE:arr_rows[11];
+        esac;
+        
+        
+        next(arr_cols[11]):=2;
+        
+        
+        next(arr_dis[11]):=case
+        next(state) = calc_cons: arr_dis[11];
+        next(state) = correct: arr_dis[11];
+        next(state) = guess & state = calc_cons & next(arr_rows[11]) = 2: 1;
+        next(state) = guess & state = calc_cons & next(arr_rows[11]) = 3: 2;
+        TRUE:arr_dis[11];
+        esac;
+        
+        
+        next(arr_rows[12]):=case
+        next(state) = calc_cons: arr_rows[12];
+        next(state) = correct: arr_rows[12];
+        next(state) = guess & state = calc_cons:row_options[3];
+        TRUE:arr_rows[12];
+        esac;
+        
+        
+        next(arr_cols[12]):=3;
+        
+        
+        next(arr_dis[12]):=case
+        next(state) = calc_cons: arr_dis[12];
+        next(state) = correct: arr_dis[12];
+        next(state) = guess & state = calc_cons & next(arr_rows[12]) = 2: 2;
+        next(state) = guess & state = calc_cons & next(arr_rows[12]) = 3: 1;
+        TRUE:arr_dis[12];
+        esac;
+        
+        
+        next(arr_rows[13]):=case
+        next(state) = calc_cons: arr_rows[13];
+        next(state) = correct: arr_rows[13];
+        next(state) = guess & state = calc_cons:row_options[3];
+        TRUE:arr_rows[13];
+        esac;
+        
+        
+        next(arr_cols[13]):=4;
+        
+        
+        next(arr_dis[13]):=0;
+        
+        
+        next(arr_rows[14]):=case
+        next(state) = calc_cons: arr_rows[14];
+        next(state) = correct: arr_rows[14];
+        next(state) = guess & state = calc_cons:row_options[4];
+        TRUE:arr_rows[14];
+        esac;
+        
+        
+        next(arr_cols[14]):=case
+        next(state) = calc_cons: arr_cols[14];
+        next(state) = correct: arr_cols[14];
+        next(state) = guess & state = calc_cons:col_options[1];
+        TRUE:arr_cols[14];
+        esac;
+        
+        
+        next(arr_dis[14]):=case
+        next(state) = calc_cons: arr_dis[14];
+        next(state) = correct: arr_dis[14];
+        next(state) = guess & state = calc_cons & next(arr_cols[14]) = 1: 0;
+        next(state) = guess & state = calc_cons & next(arr_cols[14]) = 2: 2;
+        TRUE:arr_dis[14];
+        esac;
+        
+        
+        next(arr_rows[15]):=case
+        next(state) = calc_cons: arr_rows[15];
+        next(state) = correct: arr_rows[15];
+        next(state) = guess & state = calc_cons:row_options[4];
+        TRUE:arr_rows[15];
+        esac;
+        
+        
+        next(arr_cols[15]):=case
+        next(state) = calc_cons: arr_cols[15];
+        next(state) = correct: arr_cols[15];
+        next(state) = guess & state = calc_cons:col_options[3];
+        TRUE:arr_cols[15];
+        esac;
+        
+        
+        next(arr_dis[15]):=case
+        next(state) = calc_cons: arr_dis[15];
+        next(state) = correct: arr_dis[15];
+        next(state) = guess & state = calc_cons & next(arr_cols[15]) = 2: 2;
+        next(state) = guess & state = calc_cons & next(arr_cols[15]) = 3: 1;
+        TRUE:arr_dis[15];
+        esac;
+        
+        
+        next(arr_rows[16]):=case
+        next(state) = calc_cons: arr_rows[16];
+        next(state) = correct: arr_rows[16];
+        next(state) = guess & state = calc_cons:row_options[4];
+        TRUE:arr_rows[16];
+        esac;
+        
+        
+        next(arr_cols[16]):=case
+        next(state) = calc_cons: arr_cols[16];
+        next(state) = correct: arr_cols[16];
+        next(state) = guess & state = calc_cons:col_options[5];
+        TRUE:arr_cols[16];
+        esac;
+        
+        
+        next(arr_dis[16]):=case
+        next(state) = calc_cons: arr_dis[16];
+        next(state) = correct: arr_dis[16];
+        next(state) = guess & state = calc_cons & next(arr_cols[16]) = 3: 1;
+        next(state) = guess & state = calc_cons & next(arr_cols[16]) = 4: 0;
+        TRUE:arr_dis[16];
+        esac;
+        
+        
+        next(arr_rows[17]):=case
+        next(state) = calc_cons: arr_rows[17];
+        next(state) = correct: arr_rows[17];
+        next(state) = guess & state = calc_cons:row_options[5];
+        TRUE:arr_rows[17];
+        esac;
+        
+        
+        next(arr_cols[17]):=1;
+        
+        
+        next(arr_dis[17]):=case
+        next(state) = calc_cons: arr_dis[17];
+        next(state) = correct: arr_dis[17];
+        next(state) = guess & state = calc_cons & next(arr_rows[17]) = 3: 0;
+        next(state) = guess & state = calc_cons & next(arr_rows[17]) = 4: 2;
+        TRUE:arr_dis[17];
+        esac;
+        
+        
+        next(arr_rows[18]):=case
+        next(state) = calc_cons: arr_rows[18];
+        next(state) = correct: arr_rows[18];
+        next(state) = guess & state = calc_cons:row_options[5];
+        TRUE:arr_rows[18];
+        esac;
+        
+        
+        next(arr_cols[18]):=2;
+        
+        
+        next(arr_dis[18]):=case
+        next(state) = calc_cons: arr_dis[18];
+        next(state) = correct: arr_dis[18];
+        next(state) = guess & state = calc_cons & next(arr_rows[18]) = 3: 2;
+        next(state) = guess & state = calc_cons & next(arr_rows[18]) = 4: 0;
+        TRUE:arr_dis[18];
+        esac;
+        
+        
+        next(arr_rows[19]):=case
+        next(state) = calc_cons: arr_rows[19];
+        next(state) = correct: arr_rows[19];
+        next(state) = guess & state = calc_cons:row_options[5];
+        TRUE:arr_rows[19];
+        esac;
+        
+        
+        next(arr_cols[19]):=3;
+        
+        
+        next(arr_dis[19]):=case
+        next(state) = calc_cons: arr_dis[19];
+        next(state) = correct: arr_dis[19];
+        next(state) = guess & state = calc_cons & next(arr_rows[19]) = 3: 1;
+        next(state) = guess & state = calc_cons & next(arr_rows[19]) = 4: 0;
+        TRUE:arr_dis[19];
+        esac;
+        
+        
+        next(arr_rows[20]):=case
+        next(state) = calc_cons: arr_rows[20];
+        next(state) = correct: arr_rows[20];
+        next(state) = guess & state = calc_cons:row_options[5];
+        TRUE:arr_rows[20];
+        esac;
+        
+        
+        next(arr_cols[20]):=4;
+        
+        
+        next(arr_dis[20]):=case
+        next(state) = calc_cons: arr_dis[20];
+        next(state) = correct: arr_dis[20];
+        next(state) = guess & state = calc_cons & next(arr_cols[20]) = 4: 1;
+        next(state) = guess & state = calc_cons & next(arr_cols[20]) = 3: 0;
+        TRUE:arr_dis[20];
+        esac;
+        
+        
+        next(arr_rows[21]):=case
+        next(state) = calc_cons: arr_rows[21];
+        next(state) = correct: arr_rows[21];
+        next(state) = guess & state = calc_cons:row_options[6];
+        TRUE:arr_rows[21];
+        esac;
+        
+        
+        next(arr_cols[21]):=case
+        next(state) = calc_cons: arr_cols[21];
+        next(state) = correct: arr_cols[21];
+        next(state) = guess & state = calc_cons:col_options[1];
+        TRUE:arr_cols[21];
+        esac;
+        
+        
+        next(arr_dis[21]):=case
+        next(state) = calc_cons: arr_dis[21];
+        next(state) = correct: arr_dis[21];
+        next(state) = guess & state = calc_cons & next(arr_cols[21]) = 1: 2;
+        next(state) = guess & state = calc_cons & next(arr_cols[21]) = 2: 0;
+        TRUE:arr_dis[21];
+        esac;
+        
+        
+        next(arr_rows[22]):=case
+        next(state) = calc_cons: arr_rows[22];
+        next(state) = correct: arr_rows[22];
+        next(state) = guess & state = calc_cons:row_options[6];
+        TRUE:arr_rows[22];
+        esac;
+        
+        
+        next(arr_cols[22]):=case
+        next(state) = calc_cons: arr_cols[22];
+        next(state) = correct: arr_cols[22];
+        next(state) = guess & state = calc_cons:col_options[3];
+        TRUE:arr_cols[22];
+        esac;
+        
+        
+        next(arr_dis[22]):=0;
+        
+        
+        next(arr_rows[23]):=case
+        next(state) = calc_cons: arr_rows[23];
+        next(state) = correct: arr_rows[23];
+        next(state) = guess & state = calc_cons:row_options[6];
+        TRUE:arr_rows[23];
+        esac;
+        
+        
+        next(arr_cols[23]):=case
+        next(state) = calc_cons: arr_cols[23];
+        next(state) = correct: arr_cols[23];
+        next(state) = guess & state = calc_cons:col_options[5];
+        TRUE:arr_cols[23];
+        esac;
+        
+        
+        next(arr_dis[23]):=case
+        next(state) = calc_cons: arr_dis[23];
+        next(state) = correct: arr_dis[23];
+        next(state) = guess & state = calc_cons & next(arr_cols[23]) = 4: 1;
+        next(state) = guess & state = calc_cons & next(arr_cols[23]) = 3: 0;
+        TRUE:arr_dis[23];
+        esac;
+        
+        
+        next(count_row1):=case
+        !(finished_count) & state = calc_cons & arr_rows[row1] = 1 & row1 < 7: (count_row1+1)mod(15) ;
+        state = guess: 0;
+        TRUE: count_row1;
+        esac;
+        
+        
+        next(count_row2):=case
+        !(finished_count) & state = calc_cons & arr_rows[row2] = 2 & row2 < 14: (count_row2+1)mod(15) ;
+        state = guess: 0;
+        TRUE: count_row2;
+        esac;
+        
+        
+        next(count_row3):=case
+        !(finished_count) & state = calc_cons & arr_rows[row3] = 3 & row3 < 21: (count_row3+1)mod(15) ;
+        state = guess: 0;
+        TRUE: count_row3;
+        esac;
+        
+        
+        next(count_row4):=case
+        !(finished_count) & state = calc_cons & arr_rows[row4] = 4 & row4 < 24: (count_row4+1)mod(15) ;
+        state = guess: 0;
+        TRUE: count_row4;
+        esac;
+        
+        
+        next(count_col1):=case
+        !(finished_count) & state = calc_cons & arr_cols[col1] = 1 & col1 < 22: (count_col1+1)mod(15) ;
+        state = guess: 0;
+        TRUE: count_col1;
+        esac;
+        
+        
+        next(count_col2):=case
+        !(finished_count) & state = calc_cons & arr_cols[col2] = 2 & col2 < 23: (count_col2+1)mod(15) ;
+        state = guess: 0;
+        TRUE: count_col2;
+        esac;
+        
+        
+        next(count_col3):=case
+        !(finished_count) & state = calc_cons & arr_cols[col3] = 3 & col3 < 24: (count_col3+1)mod(15) ;
+        state = guess: 0;
+        TRUE: count_col3;
+        esac;
+        
+        
+        next(count_col4):=case
+        !(finished_count) & state = calc_cons & arr_cols[col4] = 4 & col4 < 24: (count_col4+1)mod(15) ;
+        state = guess: 0;
+        TRUE: count_col4;
+        esac;
+        
+        
+        next(count_di1):=case
+        !(finished_count) & state = calc_cons & arr_dis[di1] = 1 & di1 < 24: (count_di1+1)mod(11) ;
+        state = guess: 0;
+        TRUE: count_di1;
+        esac;
+        
+        
+        next(count_di2):=case
+        !(finished_count) & state = calc_cons & arr_dis[di2] = 2 & di2 < 22: (count_di2+1)mod(11) ;
+        state = guess: 0;
+        TRUE: count_di2;
+        esac;
+        
+        
+        /--need to count cols and dis--/
+        LTLSPEC
+        G !(state = correct)
