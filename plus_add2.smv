@@ -1,5 +1,5 @@
 MODULE main
-            
+         /-- 2 digits per number, plus add, num. of matcsticks to add = 4   
             /--state variables--/ 
             VAR
         dig1_1:0..9;
