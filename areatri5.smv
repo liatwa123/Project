@@ -1,0 +1,334 @@
+MODULE main
+                
+                VAR
+                
+                state:{initial, guess, calc_cons, correct};
+                arr_junct_1: array 0..5 of 0..13;
+                arr_junct_2: array 0..5 of 0..13;
+                num_it: 0..15;
+                cuts1: array 6..11 of array 0..2 of {60,120,240,180,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
+            cuts2: array 6..11 of array 0..2 of {60,120,240,180,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
+            inside1: array 7..10 of array 0..2 of {60,120,180,240,300,15,16,17,18,19};
+            inside2: array 7..10 of array 0..2 of {60,120,180,240,300,15,16,17,18,19};
+            
+            equal1: boolean;
+            equal2: boolean;
+            legal: boolean;
+            ind1: 0..11;
+            ind2: 0..11;
+            ind3: 0..11;
+            init_ind1: 0..11;
+            init_ind2: 0..11;
+            finished: boolean; 
+DEFINE	
+            shape:=[[1, 120, 2], [2, 240, 3], [3, 120, 4], [4, 120, 5], [5, 120, 6], [6, 240, 7], [7, 120, 8], [8, 120, 9], [9, 240, 10], [10, 120, 11], [11, 120, 12], [12, 120, 13], [13, 240, 14], [14, 120, 1]];
+            cut_in:=[[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1],[15,180,1]];
+            junct_in:=[1, 1, 1, 1, 1, 1];
+            ins_in:=[[15,180,16],[15,180,16],[15,180,16],[15,180,16],[15,180,16],[15,180,16],[15,180,16],[15,180,16],[15,180,16],[15,180,16],[15,180,16]];
+            
+ASSIGN
+                
+                init(inside1):=ins_in;
+                init(inside2):=ins_in;
+                init(arr_junct_1):=junct_in;
+                init(arr_junct_2):=junct_in;
+                init(cuts1):=cut_in;
+                init(cuts2):=cut_in;
+                init(state):=initial;
+                init(ind1):= 0; 
+                init(ind2):= 0; 
+                init(ind3):=0;
+                init(init_ind1):=0;
+                init(init_ind2):= 0; 
+                init(legal):=TRUE;
+                init(equal1):=TRUE;
+                init(equal2):=TRUE;
+                 init(num_it):=1;
+                 
+                next(state):=case
+                state = initial: guess; 
+                state = guess: calc_cons;
+                state = calc_cons & finished & (equal1 | equal2) & legal: correct;
+                TRUE: calc_cons;
+                esac;
+                
+                 next(num_it):=(num_it + 1) mod (16);
+                 
+                next(arr_junct_1[0]):=case
+                next(state) = guess: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+                TRUE: arr_junct_1[0];
+                esac;
+            next(arr_junct_1[1]):=case
+                next(state) = guess: (next(arr_junct_1[0]) + 1)mod(14);
+                TRUE: arr_junct_1[1];
+                esac;
+                next(arr_junct_1[2]):=case
+                next(state) = guess: (next(arr_junct_1[1]) + 1)mod(14);
+                TRUE: arr_junct_1[2];
+                esac;
+                next(arr_junct_1[3]):=case
+                next(state) = guess: (next(arr_junct_1[2]) + 1)mod(14);
+                TRUE: arr_junct_1[3];
+                esac;
+                next(arr_junct_1[4]):=case
+                next(state) = guess: (next(arr_junct_1[3]) + 1)mod(14);
+                TRUE: arr_junct_1[4];
+                esac;
+                next(arr_junct_1[5]):=case
+                next(state) = guess: (next(arr_junct_1[4]) + 1)mod(14);
+                TRUE: arr_junct_1[5];
+                esac;
+                next(arr_junct_2[0]):=case
+                next(state) = guess: (next(arr_junct_1[5]) + 2)mod(14);
+                TRUE: arr_junct_2[0];
+                esac;
+                next(arr_junct_2[1]):=case
+                    next(state) = guess: (next(arr_junct_2[0]) + 1)mod(14);
+                    TRUE: arr_junct_2[1];
+                    esac;
+                    next(arr_junct_2[2]):=case
+                    next(state) = guess: (next(arr_junct_2[1]) + 1)mod(14);
+                    TRUE: arr_junct_2[2];
+                    esac;
+                    next(arr_junct_2[3]):=case
+                    next(state) = guess: (next(arr_junct_2[2]) + 1)mod(14);
+                    TRUE: arr_junct_2[3];
+                    esac;
+                    next(arr_junct_2[4]):=case
+                    next(state) = guess: (next(arr_junct_2[3]) + 1)mod(14);
+                    TRUE: arr_junct_2[4];
+                    esac;
+                    next(arr_junct_2[5]):=case
+                    next(state) = guess: (next(arr_junct_2[4]) + 1)mod(14);
+                    TRUE: arr_junct_2[5];
+                    esac;
+                    next(ind1):=case
+                        state = initial: 0;
+                                        state = guess & next(state) = calc_cons: next(init_ind1);
+                                        state = calc_cons & !finished & ind1 < 5: (ind1 + 1)mod(12);
+        								state = calc_cons & !finished & ind1 = 5 & cuts1[11][2] = (shape[(arr_junct_1[5])mod(14)][2])mod(15): 11;
+        								state = calc_cons & !finished & cuts1[11][2] = (shape[(arr_junct_1[5])mod(14)][2])mod(15) & ind1 > 6 : (ind1 + 11)mod(12);
+        								state = calc_cons & !finished & cuts1[11][2] = (shape[(arr_junct_1[5])mod(14)][2])mod(15) & ind1 = 6 : 0;
+        								state = calc_cons & !finished & ind1 = 5 & cuts1[6][2] = (shape[(arr_junct_1[5])mod(14)][2])mod(15): 6;
+        								state = calc_cons & !finished & ind1 > 5 & cuts1[6][2] = (shape[(arr_junct_1[5])mod(14)][2])mod(15): (ind1 + 1)mod(12);
+                                        state = calc_cons & next(state) = guess: 0;
+                                        TRUE: ind1;
+                                        esac;
+                        
+                        next(ind3):=case
+                        state = guess & next(state) = calc_cons: next(init_ind1);
+                                        state = calc_cons & !finished & ind3 <= 5 & ind3 > 0: (ind3 + 11)mod(12);
+        								state = calc_cons & !finished & ind3 = 0 & cuts1[11][2] = (shape[(arr_junct_1[0])mod(14)][0])mod(15): 11;
+        								state = calc_cons & !finished & cuts1[11][2] = (shape[(arr_junct_1[0])mod(14)][0])mod(15) & ind3 > 6 & ind3 < 11 : (ind3 + 1)mod(12);
+        								state = calc_cons & !finished & cuts1[11][2] = (shape[(arr_junct_1[0])mod(14)][0])mod(15) & ind3 = 11 : 5;
+        								state = calc_cons & !finished & ind3 = 0 & cuts1[6][2] = (shape[(arr_junct_1[0])mod(14)][0])mod(15): 6;
+        								state = calc_cons & !finished & ind3 >= 6 & ind3 < 11 & cuts1[6][2] = (shape[(arr_junct_1[0])mod(14)][0])mod(15): (ind3 + 1)mod(12);
+        								state = calc_cons & !finished & ind3 = 11 & cuts1[6][2] = (shape[(arr_junct_1[0])mod(14)][0])mod(15): 5;
+                                        state = calc_cons & next(state) = guess: 0;
+                                        TRUE: ind3;
+                                        esac;
+                        
+                        next(ind2):=case
+                                        state = initial: 0;
+                                        state = guess & next(state) = calc_cons: next(init_ind2);
+                                        state = calc_cons & !finished & ind2 < 5: (ind2 + 1)mod(12);
+        								state = calc_cons & !finished & ind2 = 5 & cuts2[11][2] = (shape[(arr_junct_2[5])mod(14)][2])mod(15): 11;
+        								state = calc_cons & !finished & cuts2[11][2] = (shape[(arr_junct_2[5])mod(14)][2])mod(15) & ind2 > 6 : (ind2 + 11)mod(12);
+        								state = calc_cons & !finished & cuts2[11][2] = (shape[(arr_junct_2[5])mod(14)][2])mod(15) & ind2 = 6 : 0;
+        								state = calc_cons & !finished & ind2 = 5 & cuts2[6][2] = (shape[(arr_junct_2[5])mod(14)][2])mod(15): 6;
+        								state = calc_cons & !finished & ind2 > 5 & cuts2[6][2] = (shape[(arr_junct_2[5])mod(14)][2])mod(15): (ind2 + 1)mod(12);
+                                        state = calc_cons & next(state) = guess: 0;
+                                        TRUE: ind2;
+                                        esac;
+                
+                next(init_ind1):=case
+                state = initial: 0;
+                state = guess & next(state) = calc_cons: {0,1,2,3,4,5,6,7,8,9,10,11};
+                state = calc_cons & next(state) = guess: 0;
+                TRUE: init_ind1;
+                esac;
+                
+                next(init_ind2):=case
+                state = initial: 0;
+                state = guess & next(state) = calc_cons: {0,1,2,3,4,5,6,7,8,9,10,11};
+                state = calc_cons & next(state) = guess: 0;
+                TRUE: init_ind2;
+                esac;
+                
+                next(finished):= num_it = 14;
+                
+                next(equal1):=case
+                state = calc_cons & next(state) = calc_cons & ind1 <= 5 & ind2 <= 5: equal1 & shape[arr_junct_1[ind1]][1] = shape[arr_junct_2[ind2]][1];
+                state = calc_cons & next(state) = calc_cons & ind1 <= 5 & ind2 = 6: equal1 & shape[arr_junct_1[ind1]][1] = cuts2[6][1];
+                state = calc_cons & next(state) = calc_cons & ind1 <= 5 & ind2 > 6 & ind2 < 11 : equal1 & shape[arr_junct_1[ind1]][1] = inside2[ind2][1];
+                state = calc_cons & next(state) = calc_cons & ind1 <= 5 & ind2 = 11: equal1 & shape[arr_junct_1[ind1]][1] = cuts2[11][1];
+                        
+                state = calc_cons & next(state) = calc_cons & ind1 = 6 & ind2 <= 5: equal1 & shape[arr_junct_2[ind2]][1] = cuts1[6][1];
+                state = calc_cons & next(state) = calc_cons & ind1 = 6 & ind2 = 6: equal1 & cuts1[6][1] = cuts2[6][1];
+            state = calc_cons & next(state) = calc_cons & ind1 = 6 & ind2 > 6 & ind2 < 11: equal1 & cuts1[6][1] = inside2[ind2][1];
+                state = calc_cons & next(state) = calc_cons & ind1 = 6 & ind2 = 11: equal1 & cuts1[6][1] = cuts2[11][1];
+            state = calc_cons & next(state) = calc_cons & ind1 > 6 & ind1 < 11 & ind2 <= 5: equal1 & shape[arr_junct_2[ind2]][1] = inside1[ind1][1];
+                state = calc_cons & next(state) = calc_cons & ind1 > 6 & ind1 < 11 & ind2 = 6: equal1 & cuts2[6][1] = inside1[ind1][1];
+                state = calc_cons & next(state) = calc_cons & ind1 > 6 & ind1 < 11 & ind2 > 6 & ind2 < 11: equal1 & inside1[ind1][1] = inside2[ind2][1];
+                state = calc_cons & next(state) = calc_cons & ind1 > 6 & ind1 < 11 & ind2 = 11: equal1 & inside1[ind1][1] = cuts2[11][1];
+                
+                state = calc_cons & next(state) = calc_cons & ind1 = 11 & ind2 <= 5: equal1 & shape[arr_junct_2[ind2]][1] = cuts1[11][1];
+                state = calc_cons & next(state) = calc_cons & ind1 = 11 & ind2 = 6: equal1 & cuts1[11][1] = cuts2[6][1];
+                state = calc_cons & next(state) = calc_cons & ind1 = 11 & ind2 > 6 & ind2 < 11: equal1 & cuts1[11][1] = inside2[ind2][1];
+                state = calc_cons & next(state) = calc_cons & ind1 = 11 & ind2 = 11: equal1 & cuts1[11][1] = cuts2[11][1];
+                next(state) = guess: TRUE;
+                TRUE: equal1;
+                esac;
+                
+                next(equal2):=case
+                state = calc_cons & next(state) = calc_cons & ind3 <= 5 & ind2 <= 5: equal2 & shape[arr_junct_1[ind3]][1] = shape[arr_junct_2[ind2]][1];
+                state = calc_cons & next(state) = calc_cons & ind3 <= 5 & ind2 = 6: equal2 & shape[arr_junct_1[ind3]][1] = cuts2[6][1];
+            state = calc_cons & next(state) = calc_cons & ind3 <= 5 & ind2 > 6 & ind2 < 11: equal2 & shape[arr_junct_1[ind3]][1] = inside2[ind2][1];
+                state = calc_cons & next(state) = calc_cons & ind3 <= 5 & ind2 = 11: equal2 & shape[arr_junct_1[ind3]][1] = cuts2[11][1];
+                
+                state = calc_cons & next(state) = calc_cons & ind3 = 6 & ind2 <= 5: equal2 & shape[arr_junct_2[ind2]][1] = cuts1[6][1];
+                state = calc_cons & next(state) = calc_cons & ind3 = 6 & ind2 = 6: equal2 & cuts1[6][1] = cuts2[6][1];
+                state = calc_cons & next(state) = calc_cons & ind3 = 6 & ind2 > 6 & ind2 < 11: equal2 & cuts1[6][1] = inside2[ind2][1];
+                state = calc_cons & next(state) = calc_cons & ind3 = 6 & ind2 = 11: equal2 & cuts1[6][1] = cuts2[11][1];
+                state = calc_cons & next(state) = calc_cons & ind3 > 6 & ind3 < 11 & ind2 <= 5: equal2 & shape[arr_junct_2[ind2]][1] = inside1[ind3][1];
+                state = calc_cons & next(state) = calc_cons & ind3 > 6 & ind3 < 11 & ind2 = 6: equal2 & cuts2[6][1] = inside1[ind3][1];
+                state = calc_cons & next(state) = calc_cons & ind3 > 6 & ind3 < 11 & ind2 > 6 & ind2 < 11: equal2 & inside1[ind3][1] = inside2[ind2][1];
+                state = calc_cons & next(state) = calc_cons & ind3 > 6 & ind3 < 11 & ind2 = 11: equal2 & inside1[ind3][1] = cuts2[11][1];
+                state = calc_cons & next(state) = calc_cons & ind3 = 11 & ind2 <= 5: equal2 & shape[arr_junct_2[ind2]][1] = cuts1[11][1];
+                state = calc_cons & next(state) = calc_cons & ind3 = 11 & ind2 = 6: equal2 & cuts1[11][1] = cuts2[6][1];
+                state = calc_cons & next(state) = calc_cons & ind3 = 11 & ind2 > 6 & ind2 < 11: equal2 & cuts1[11][1] = inside2[ind2][1];
+                
+                state = calc_cons & next(state) = calc_cons & ind3 = 11 & ind2 = 11: equal2 & cuts1[11][1] = cuts2[11][1];
+                next(state) = guess: TRUE;
+                TRUE: equal2;
+                esac;
+                
+                next(cuts1[6][0]):=15;
+                next(cuts1[11][0]):=19;
+                
+                next(cuts2[6][0]):=15;
+                next(cuts2[11][0]):=19;
+                
+                
+                next(cuts1[6][2]):=next(shape[arr_junct_1[0]][0]);
+                next(cuts1[11][2]):=next(shape[arr_junct_1[5]][2]);
+                
+                next(cuts2[6][2]):=next(shape[arr_junct_2[5]][2]);
+                next(cuts2[11][2]):=next(shape[arr_junct_2[0]][0]);
+        
+        next(cuts1[6][1]) := case
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) > (next(cuts2[6][2]))mod(15) & !(next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14) | next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14) & next(shape[(abs(cuts2[6][2] + 13))mod(14)][1]) = 300: {60, 120, 180, 240};
+                
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) > (next(cuts2[6][2]))mod(15) & !(next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14) | next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14) & next(shape[(abs(cuts2[6][2] + 13))mod(14)][1]) = 240: {60, 120, 180};
+                
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) > (next(cuts2[6][2]))mod(15) & !(next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14) | next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14) & next(shape[(abs(cuts2[6][2] + 13))mod(14)][1]) = 180: {60, 120};
+                
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) > (next(cuts2[6][2]))mod(15) & !(next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14) | next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14) & next(shape[(abs(cuts2[6][2] + 13))mod(14)][1]) = 120: 60;
+                
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) <= (next(cuts2[6][2]))mod(15)  & !(next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1) | next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1) & next(shape[(abs(cuts1[6][2] + 13))mod(14)][1]) = 120: 60;
+                
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) <= (next(cuts2[6][2]))mod(15)  & !(next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1) | next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1) & next(shape[(abs(cuts1[6][2] + 13))mod(14)][1]) = 180: {60, 120};
+                
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) <= (next(cuts2[6][2]))mod(15)  & !(next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1) | next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1) & next(shape[(abs(cuts1[6][2] + 13))mod(14)][1]) = 240: {60, 120, 180};
+                
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) <= (next(cuts2[6][2]))mod(15)  & !(next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1) | next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1) & next(shape[(abs(cuts1[6][2] + 13))mod(14)][1]) = 300: {60, 120, 180, 240};
+                
+                next(state) = calc_cons | next(state) = correct: cuts1[6][1];
+                TRUE: 0;
+                esac;
+                
+                next(cuts2[6][1]) := case
+               
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) > (next(cuts2[6][2]))mod(15) & !(next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14)| next(cuts1[6][2]) = 1 & next(cuts2[6][2]) = 14): next(shape[(abs(cuts2[6][2] + 13))mod(14)][1]) - next(cuts1[6][1]);
+                
+                next(state) = guess & ((next(cuts1[6][2]))mod(15) <= (next(cuts2[6][2]))mod(15) & !(next(cuts1[6][2]) = 14 & next(cuts1[6][2]) = 1) | next(cuts1[6][2]) = 14 & next(cuts2[6][2]) = 1): next(shape[(abs(cuts1[6][2] + 13))mod(14)][1]) - next(cuts1[6][1]);
+                
+                next(state) = calc_cons | next(state) = correct: cuts2[6][1];
+                TRUE: 0;
+                esac;
+                
+                next(cuts1[11][1]) := case
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) > (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14)| next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14) & next(shape[(abs(cuts2[11][2] + 13))mod(14)][1]) = 300: {60, 120, 180, 240};
+                
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) > (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14)| next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14)& next(shape[(abs(cuts2[11][2] + 13))mod(14)][1]) = 240: {60, 120, 180};
+                
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) > (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14)| next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14)& next(shape[(abs(cuts2[11][2] + 13))mod(14)][1]) = 180: {60, 120};
+                
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) > (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14)| next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14)& next(shape[(abs(cuts2[11][2] + 13))mod(14)][1]) = 120: 60;
+                
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) <= (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)| next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)& next(shape[(abs(cuts1[11][2] + 13))mod(14)][1]) = 120: 60;
+                
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) <= (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)| next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)& next(shape[(abs(cuts1[11][2] + 13))mod(14)][1]) = 180: {60, 120};
+                
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) <= (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)| next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)& next(shape[(abs(cuts1[11][2] + 13))mod(14)][1]) = 240: {60, 120, 180};
+                
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) <= (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)| next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)& next(shape[(abs(cuts1[11][2] + 13))mod(14)][1]) = 300: {60, 120, 180, 240};
+                
+                next(state) = calc_cons | next(state) = correct: cuts1[11][1];
+                TRUE: 0;
+                esac;
+                
+                next(cuts2[11][1]) := case
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) > (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14)| next(cuts1[11][2]) = 1 & next(cuts2[11][2]) = 14): next(shape[(abs(cuts2[11][2] + 13))mod(14)][1]) - next(cuts1[11][1]);
+                
+                next(state) = guess & ((next(cuts1[11][2]))mod(15) <= (next(cuts2[11][2]))mod(15) & !(next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1)| next(cuts1[11][2]) = 14 & next(cuts2[11][2]) = 1): next(shape[(abs(cuts1[11][2] + 13))mod(14)][1]) - next(cuts1[11][1]);
+                
+                next(state) = calc_cons | next(state) = correct: cuts2[11][1];
+                TRUE: 0;
+                esac;
+        next(inside1[7][0]):=15;
+                next(inside1[7][1]):=case
+                next(state) = guess: {60,120,240,180,300};
+                TRUE: inside1[7][1];
+                esac;
+                
+                next(inside1[7][2]):=16;
+                
+                next(inside2[7][0]):=15;
+                
+                next(inside2[7][1]):=360 - next(inside1[7][1]);
+                
+                next(inside2[7][2]):=16; 
+                next(inside1[8][0]):=16;
+                next(inside1[8][1]):=case
+                next(state) = guess: {60,120,240,180,300};
+                TRUE: inside1[8][1];
+                esac;
+                
+                next(inside1[8][2]):=17;
+                
+                next(inside2[8][0]):=16;
+                
+                next(inside2[8][1]):=360 - next(inside1[8][1]);
+                
+                next(inside2[8][2]):=17; 
+                next(inside1[9][0]):=17;
+                next(inside1[9][1]):=case
+                next(state) = guess: {60,120,240,180,300};
+                TRUE: inside1[9][1];
+                esac;
+                
+                next(inside1[9][2]):=18;
+                
+                next(inside2[9][0]):=17;
+                
+                next(inside2[9][1]):=360 - next(inside1[9][1]);
+                
+                next(inside2[9][2]):=18; 
+                next(inside1[10][0]):=18;
+                next(inside1[10][1]):=case
+                next(state) = guess: {60,120,240,180,300};
+                TRUE: inside1[10][1];
+                esac;
+                
+                next(inside1[10][2]):=19;
+                
+                next(inside2[10][0]):=18;
+                
+                next(inside2[10][1]):=360 - next(inside1[10][1]);
+                
+                next(inside2[10][2]):=19; 
+                next(legal):=cuts1[6][1] != 0 & cuts2[6][1] != 0 & cuts1[11][1] != 0 & cuts2[11][1] != 0;
+                
+                LTLSPEC
+                G !(state = correct)
