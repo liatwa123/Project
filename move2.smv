@@ -1,4 +1,5 @@
 MODULE main
+/--move matchsticks, 2 digits, solved, operator - minus, number of matchsticks to move = 5--/
         
 				/--state variables--/
 				VAR
