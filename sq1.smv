@@ -37,30 +37,38 @@ MODULE main
         num_match_end:0..24;
         
 DEFINE
+            /--squares locations - represented as matchstick indices arrays--/
             list_square_1:=[[0,3,4,7],[1,4,5,8],[5,2,6,9],[10,7,11,14],[11,8,12,15],[12,13,16,9],[17,14,18,21],[18,15,19,22],[19,20,16,23]];
             list_square_2:=[[0,3,10,14,15,12,5,1],[1,2,6,13,16,15,11,4],[7,8,12,19,22,21,17,10],[8,9,13,20,22,23,18,11]];
             list_square_3:=[0,1,2,6,13,20,23,22,21,17,10,3];
+            
+            /--FALSE - the square does not exist, TRUE - the square exists; every square is indexed - see squares lists above--/
+            
+            /--user input--/
             init_sq1:=[FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE];
             init_sq2:=[FALSE,FALSE,TRUE,FALSE];
             bool1:=[TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE];
+            /--end - input--/
+            
             falsarr:=[FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE];
         
 ASSIGN
-            /--user input--/
-            init(num_squares_beginning):=3;
-            init(num_squares_1_beg):=1;
-            init(num_squares_2_beg):=1;
-            init(num_squares_3_beg):=1;
-            init(num_squares_end):=8;
-            init(num_allowed):=0;
-            init(matchsticks):=bool1;
-            init(sq_1_bool):=init_sq1;
-            init(sq_2_bool):=init_sq2;
-            init(sq_3_bool):=TRUE;
-            
+        /--user input--/
         
+        init(num_squares_beginning):=3;
+        init(num_squares_1_beg):=1;
+        init(num_squares_2_beg):=1;
+        init(num_squares_3_beg):=1;
+        init(num_squares_end):=8;
+        init(num_allowed):=0;
+        init(matchsticks):=bool1;
+        init(sq_1_bool):=init_sq1;
+        init(sq_2_bool):=init_sq2;
+        init(sq_3_bool):=TRUE;
         
-init(num_squares_1_end):=0;
+        /--end - input--/
+        
+        init(num_squares_1_end):=0;
         init(num_squares_2_end):=0;
         init(num_squares_3_end):=0;
         init(xor_arr):=falsarr;
@@ -75,8 +83,12 @@ init(num_squares_1_end):=0;
         init(match_index):=0;
         init(state):=initial;
         init(finished_count):=FALSE;
+        
+        /--counts initial number of matchsticks--/
         init(num_match_beg):=count(bool1[0]) + count(bool1[1]) + count(bool1[2]) + count(bool1[3]) + count(bool1[4]) + count(bool1[5]) + count(bool1[6]) + count(bool1[7]) + count(bool1[8]) + count(bool1[9]) + count(bool1[10]) + count(bool1[11]) + count(bool1[12]) + count(bool1[13]) + count(bool1[14]) + count(bool1[15]) + count(bool1[16]) + count(bool1[17]) + count(bool1[18]) + count(bool1[19]) + count(bool1[20]) + count(bool1[21]) + count(bool1[22]) + count(bool1[23]);
+        
         init(num_match_end):=0;
+        
         /--next values--/
         /--constants--/
         next(num_squares_beginning):=num_squares_beginning;
@@ -85,9 +97,15 @@ init(num_squares_1_end):=0;
         next(num_squares_3_beg):=num_squares_3_beg;
         next(num_squares_end):=num_squares_end;
         next(num_allowed):=num_allowed;
-        next(finished_count):=last_in_1=9 & last_in_2=4 & last_in_3=1;
+        
+        /--there are: 9 1-matchstick-length squares, 4 2-matchstick-length squares, 1 3-matchstick-length square--/
+        
+        next(finished_count):=last_in_1=9 & last_in_2=4 & last_in_3=1; 
+        
         next(num_match_beg):=num_match_beg;
+        
         /--non constants--/
+        
         next(state):=case
         finished_count & state = check_free & !free & fin_free & num_squares_1_end + num_squares_2_end + num_squares_3_end = num_squares_end & num_move = 2*num_allowed & num_match_beg = num_match_end: correct;
         state = calc_cons & finished_count & (num_squares_1_end + num_squares_2_end + num_squares_3_end != num_squares_end | num_move!=2*num_allowed | num_match_beg != num_match_end): guess;
@@ -99,16 +117,19 @@ init(num_squares_1_end):=0;
         TRUE: calc_cons;
         esac;
         
+        /--matchstick index iterator--/
         
         next(match_index):=case
         state = check_free: (match_index + 1)mod(25);
         TRUE: 0;
         esac;
         
+        /--checks that all matchsticks have been visited (the process: verifying that all matchsticks belong to at least 1 square)--/
         
         next(fin_free):=(next(match_index) = 24);
-        
-        
+       
+       /--1-length-squares index iterator--/
+       
         next(last_in_1):=case
         state = calc_cons & next(state) = calc_cons & last_in_1 < 9: (last_in_1 + 1)mod(10);
         state = calc_cons & last_in_1 = 9 & next(state) = calc_cons: 9;
@@ -120,6 +141,7 @@ init(num_squares_1_end):=0;
         TRUE: 9;
         esac;
         
+        /--2-length-squares index iterator--/
         
         next(last_in_2):=case
         state = calc_cons & next(state) = calc_cons & last_in_2 < 4: (last_in_2 + 1)mod(5);
@@ -132,6 +154,7 @@ init(num_squares_1_end):=0;
         TRUE: 4;
         esac;
         
+        /--3-length-square index iterator--/
         
         next(last_in_3):=case
         state = calc_cons & next(state) = calc_cons & last_in_3 < 1: (last_in_3 + 1)mod(2);
@@ -144,7 +167,7 @@ init(num_squares_1_end):=0;
         TRUE: 1;
         esac;
         
-        
+        /--guessing the matchsticks array--/
         next(matchsticks[0]):=case
         next(state) = calc_cons: matchsticks[0];
         next(state) = correct: matchsticks[0];
@@ -336,6 +359,7 @@ init(num_squares_1_end):=0;
         TRUE:matchsticks[23];
         esac;
         
+        /--counting the changes in the matchsticks' locations using a xor array--/
         
         next(xor_arr[0]):=case
         next(state)=calc_cons:(bool1[0])xor(matchsticks[0]);
@@ -478,6 +502,7 @@ init(num_squares_1_end):=0;
         TRUE:xor_arr[23];
         esac;
         
+        /--boolean array representing the 1-length-squares' locations--/
         
         next(sq_1_bool[0]):=case
         matchsticks[0] & matchsticks[4] & matchsticks[7] & matchsticks[3]: TRUE;
@@ -532,6 +557,8 @@ init(num_squares_1_end):=0;
         TRUE: FALSE;
         esac;
         
+         /--boolean array representing the 2-length-squares' locations--/
+         
         next(sq_2_bool[0]):=case
         matchsticks[0] & matchsticks[1] & matchsticks[5] & matchsticks[12] & matchsticks[15] & matchsticks[14] & matchsticks[10] & matchsticks[3]: TRUE;
         TRUE: FALSE;
@@ -554,21 +581,23 @@ init(num_squares_1_end):=0;
         TRUE: FALSE;
         esac;
         
-        
+         /--boolean variable representing the existence of the 3-matchstick-length square--/
+         
         next(sq_3_bool):=case
         matchsticks[0] & matchsticks[1] & matchsticks[2] & matchsticks[6] & matchsticks[13] & matchsticks[20] & matchsticks[23] & matchsticks[22] & matchsticks[21] & matchsticks[17] & matchsticks[10] & matchsticks[3]: TRUE;
         TRUE: FALSE;
         esac;
         
-        
+        /--counting the number of changes in the matchsticks' locations--/
         next(num_move):=case
         state = guess: count(next(xor_arr[0])) + count(next(xor_arr[1])) + count(next(xor_arr[2])) + count(next(xor_arr[3])) + count(next(xor_arr[4])) + count(next(xor_arr[5])) + count(next(xor_arr[6])) + count(next(xor_arr[7])) + count(next(xor_arr[8])) + count(next(xor_arr[9])) + count(next(xor_arr[10])) + count(next(xor_arr[11])) + count(next(xor_arr[12])) + count(next(xor_arr[13])) + count(next(xor_arr[14])) + count(next(xor_arr[15])) + count(next(xor_arr[16])) + count(next(xor_arr[17])) + count(next(xor_arr[18])) + count(next(xor_arr[19])) + count(next(xor_arr[20])) + count(next(xor_arr[21])) + count(next(xor_arr[22])) + count(next(xor_arr[23]));
         TRUE: num_move;
         esac;
         
-        
+        /--counting the final number of matchsticks--/
         next(num_match_end):= count(matchsticks[0]) +  count(matchsticks[1]) + count(matchsticks[2]) + count(matchsticks[3]) + count(matchsticks[4]) + count(matchsticks[5]) + count(matchsticks[6]) + count(matchsticks[7]) + count(matchsticks[8]) + count(matchsticks[9]) + count(matchsticks[10]) + count(matchsticks[11]) + count(matchsticks[12]) + count(matchsticks[13]) + count(matchsticks[14]) + count(matchsticks[15]) + count(matchsticks[16]) + count(matchsticks[17]) + count(matchsticks[18]) + count(matchsticks[19]) + count(matchsticks[20]) + count(matchsticks[21]) + count(matchsticks[22]) + count(matchsticks[23]);
         
+        /--checking that all the matchsticks belong to at least 1 square, based on their index (and concluding that there are no free matchsticks)--/
         next(free):=case
         state = check_free & match_index = 0 & matchsticks[0]: !(sq_1_bool[0] | sq_2_bool[0] | sq_3_bool);
         state = check_free & match_index = 0 & !matchsticks[0]: FALSE;
@@ -622,21 +651,21 @@ init(num_squares_1_end):=0;
         TRUE: FALSE;
         esac;
         
-        
+        /--counting the 1-matchstick-length squares--/
         next(num_squares_1_end):=case
         !(finished_count) & state = calc_cons & sq_1_bool[last_in_1] & last_in_1 < 9: (num_squares_1_end+1)mod(10) ;
         state = guess: 0;
         TRUE: num_squares_1_end;
         esac;
         
-        
+        /--counting the 2-matchstick-length squares--/
         next(num_squares_2_end):=case
         !(finished_count) & state = calc_cons & sq_2_bool[last_in_2] & last_in_2 < 4: (num_squares_2_end+1)mod(5) ;
         state = guess: 0;
         TRUE: num_squares_2_end;
         esac;
         
-        
+        /--counting the 3-matchstick-length squares--/
         next(num_squares_3_end):=case
         !(finished_count) & state = calc_cons & sq_3_bool & last_in_3 < 1: (num_squares_3_end+1)mod(2) ;
         state = guess: 0;
