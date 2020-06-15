@@ -1,7 +1,7 @@
 MODULE main
-            
-            /--state variables--/ 
-            VAR
+         /-- 2 digits per number, plus remove, num. of matcsticks to remove = 1       
+       /--state variables--/ 
+	VAR
         dig1_1:0..9;
         dig1_1_in:0..9;
         num_op_dig1_1:0..5;
@@ -22,19 +22,19 @@ MODULE main
         num_op_dig3_2:0..5;
         num_allowed:0..30;
         plus_or_minus:{plus,minus};
-            remove_or_add:{remove,add};
+        remove_or_add:{remove,add};
             
-            /--legal checks if num_op_dig1, num_op_dig2 and num_op_dig3 are legal, meaning:--/ 
-            /--these values are the solution of the riddle--/ 
+       /--legal checks if num_op_dig1, num_op_dig2 and num_op_dig3 are legal, meaning:--/ 
+      /--these values are the solution of the riddle--/ 
 			
-            /--or: any transformation to different dig1, dig2 and dig3 is available using num_op_dig1, num_op_dig2 and num_op_dig3--/ 
+    /--or: any transformation to different dig1, dig2 and dig3 is available using num_op_dig1, num_op_dig2 and num_op_dig3--/ 
 			
-            legal:boolean;
-            is_sol:boolean;
+        legal:boolean;
+        is_sol:boolean;
 			
-			/-- is_sol checks that the sum of operations done is exactly the number of allowed operations and the equation is satisfied --/ 
+/-- is_sol checks that the sum of operations done is exactly the number of allowed operations and the equation is satisfied --/ 
 
-            state:{zeros, guess, correct};
+        state:{zeros, guess, correct};
         
 DEFINE
         /--digit_bool:=[[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE],[FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE],[TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE],[FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE],[FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE],[FALSE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE],[TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE],[FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE],[TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE],[FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]];--/
@@ -67,39 +67,59 @@ DEFINE
         [{9},{3,5},{4},{7},{1},{9}]];
         
 ASSIGN
-        /--initial values: user input--/
+         /--initial values: user input--/
+	/--leftmost digits--/
+	
         init(dig1_1) := 4;
         init(dig2_1) := 4;
         init(result_1) := 8;
+	
+	/--copy-initial input--/
         init(dig1_1_in) := 4;
         init(dig2_1_in) := 4;
         init(result_1_in) := 8;
+	/--copy-end--/
+	/--input-end--/
+	
         init(num_op_dig1_1) := 0;
         init(num_op_dig2_1) := 0;
         init(num_op_dig3_1) := 0;
+	
+	/--initial values: user input--/
+	/--rightmost digits--/
         init(dig1_2) := 2;
         init(dig2_2) := 3;
         init(result_2) := 6;
+	
+	/--copy-initial input--/
         init(dig1_2_in) := 2;
         init(dig2_2_in) := 3;
         init(result_2_in) := 6;
+	/--copy-end--/
+	/--input-end--/
+	
         init(num_op_dig1_2) := 0;
         init(num_op_dig2_2) := 0;
         init(num_op_dig3_2) := 0;
+	
         init(state):=zeros;
+	
         /--initial values: user input--/
         init(plus_or_minus):=plus;
         init(remove_or_add):=remove;
         init(num_allowed):=1;
+	
+	/--input-end--/
+	
         init(legal):=dig1_1 * 10 + dig1_2 * 1  + ( dig2_1 * 10 + dig2_2 * 1  ) = result_1 * 10 + result_2 * 1 & num_allowed = 0;
         init(is_sol):=dig1_1 * 10 + dig1_2 * 1  + ( dig2_1 * 10 + dig2_2 * 1  ) = result_1 * 10 + result_2 * 1 & num_allowed = 0;
         
-/--next values--/
-                /--constants--/
+	/--next values--/
+       /--constants--/
                 
-                next(plus_or_minus):=plus_or_minus;
-                next(num_allowed):=num_allowed;
-                next(remove_or_add):=remove_or_add;
+        next(plus_or_minus):=plus_or_minus;
+        next(num_allowed):=num_allowed;
+        next(remove_or_add):=remove_or_add;
         next(dig1_1_in) := dig1_1_in;
         next(dig2_1_in) := dig2_1_in;
         next(result_1_in) := result_1_in;
@@ -107,152 +127,152 @@ ASSIGN
         next(dig2_2_in) := dig2_2_in;
         next(result_2_in) := result_2_in;
 		
-		/--non constants--/
+	/--non constants--/
         next(state) := case
-                        state = zeros & !is_sol: guess;
-                        state = zeros & legal & is_sol: correct;
-                        state = guess & next(is_sol): correct;
-                        state = guess & !next(is_sol): zeros;
-                        state = correct: correct;
-                         TRUE: zeros;
-                         esac;
+        state = zeros & !is_sol: guess;
+        state = zeros & legal & is_sol: correct;
+        state = guess & next(is_sol): correct;
+        state = guess & !next(is_sol): zeros;
+        state = correct: correct;
+        TRUE: zeros;
+        esac;
 						 
-			/--legal checks if num_op_dig1, num_op_dig2 and num_op_dig3 are legal, meaning:--/ 
-            /--these values are the solution of the riddle--/ 
+	/--legal checks if num_op_dig1, num_op_dig2 and num_op_dig3 are legal, meaning:--/ 
+       /--these values are the solution of the riddle--/ 
 			
-            /--or: any transformation to different dig1, dig2 and dig3 is available using num_op_dig1, num_op_dig2 and num_op_dig3--/ 
+     /--or: any transformation to different dig1, dig2 and dig3 is available using num_op_dig1, num_op_dig2 and num_op_dig3--/ 
                          
-                        next(legal) := case
-                         state = guess & (num_op_dig1_1 != 0 & dig1_1=dig1_1_in | num_op_dig2_1 != 0 & dig2_1=dig2_1_in | num_op_dig3_1 != 0 & result_1=result_1_in | num_op_dig1_2 != 0 & dig1_2=dig1_2_in | num_op_dig2_2 != 0 & dig2_2=dig2_2_in | num_op_dig3_2 != 0 & result_2=result_2_in ): FALSE;
-                        state = zeros: legal; 
-                         state = correct: TRUE;
-                         state = guess & !(num_op_dig1_1 != 0 & dig1_1=dig1_1_in | num_op_dig2_1 != 0 & dig2_1=dig2_1_in | num_op_dig3_1 != 0 & result_1=result_1_in | num_op_dig1_2 != 0 & dig1_2=dig1_2_in | num_op_dig2_2 != 0 & dig2_2=dig2_2_in | num_op_dig3_2 != 0 & result_2=result_2_in ): TRUE;
-                        TRUE: legal;
-                         esac;
+         next(legal) := case
+         state = guess & (num_op_dig1_1 != 0 & dig1_1=dig1_1_in | num_op_dig2_1 != 0 & dig2_1=dig2_1_in | num_op_dig3_1 != 0 & result_1=result_1_in | num_op_dig1_2 != 0 & dig1_2=dig1_2_in | num_op_dig2_2 != 0 & dig2_2=dig2_2_in | num_op_dig3_2 != 0 & result_2=result_2_in ): FALSE;
+         state = zeros: legal; 
+         state = correct: TRUE;
+         state = guess & !(num_op_dig1_1 != 0 & dig1_1=dig1_1_in | num_op_dig2_1 != 0 & dig2_1=dig2_1_in | num_op_dig3_1 != 0 & result_1=result_1_in | num_op_dig1_2 != 0 & dig1_2=dig1_2_in | num_op_dig2_2 != 0 & dig2_2=dig2_2_in | num_op_dig3_2 != 0 & result_2=result_2_in ): TRUE;
+         TRUE: legal;
+         esac;
                          
-						 /-- is_sol checks that the sum of operations done is exactly the number of allowed operations and the equation is satisfied --/ 
+/-- is_sol checks that the sum of operations done is exactly the number of allowed operations and the equation is satisfied --/ 
 						 
-                         next(is_sol) := case
-                         state = zeros: is_sol;
-                         state = guess: next(legal) & num_op_dig1_1 + num_op_dig2_1 + num_op_dig3_1 + num_op_dig1_2 + num_op_dig2_2 + num_op_dig3_2  = num_allowed & dig1_1 * 10 + dig1_2 * 1  + (dig2_1 * 10 + dig2_2 * 1 ) = result_1 * 10 + result_2 * 1 ;
-                        state = correct: TRUE;
-                         TRUE: TRUE;
-                         esac;
+         next(is_sol) := case
+         state = zeros: is_sol;
+         state = guess: next(legal) & num_op_dig1_1 + num_op_dig2_1 + num_op_dig3_1 + num_op_dig1_2 + num_op_dig2_2 + num_op_dig3_2  = num_allowed & dig1_1 * 10 + dig1_2 * 1  + (dig2_1 * 10 + dig2_2 * 1 ) = result_1 * 10 + result_2 * 1 ;
+         state = correct: TRUE;
+         TRUE: TRUE;
+         esac;
                          
-                         /--guessing the number of operations per digit--/
-						 /--guessing the digits according to the transformation array constant--/ 
+ /--guessing the number of operations per digit--/
+/--guessing the digits according to the transformation array constant--/ 
 						 
          next(num_op_dig1_1) := case
-                         state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
-                         state = zeros & next(state) = correct: 0;
-                         state = guess & next(state) = correct: num_op_dig1_1;
-                         state = guess & next(state) = zeros: 0;
-                         state = correct: num_op_dig1_1;
-                         TRUE: {0, 1, 2, 3, 4, 5};
-                         esac;
+         state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
+         state = zeros & next(state) = correct: 0;
+         state = guess & next(state) = correct: num_op_dig1_1;
+         state = guess & next(state) = zeros: 0;
+         state = correct: num_op_dig1_1;
+         TRUE: {0, 1, 2, 3, 4, 5};
+         esac;
                          
-                         next(num_op_dig2_1) := case
-                         state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
-                         state = zeros & next(state) = correct: 0;
-                         state = guess & next(state) = correct: num_op_dig2_1;
-                         state = guess & next(state) = zeros: 0;
-                         state = correct: num_op_dig2_1;
-                         TRUE: {0, 1, 2, 3, 4, 5};
-                         esac;
+        next(num_op_dig2_1) := case
+        state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
+        state = zeros & next(state) = correct: 0;
+        state = guess & next(state) = correct: num_op_dig2_1;
+        state = guess & next(state) = zeros: 0;
+        state = correct: num_op_dig2_1;
+        TRUE: {0, 1, 2, 3, 4, 5};
+        esac;
                          
-                         next(num_op_dig3_1) := case
-                         state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
-                         state = zeros & next(state) = correct: 0;
-                         state = guess & next(state) = correct: num_op_dig3_1;
-                         state = guess & next(state) = zeros: 0;
-                         state = correct: num_op_dig3_1;
-                         TRUE: {0, 1, 2, 3, 4, 5};
-                         esac;
+        next(num_op_dig3_1) := case
+        state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
+        state = zeros & next(state) = correct: 0;
+        state = guess & next(state) = correct: num_op_dig3_1;
+        state = guess & next(state) = zeros: 0;
+        state = correct: num_op_dig3_1;
+        TRUE: {0, 1, 2, 3, 4, 5};
+        esac;
                          
 						 
-                         next(dig1_1) := case
-                         state = zeros & next(state) = guess: arr_trans_remove[dig1_1_in][next(num_op_dig1_1)];
-                         state = zeros & next(state) = correct: dig1_1_in;
-                         state = guess & next(state) = correct: dig1_1;
-                         state = guess & next(state) = zeros: dig1_1_in;
-                         state = correct: dig1_1;
-                         TRUE: arr_trans_remove[dig1_1_in][next(num_op_dig1_1)];
-                         esac;
+        next(dig1_1) := case
+        state = zeros & next(state) = guess: arr_trans_remove[dig1_1_in][next(num_op_dig1_1)];
+        state = zeros & next(state) = correct: dig1_1_in;
+        state = guess & next(state) = correct: dig1_1;
+        state = guess & next(state) = zeros: dig1_1_in;
+        state = correct: dig1_1;
+        TRUE: arr_trans_remove[dig1_1_in][next(num_op_dig1_1)];
+        esac;
 						
                          
-                         next(dig2_1) := case
-                         state = zeros & next(state) = guess: arr_trans_remove[dig2_1_in][next(num_op_dig2_1)];
-                         state = zeros & next(state) = correct: dig2_1_in;
-                         state = guess & next(state) = correct: dig2_1;
-                         state = guess & next(state) = zeros: dig2_1_in;
-                         state = correct: dig2_1;
-                         TRUE: arr_trans_remove[dig2_1_in][next(num_op_dig2_1)];
-                         esac;
+        next(dig2_1) := case
+        state = zeros & next(state) = guess: arr_trans_remove[dig2_1_in][next(num_op_dig2_1)];
+        state = zeros & next(state) = correct: dig2_1_in;
+        state = guess & next(state) = correct: dig2_1;
+        state = guess & next(state) = zeros: dig2_1_in;
+        state = correct: dig2_1;
+        TRUE: arr_trans_remove[dig2_1_in][next(num_op_dig2_1)];
+        esac;
                          
-                         next(result_1) := case
-                         state = zeros & next(state) = guess: arr_trans_remove[result_1_in][next(num_op_dig3_1)];
-                         state = zeros & next(state) = correct: result_1_in;
-                         state = guess & next(state) = correct: result_1;
-                         state = guess & next(state) = zeros: result_1_in;
-                         state = correct: result_1;
-                         TRUE: arr_trans_remove[result_1_in][next(num_op_dig3_1)];
-                         esac;
+        next(result_1) := case
+        state = zeros & next(state) = guess: arr_trans_remove[result_1_in][next(num_op_dig3_1)];
+        state = zeros & next(state) = correct: result_1_in;
+        state = guess & next(state) = correct: result_1;
+        state = guess & next(state) = zeros: result_1_in;
+        state = correct: result_1;
+        TRUE: arr_trans_remove[result_1_in][next(num_op_dig3_1)];
+        esac;
                          
         next(num_op_dig1_2) := case
-                         state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
-                         state = zeros & next(state) = correct: 0;
-                         state = guess & next(state) = correct: num_op_dig1_2;
-                         state = guess & next(state) = zeros: 0;
-                         state = correct: num_op_dig1_2;
-                         TRUE: {0, 1, 2, 3, 4, 5};
-                         esac;
+        state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
+        state = zeros & next(state) = correct: 0;
+        state = guess & next(state) = correct: num_op_dig1_2;
+        state = guess & next(state) = zeros: 0;
+        state = correct: num_op_dig1_2;
+        TRUE: {0, 1, 2, 3, 4, 5};
+        esac;
                          
-                         next(num_op_dig2_2) := case
-                         state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
-                         state = zeros & next(state) = correct: 0;
-                         state = guess & next(state) = correct: num_op_dig2_2;
-                         state = guess & next(state) = zeros: 0;
-                         state = correct: num_op_dig2_2;
-                         TRUE: {0, 1, 2, 3, 4, 5};
-                         esac;
+        next(num_op_dig2_2) := case
+        state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
+        state = zeros & next(state) = correct: 0;
+        state = guess & next(state) = correct: num_op_dig2_2;
+        state = guess & next(state) = zeros: 0;
+        state = correct: num_op_dig2_2;
+        TRUE: {0, 1, 2, 3, 4, 5};
+        esac;
                          
-                         next(num_op_dig3_2) := case
-                         state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
-                         state = zeros & next(state) = correct: 0;
-                         state = guess & next(state) = correct: num_op_dig3_2;
-                         state = guess & next(state) = zeros: 0;
-                         state = correct: num_op_dig3_2;
-                         TRUE: {0, 1, 2, 3, 4, 5};
-                         esac;
+        next(num_op_dig3_2) := case
+        state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
+        state = zeros & next(state) = correct: 0;
+        state = guess & next(state) = correct: num_op_dig3_2;
+        state = guess & next(state) = zeros: 0;
+        state = correct: num_op_dig3_2;
+        TRUE: {0, 1, 2, 3, 4, 5};
+        esac;
                          
-                         next(dig1_2) := case
-                         state = zeros & next(state) = guess: arr_trans_remove[dig1_2_in][next(num_op_dig1_2)];
-                         state = zeros & next(state) = correct: dig1_2_in;
-                         state = guess & next(state) = correct: dig1_2;
-                         state = guess & next(state) = zeros: dig1_2_in;
-                         state = correct: dig1_2;
-                         TRUE: arr_trans_remove[dig1_2_in][next(num_op_dig1_2)];
-                         esac;
+        next(dig1_2) := case
+        state = zeros & next(state) = guess: arr_trans_remove[dig1_2_in][next(num_op_dig1_2)];
+        state = zeros & next(state) = correct: dig1_2_in;
+        state = guess & next(state) = correct: dig1_2;
+        state = guess & next(state) = zeros: dig1_2_in;
+        state = correct: dig1_2;
+        TRUE: arr_trans_remove[dig1_2_in][next(num_op_dig1_2)];
+        esac;
                          
-                         next(dig2_2) := case
-                         state = zeros & next(state) = guess: arr_trans_remove[dig2_2_in][next(num_op_dig2_2)];
-                         state = zeros & next(state) = correct: dig2_2_in;
-                         state = guess & next(state) = correct: dig2_2;
-                         state = guess & next(state) = zeros: dig2_2_in;
-                         state = correct: dig2_2;
-                         TRUE: arr_trans_remove[dig2_2_in][next(num_op_dig2_2)];
-                         esac;
+         next(dig2_2) := case
+         state = zeros & next(state) = guess: arr_trans_remove[dig2_2_in][next(num_op_dig2_2)];
+         state = zeros & next(state) = correct: dig2_2_in;
+         state = guess & next(state) = correct: dig2_2;
+         state = guess & next(state) = zeros: dig2_2_in;
+         state = correct: dig2_2;
+         TRUE: arr_trans_remove[dig2_2_in][next(num_op_dig2_2)];
+         esac;
                          
-                         next(result_2) := case
-                         state = zeros & next(state) = guess: arr_trans_remove[result_2_in][next(num_op_dig3_2)];
-                         state = zeros & next(state) = correct: result_2_in;
-                         state = guess & next(state) = correct: result_2;
-                         state = guess & next(state) = zeros: result_2_in;
-                         state = correct: result_2;
-                         TRUE: arr_trans_remove[result_2_in][next(num_op_dig3_2)];
-                         esac;
+         next(result_2) := case
+         state = zeros & next(state) = guess: arr_trans_remove[result_2_in][next(num_op_dig3_2)];
+         state = zeros & next(state) = correct: result_2_in;
+         state = guess & next(state) = correct: result_2;
+         state = guess & next(state) = zeros: result_2_in;
+         state = correct: result_2;
+         TRUE: arr_trans_remove[result_2_in][next(num_op_dig3_2)];
+         esac;
                          
-		/--find a correct solution--/
-	   LTLSPEC
-                 G ! (state=correct)
+	/--find a correct solution--/
+	LTLSPEC
+        G ! (state=correct)
         
