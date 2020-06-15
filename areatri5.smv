@@ -1,5 +1,5 @@
 MODULE main
-                
+            /--divide the shape riddle, basic area unit: triangle, number of matchsticks required for division: 5--/    
             VAR
                 
             state:{initial, guess, calc_cons, correct};
