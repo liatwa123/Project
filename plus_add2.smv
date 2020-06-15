@@ -134,7 +134,7 @@ ASSIGN
                          esac;
                          
           /--guessing the number of operations per digit--/
-		 /--guessing the digits according to the transformation array constant--/ 
+	/--guessing the digits according to the transformation array constant and the number of operations per digit--/ 
 						                 
          next(num_op_dig1_1) := case
                          state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};
