@@ -22,7 +22,7 @@ MODULE main
 				/--user input--/
 				/--the initial numbers, every subarray represents a 2-digits number--/
 				init_digs := [[0,0],[0,0],[0,0]]; 
-				/--numbers' boolean segment representtion--/
+				/--numbers' boolean segment representation--/
 				init_xor := [[[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE], [TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE]], [[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE], [TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE]], [[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE], 		[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE]]];
 				num_allowed:=5;
 				/--end-input--/
