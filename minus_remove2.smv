@@ -72,42 +72,70 @@ DEFINE
         
 ASSIGN
         /--initial values: user input--/
+	/--leftmost digits--/
         init(dig1_1) := 9;
         init(dig2_1) := 8;
         init(result_1) := 9;
+	
+	/--copy-initial input--/
         init(dig1_1_in) := 9;
         init(dig2_1_in) := 8;
         init(result_1_in) := 9;
+	/--copy-end--/
+	/--input-end--/
+	
         init(num_op_dig1_1) := 0;
         init(num_op_dig2_1) := 0;
         init(num_op_dig3_1) := 0;
+	
+	/--initial values: user input--/
+	/--middle digits--/
         init(dig1_2) := 7;
         init(dig2_2) := 9;
         init(result_2) := 4;
+	
+	/--copy-initial input--/
         init(dig1_2_in) := 7;
         init(dig2_2_in) := 9;
         init(result_2_in) := 4;
+	/--copy-end--/
+	/--input-end--/
+	
         init(num_op_dig1_2) := 0;
         init(num_op_dig2_2) := 0;
         init(num_op_dig3_2) := 0;
+	
+	/--initial values: user input--/
+	/--rightmost digits--/
         init(dig1_3) := 2;
         init(dig2_3) := 4;
         init(result_3) := 8;
+	
+	/--copy-initial input--/
         init(dig1_3_in) := 2;
         init(dig2_3_in) := 4;
         init(result_3_in) := 8;
+	/--copy-end--/
+	/--input-end--/
+	
         init(num_op_dig1_3) := 0;
         init(num_op_dig2_3) := 0;
         init(num_op_dig3_3) := 0;
+	
         init(state):=zeros;
+	
         /--initial values: user input--/
+	
         init(plus_or_minus):=minus;
         init(remove_or_add):=remove;
         init(num_allowed):=6;
+	
+	/--input-end--/
+	
         init(legal):=dig1_1 * 100 + dig1_2 * 10 + dig1_3 * 1  - ( dig2_1 * 100 + dig2_2 * 10 + dig2_3 * 1  ) = result_1 * 100 + result_2 * 10 + result_3 * 1 & num_allowed = 0;
         init(is_sol):=dig1_1 * 100 + dig1_2 * 10 + dig1_3 * 1  - ( dig2_1 * 100 + dig2_2 * 10 + dig2_3 * 1  ) = result_1 * 100 + result_2 * 10 + result_3 * 1 & num_allowed = 0;
         
-/--next values--/
+	 /--next values--/
         /--constants--/
                 
         next(plus_or_minus):=plus_or_minus;
@@ -124,13 +152,13 @@ ASSIGN
         next(result_3_in) := result_3_in;
 	
         next(state) := case
-                        state = zeros & !is_sol: guess;
-                        state = zeros & legal & is_sol: correct;
-                        state = guess & next(is_sol): correct;
-                        state = guess & !next(is_sol): zeros;
-                        state = correct: correct;
-                         TRUE: zeros;
-                         esac;
+        state = zeros & !is_sol: guess;
+        state = zeros & legal & is_sol: correct;
+        state = guess & next(is_sol): correct;
+        state = guess & !next(is_sol): zeros;
+        state = correct: correct;
+        TRUE: zeros;
+        esac;
 						 
 	      /--legal checks if num_op_dig1, num_op_dig2 and num_op_dig3 are legal, meaning:--/ 
             /--these values are the solution of the riddle--/ 
