@@ -1,4 +1,5 @@
 MODULE main
+/--sum of matchstick heads--/
         /--state variables--/
         VAR
         count_row1:0..14;
@@ -50,10 +51,14 @@ DEFINE
             col_options:=row_options;
             di_options:=[0,{0,1},{0,2},{1,2}];
             
-        
+            /--user input--/
+            /--these arrays represent 24 matchsticks, every matchstick points to the row/column/diagonal index in the relevant location--/
+            /--example: the matchstick indexed '0' points to row 1, col. 1, di. 1--/
+            
             match_rows:=[1, 1, 1, 2, 1, 1, 2, 2, 2, 2, 3, 2, 2, 2, 3, 3, 3, 4, 4, 3, 4, 4, 4, 4];
             match_cols:=[1, 3, 3, 1, 2, 3, 4, 2, 2, 3, 1, 2, 3, 4, 2, 3, 4, 1, 2, 3, 4, 1, 3, 4];
             match_dis:=[1, 0, 0, 0, 0, 0, 0, 1, 1, 2, 0, 1, 2, 0, 2, 1, 0, 2, 0, 1, 1, 2, 0, 1];
+            /--end-input--/
 ASSIGN
         init(finished_count):=FALSE;
         init(count_row1):=0;
@@ -87,8 +92,9 @@ ASSIGN
         init(di1):=0;
         init(di2):=2;
         
-        
+        /--allowed number of matchstick heads in every row, column and diagonal--/
         init(num_allowed):=6;
+        
         init(arr_rows):=match_rows;
         init(arr_cols):=match_cols;
         init(arr_dis):=match_dis;
@@ -98,11 +104,11 @@ ASSIGN
         init(rows_equal):=count_row1 = num_allowed & count_row2 = num_allowed & count_row3 = num_allowed & count_row4 = num_allowed;
         init(cols_equal):=count_col1 = num_allowed & count_col2 = num_allowed & count_col3 = num_allowed & count_col4 = num_allowed;
         init(dis_equal):=count_di1 = num_allowed & count_di2 = num_allowed;
-        
-        
+       
+        /--checks if the counting matchstick heads process has ended--/
         next(finished_count) := row1 = 7 & row2 = 14 & row3 = 21 & row4 = 24 & col1 = 22 & col2 = 23 & col3 = 24 & col4 = 24 & di1 = 24 & di2 = 22;
-        next(num_allowed):=num_allowed;
         
+        next(num_allowed):=num_allowed;
         
         next(state):=case
         finished_count & rows_equal & cols_equal & dis_equal: correct;
@@ -112,7 +118,7 @@ ASSIGN
         TRUE: calc_cons;
         esac;
         
-        
+        /--first row index iterator, iterating on the first row matchsticks' indices--/
         next(row1):=case
         state = calc_cons & next(state) = calc_cons & row1 < 7: (row1 + 1)mod(8);
         state = calc_cons & row1 = 7 & next(state) = calc_cons: 7;
@@ -124,7 +130,7 @@ ASSIGN
         TRUE: 7;
         esac;
         
-        
+         /--2nd row index iterator, iterating on the 2nd row matchsticks' indices--/
         next(row2):=case
         state = calc_cons & next(state) = calc_cons & row2 < 14: 4 + (row2 - 3)mod(11);
         state = calc_cons & row2 = 14 & next(state) = calc_cons: 14;
@@ -136,6 +142,7 @@ ASSIGN
         TRUE: 14;
         esac;
         
+         /--3rd row index iterator, iterating on the 3rd row matchsticks' indices--/
         next(row3):=case
         state = calc_cons & next(state) = calc_cons & row3 < 21: 10 + (row3 - 9)mod(12);
         state = calc_cons & row3 = 21 & next(state) = calc_cons: 21;
@@ -147,7 +154,7 @@ ASSIGN
         TRUE: 21;
         esac;
         
-        
+         /--4th row index iterator, iterating on the 4th row matchsticks' indices--/
         next(row4):=case
         state = calc_cons & next(state) = calc_cons & row4 < 24: 17 + (row4 - 16)mod(8);
         state = calc_cons & row4 = 24 & next(state) = calc_cons: 24;
@@ -159,7 +166,7 @@ ASSIGN
         TRUE: 24;
         esac;
         
-        
+         /--first col. index iterator, iterating on the first col. matchsticks' indices--/
         /--0,3,7,10,14,17,21,22--/
         next(col1):=case
         state = calc_cons & next(state) = calc_cons & col1 = 0: 3;
@@ -177,7 +184,7 @@ ASSIGN
         TRUE: 22;
         esac;
         
-        
+        /--2nd col. index iterator, iterating on the 2nd col. matchsticks' indices--/
         /--0,1,4,7,8,11,14,15,18,21,22,23--/
         next(col2):=case
         state = calc_cons & next(state) = calc_cons & col2 = 0: 1;
@@ -199,7 +206,7 @@ ASSIGN
         TRUE: 23;
         esac;
         
-        
+        /--3rd col. index iterator, iterating on the 3rd col. matchsticks' indices--/
         /--1,2,5,8,9,12,15,16,19,22,23,24--/
         next(col3):=case
         state = calc_cons & next(state) = calc_cons & col3 = 1: 2;
@@ -221,7 +228,7 @@ ASSIGN
         TRUE: 24;
         esac;
         
-        
+        /--4th col. index iterator, iterating on the 4th col. matchsticks' indices--/
         /--2,6,9,13,16,20,23,24--/
         next(col4):=case
         state = calc_cons & next(state) = calc_cons & col4 = 2: 6;
@@ -239,7 +246,7 @@ ASSIGN
         TRUE: 24;
         esac;
         
-        
+        /--first di. index iterator, iterating on the first di. matchsticks' indices--/
         /--0,3,4,7,8,11,12,15,16,19,20,23,24--/
         next(di1):=case
         state = calc_cons & next(state) = calc_cons & di1 = 0: 3;
@@ -262,7 +269,7 @@ ASSIGN
         TRUE: 24;
         esac;
         
-        
+        /--2nd di. index iterator, iterating on the 2nd di. matchsticks' indices--/
         /--2,5,6,8,9,11,12,14,15,17,18,21,22--/
         next(di2):=case
         state = calc_cons & next(state) = calc_cons & di2 = 2: 5;
@@ -286,12 +293,18 @@ ASSIGN
         TRUE: 22;
         esac;
         
-        
+        /--boolean variables checking if the number of matchstick heads in every row/col./di. equals the allowed number--/
         next(rows_equal):=next(count_row1) = next(num_allowed) & next(count_row2) = next(num_allowed) & next(count_row3) = next(num_allowed) & next(count_row4) = next(num_allowed);
         next(cols_equal):=next(count_col1) = next(num_allowed) & next(count_col2) = next(num_allowed) & next(count_col3) = next(num_allowed) & next(count_col4) = next(num_allowed);
         next(dis_equal):=next(count_di1) = next(num_allowed) & next(count_di2) = next(num_allowed);
         
+        /--guessing the matchsticks' pointing directions--/
         
+        /--guessing the rows the matchsticks point to--/
+       /--guessing the columns the matchsticks point to--/
+      /--guessing the diagonals the matchsticks point to--/
+     /--every index (example: arr_rows[0]) represents a matchstick--/
+          
         next(arr_rows[0]):=case
         next(state) = calc_cons: arr_rows[0];
         next(state) = correct: arr_rows[0];
@@ -305,7 +318,6 @@ ASSIGN
         next(state) = guess & state = calc_cons:col_options[1];
         TRUE:arr_cols[0];
         esac;
-        
         
         next(arr_dis[0]):=case
         next(state) = calc_cons: arr_dis[0];
@@ -805,6 +817,7 @@ ASSIGN
         TRUE:arr_dis[23];
         esac;
         
+        /--counting the matchstick heads pointing to row1, row2, ..., col1, col2, ... , di1, di2--/
         
         next(count_row1):=case
         !(finished_count) & state = calc_cons & arr_rows[row1] = 1 & row1 < 7: (count_row1+1)mod(15) ;
@@ -876,6 +889,5 @@ ASSIGN
         esac;
         
         
-        /--need to count cols and dis--/
         LTLSPEC
         G !(state = correct)
