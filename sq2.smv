@@ -1,5 +1,5 @@
 MODULE main
-        
+        /--square riddle solved, 616 from the website--/
         /--state variables--/
         VAR
         num_squares_beginning:0..14;
