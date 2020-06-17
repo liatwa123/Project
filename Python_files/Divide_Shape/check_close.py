@@ -1,15 +1,17 @@
 import string
 from math import *
 
+# This function calculates the change in y's value, given the slope value (m) and the edge length (distance)
 
 def dy(distance, m):
     return m * dx(distance, m)
 
+# This function calculates the change in x's value, given the slope value (m) and the edge length (distance)
 
 def dx(distance, m):
     return distance / sqrt(m ** 2 + 1)
 
-
+"""
 def build_edges(arr_len):
     edges = []
     count = 0
@@ -20,7 +22,7 @@ def build_edges(arr_len):
         else:
             count = count + 1
     return edges
-
+   
 
 def build_shape(arr_len, arr_ang, arr_dir):
     init_point_x = 0
@@ -70,9 +72,10 @@ def build_shape(arr_len, arr_ang, arr_dir):
         return True
     else:
         return False
-
+"""
 
 def build_edges2(shape):
+    # This function returns a matchsticks array; Every matchstick is represented by the integer '1' - 1 length unit
     edges = []
     for i in range(0, len(shape)):
         edges.append(1)
@@ -80,6 +83,14 @@ def build_edges2(shape):
 
 
 def build_shape2(shape, arr_dir):
+    """
+    This function calculates the shape's points. Using the list of points (coordinates), the function determines if the shape is a polygon:
+    -For each new point: the new point must not be in the list of previous points. (Except for the last point)
+    -The sum of angles must be: 180 * (number of matchsticks - 2)
+    -Last point's x = First point's x , Last point's y = First point's y 
+    Every point is a matchstick head's location, represented by [x,y].
+   
+    """
     list_points = [[0, 0]]
     init_point_x = 0
     init_point_y = 0
