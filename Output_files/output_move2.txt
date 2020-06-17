@@ -1,0 +1,293 @@
+*** This is NuSMV 2.6.0 (compiled on Wed Oct 14 15:37:51 2015)
+*** Enabled addons are: compass
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Please report bugs to <Please report bugs to <nusmv-users@fbk.eu>>
+
+*** Copyright (c) 2010-2014, Fondazione Bruno Kessler
+
+*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+*** This version of NuSMV is linked to the MiniSat SAT solver. 
+*** See http://minisat.se/MiniSat.html
+*** Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
+*** Copyright (c) 2007-2010, Niklas Sorensson
+
+WARNING: line: 68: array access out of bounds
+WARNING: line: 73: array access out of bounds
+WARNING: line: 78: array access out of bounds
+WARNING: line: 83: array access out of bounds
+WARNING: line: 88: array access out of bounds
+WARNING: line: 93: array access out of bounds
+WARNING: line: 98: array access out of bounds
+WARNING: line: 103: array access out of bounds
+WARNING: line: 108: array access out of bounds
+WARNING: line: 113: array access out of bounds
+WARNING: line: 118: array access out of bounds
+WARNING: line: 123: array access out of bounds
+WARNING: line: 128: array access out of bounds
+WARNING: line: 133: array access out of bounds
+WARNING: line: 138: array access out of bounds
+WARNING: line: 143: array access out of bounds
+WARNING: line: 148: array access out of bounds
+WARNING: line: 153: array access out of bounds
+WARNING: line: 158: array access out of bounds
+WARNING: line: 163: array access out of bounds
+WARNING: line: 168: array access out of bounds
+WARNING: line: 173: array access out of bounds
+WARNING: line: 178: array access out of bounds
+WARNING: line: 183: array access out of bounds
+WARNING: line: 188: array access out of bounds
+WARNING: line: 193: array access out of bounds
+WARNING: line: 198: array access out of bounds
+WARNING: line: 203: array access out of bounds
+WARNING: line: 208: array access out of bounds
+WARNING: line: 213: array access out of bounds
+WARNING: line: 218: array access out of bounds
+WARNING: line: 223: array access out of bounds
+WARNING: line: 228: array access out of bounds
+WARNING: line: 233: array access out of bounds
+WARNING: line: 238: array access out of bounds
+WARNING: line: 243: array access out of bounds
+WARNING: line: 248: array access out of bounds
+WARNING: line: 253: array access out of bounds
+WARNING: line: 258: array access out of bounds
+WARNING: line: 263: array access out of bounds
+WARNING: line: 268: array access out of bounds
+WARNING: line: 273: array access out of bounds
+-- no counterexample found with bound 0
+-- no counterexample found with bound 1
+-- no counterexample found with bound 2
+-- specification  G !(state = correct)    is false
+-- as demonstrated by the following execution sequence
+Trace Description: BMC Counterexample 
+Trace Type: Counterexample 
+  -> State: 1.1 <-
+    num_move = 0
+    digits[0][0] = 0
+    digits[0][1] = 0
+    digits[1][0] = 0
+    digits[1][1] = 0
+    digits[2][0] = 0
+    digits[2][1] = 0
+    xor_arr[0][0][0] = TRUE
+    xor_arr[0][0][1] = TRUE
+    xor_arr[0][0][2] = TRUE
+    xor_arr[0][0][3] = TRUE
+    xor_arr[0][0][4] = TRUE
+    xor_arr[0][0][5] = FALSE
+    xor_arr[0][0][6] = TRUE
+    xor_arr[0][1][0] = TRUE
+    xor_arr[0][1][1] = TRUE
+    xor_arr[0][1][2] = TRUE
+    xor_arr[0][1][3] = TRUE
+    xor_arr[0][1][4] = TRUE
+    xor_arr[0][1][5] = FALSE
+    xor_arr[0][1][6] = TRUE
+    xor_arr[1][0][0] = TRUE
+    xor_arr[1][0][1] = TRUE
+    xor_arr[1][0][2] = TRUE
+    xor_arr[1][0][3] = TRUE
+    xor_arr[1][0][4] = TRUE
+    xor_arr[1][0][5] = FALSE
+    xor_arr[1][0][6] = TRUE
+    xor_arr[1][1][0] = TRUE
+    xor_arr[1][1][1] = TRUE
+    xor_arr[1][1][2] = TRUE
+    xor_arr[1][1][3] = TRUE
+    xor_arr[1][1][4] = TRUE
+    xor_arr[1][1][5] = FALSE
+    xor_arr[1][1][6] = TRUE
+    xor_arr[2][0][0] = TRUE
+    xor_arr[2][0][1] = TRUE
+    xor_arr[2][0][2] = TRUE
+    xor_arr[2][0][3] = TRUE
+    xor_arr[2][0][4] = TRUE
+    xor_arr[2][0][5] = FALSE
+    xor_arr[2][0][6] = TRUE
+    xor_arr[2][1][0] = TRUE
+    xor_arr[2][1][1] = TRUE
+    xor_arr[2][1][2] = TRUE
+    xor_arr[2][1][3] = TRUE
+    xor_arr[2][1][4] = TRUE
+    xor_arr[2][1][5] = FALSE
+    xor_arr[2][1][6] = TRUE
+    state = initial
+    num_match_beg = 36
+    num_match_end = 0
+    num_allowed = 5
+    init_xor[0][0][0] = TRUE
+    init_xor[0][0][1] = TRUE
+    init_xor[0][0][2] = TRUE
+    init_xor[0][0][3] = TRUE
+    init_xor[0][0][4] = TRUE
+    init_xor[0][0][5] = FALSE
+    init_xor[0][0][6] = TRUE
+    init_xor[0][1][0] = TRUE
+    init_xor[0][1][1] = TRUE
+    init_xor[0][1][2] = TRUE
+    init_xor[0][1][3] = TRUE
+    init_xor[0][1][4] = TRUE
+    init_xor[0][1][5] = FALSE
+    init_xor[0][1][6] = TRUE
+    init_xor[1][0][0] = TRUE
+    init_xor[1][0][1] = TRUE
+    init_xor[1][0][2] = TRUE
+    init_xor[1][0][3] = TRUE
+    init_xor[1][0][4] = TRUE
+    init_xor[1][0][5] = FALSE
+    init_xor[1][0][6] = TRUE
+    init_xor[1][1][0] = TRUE
+    init_xor[1][1][1] = TRUE
+    init_xor[1][1][2] = TRUE
+    init_xor[1][1][3] = TRUE
+    init_xor[1][1][4] = TRUE
+    init_xor[1][1][5] = FALSE
+    init_xor[1][1][6] = TRUE
+    init_xor[2][0][0] = TRUE
+    init_xor[2][0][1] = TRUE
+    init_xor[2][0][2] = TRUE
+    init_xor[2][0][3] = TRUE
+    init_xor[2][0][4] = TRUE
+    init_xor[2][0][5] = FALSE
+    init_xor[2][0][6] = TRUE
+    init_xor[2][1][0] = TRUE
+    init_xor[2][1][1] = TRUE
+    init_xor[2][1][2] = TRUE
+    init_xor[2][1][3] = TRUE
+    init_xor[2][1][4] = TRUE
+    init_xor[2][1][5] = FALSE
+    init_xor[2][1][6] = TRUE
+    init_digs[0][0] = 0
+    init_digs[0][1] = 0
+    init_digs[1][0] = 0
+    init_digs[1][1] = 0
+    init_digs[2][0] = 0
+    init_digs[2][1] = 0
+    digit_bool[0][0] = TRUE
+    digit_bool[0][1] = TRUE
+    digit_bool[0][2] = TRUE
+    digit_bool[0][3] = TRUE
+    digit_bool[0][4] = TRUE
+    digit_bool[0][5] = FALSE
+    digit_bool[0][6] = TRUE
+    digit_bool[1][0] = FALSE
+    digit_bool[1][1] = FALSE
+    digit_bool[1][2] = FALSE
+    digit_bool[1][3] = TRUE
+    digit_bool[1][4] = TRUE
+    digit_bool[1][5] = FALSE
+    digit_bool[1][6] = FALSE
+    digit_bool[2][0] = TRUE
+    digit_bool[2][1] = FALSE
+    digit_bool[2][2] = TRUE
+    digit_bool[2][3] = TRUE
+    digit_bool[2][4] = FALSE
+    digit_bool[2][5] = TRUE
+    digit_bool[2][6] = TRUE
+    digit_bool[3][0] = FALSE
+    digit_bool[3][1] = FALSE
+    digit_bool[3][2] = TRUE
+    digit_bool[3][3] = TRUE
+    digit_bool[3][4] = TRUE
+    digit_bool[3][5] = TRUE
+    digit_bool[3][6] = TRUE
+    digit_bool[4][0] = FALSE
+    digit_bool[4][1] = TRUE
+    digit_bool[4][2] = FALSE
+    digit_bool[4][3] = TRUE
+    digit_bool[4][4] = TRUE
+    digit_bool[4][5] = TRUE
+    digit_bool[4][6] = FALSE
+    digit_bool[5][0] = FALSE
+    digit_bool[5][1] = TRUE
+    digit_bool[5][2] = TRUE
+    digit_bool[5][3] = FALSE
+    digit_bool[5][4] = TRUE
+    digit_bool[5][5] = TRUE
+    digit_bool[5][6] = TRUE
+    digit_bool[6][0] = TRUE
+    digit_bool[6][1] = TRUE
+    digit_bool[6][2] = TRUE
+    digit_bool[6][3] = FALSE
+    digit_bool[6][4] = TRUE
+    digit_bool[6][5] = TRUE
+    digit_bool[6][6] = TRUE
+    digit_bool[7][0] = FALSE
+    digit_bool[7][1] = FALSE
+    digit_bool[7][2] = TRUE
+    digit_bool[7][3] = TRUE
+    digit_bool[7][4] = TRUE
+    digit_bool[7][5] = FALSE
+    digit_bool[7][6] = FALSE
+    digit_bool[8][0] = TRUE
+    digit_bool[8][1] = TRUE
+    digit_bool[8][2] = TRUE
+    digit_bool[8][3] = TRUE
+    digit_bool[8][4] = TRUE
+    digit_bool[8][5] = TRUE
+    digit_bool[8][6] = TRUE
+    digit_bool[9][0] = FALSE
+    digit_bool[9][1] = TRUE
+    digit_bool[9][2] = TRUE
+    digit_bool[9][3] = TRUE
+    digit_bool[9][4] = TRUE
+    digit_bool[9][5] = TRUE
+    digit_bool[9][6] = TRUE
+  -> State: 1.2 <-
+    digits[0][0] = 6
+    digits[0][1] = 8
+    digits[1][1] = 9
+    digits[2][0] = 5
+    digits[2][1] = 9
+    state = guess
+    num_match_end = 36
+  -> State: 1.3 <-
+    num_move = 10
+    xor_arr[0][0][0] = FALSE
+    xor_arr[0][0][1] = FALSE
+    xor_arr[0][0][2] = FALSE
+    xor_arr[0][0][4] = FALSE
+    xor_arr[0][0][5] = TRUE
+    xor_arr[0][0][6] = FALSE
+    xor_arr[0][1][0] = FALSE
+    xor_arr[0][1][1] = FALSE
+    xor_arr[0][1][2] = FALSE
+    xor_arr[0][1][3] = FALSE
+    xor_arr[0][1][4] = FALSE
+    xor_arr[0][1][5] = TRUE
+    xor_arr[0][1][6] = FALSE
+    xor_arr[1][0][0] = FALSE
+    xor_arr[1][0][1] = FALSE
+    xor_arr[1][0][2] = FALSE
+    xor_arr[1][0][3] = FALSE
+    xor_arr[1][0][4] = FALSE
+    xor_arr[1][0][6] = FALSE
+    xor_arr[1][1][1] = FALSE
+    xor_arr[1][1][2] = FALSE
+    xor_arr[1][1][3] = FALSE
+    xor_arr[1][1][4] = FALSE
+    xor_arr[1][1][5] = TRUE
+    xor_arr[1][1][6] = FALSE
+    xor_arr[2][0][1] = FALSE
+    xor_arr[2][0][2] = FALSE
+    xor_arr[2][0][4] = FALSE
+    xor_arr[2][0][5] = TRUE
+    xor_arr[2][0][6] = FALSE
+    xor_arr[2][1][1] = FALSE
+    xor_arr[2][1][2] = FALSE
+    xor_arr[2][1][3] = FALSE
+    xor_arr[2][1][4] = FALSE
+    xor_arr[2][1][5] = TRUE
+    xor_arr[2][1][6] = FALSE
+    state = calc_cons
+  -> State: 1.4 <-
+    state = correct
+
+ptime 1.0 for Win32, Freeware - http://www.pc-tools.net/
+Copyright(C) 2002, Jem Berkes <jberkes@pc-tools.net>
+
+=== NuSMV -bmc -bmc_length 10 move2.smv ===
+
+Execution time: 12.108 s
