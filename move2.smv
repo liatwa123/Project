@@ -1,6 +1,7 @@
 MODULE main
 /--move matchsticks, 2 digits, solved, operator - minus, number of matchsticks to move = 5--/
-        
+/--run command: NuSMV -bmc -bmc_length 10 move2.smv--/
+/--4 states: 1 state - initialization; 1 state - guessing the digits and counting the number of matchsticks in the new equation; 1 state - calculating the number of changes in the matchsticks' locations, it must be 2 * number of matchsticks to move; 1 state - 'correct' (if the equaion is correct, the number of 'move' operations equals the required number and no matchsticks were added / removed) --/        
 				/--state variables--/
 				VAR
 				num_move:0..42;
