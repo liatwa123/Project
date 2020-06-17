@@ -1,6 +1,10 @@
 MODULE main
         
+        /--square riddle - no solution--/
+        /--run command: NuSMV -bmc -bmc_length 51 sq1.smv--/
+        /--1 state - initialization + guess; 11 states - check if the guessed construction is a potential solution by counting the number of squares and matchsticks - the final number of matchsticks equals the initial number and the total number of squares equals the desired number of squares;  1 state - new guess; 12 states - count the number of matchsticks and compare it to the initial number, count the number of squares and compare it to the desired number; 24 states - check that all the matchsticks belong to at least one square and there are no free matchsticks; 2 states - 'correct' --/
         /--state variables--/
+        
         VAR
         num_squares_beginning:0..14;
         num_squares_end:0..14;
