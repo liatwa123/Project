@@ -1,5 +1,7 @@
 MODULE main
-         /-- 2 digits per number, plus remove, num. of matcsticks to remove = 1       
+         /-- 2 digits per number, plus remove, num. of matcsticks to remove = 1--/
+	 /--run command: NuSMV -bmc -bmc_length 10 plus_remove2.smv--/
+	 /----/
        /--state variables--/ 
 	VAR
         dig1_1:0..9;
