@@ -2,7 +2,7 @@ MODULE main
          /-- 2 digits per number, plus add, num. of matcsticks to add = 4--/
 	 /--no-solution riddle--/
 	 /--run command: NuSMV -bmc -bmc_length 10 plus_add2.smv--/
-	 
+	 /--3 states: 1 state - initialization, 1 state - guess the digits, 1 state - 'correct'--/
         /--state variables--/ 
 	
         VAR
