@@ -1,5 +1,8 @@
 MODULE main
             /--number of digits per number = 3, number of matchsticks to remove = 6, minus remove --/
+	    /--3 states: 1 state - initialization, 1 state - guess the digits, 1 state - 'correct'--/
+	    /--run command: NuSMV -bmc -bmc_length 10 minus_remove2.smv--/
+	    /--solved riddle--/
             /--state variables--/ 
             VAR
         dig1_1:0..9;
