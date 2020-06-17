@@ -1,5 +1,7 @@
 MODULE main
 /--sum of matchstick heads--/
+/--run with command: NuSMV -bmc -bmc_length 31 sum_matchstick_heads.smv--/
+/--1 state: initialization; 13 states - counting the matchsticks in every row, column and diagonal; 2 states - new guess and initialization; 13 states - counting the matchsticks; 2 states - 'correct'--/
         /--state variables--/
         VAR
         count_row1:0..14;
