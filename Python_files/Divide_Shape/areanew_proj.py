@@ -9,23 +9,33 @@ import re
 
 
 def read_riddle(i, shape, num_allowed): 
+"""
+This function gets a file index - i, a shape and the allowed number of matchsticks to add
+It checks that the shape is a polygon. If it is - it encodes the riddle into a model file (with index i), else - it returns an error.
+"""
     if check_valid(shape, num_allowed):
-        return write_model_sq(i, shape, num_allowed)
+        return write_model_sq(i, shape, num_allowed) # in order to write a model file for the triangle area unit riddles - change this row to:
+						     # write_model_tri(i, shape, num_allowed)
     else:
         return -1
 
-
+# check if the input shape is a polygon
 def check_valid(shape, num_allowed):
     return check_close.build_shape2(shape, build_dir(shape))
 
 
 def write_model_sq(j, shape, num_allowed):
-    half = str(len(shape) / 2 - 2)
-    half_1 = str(len(shape) / 2 - 1)
-    half_2 = str(len(shape) / 2)
-    half1_allowed = str(len(shape) / 2 - 1 + num_allowed)
-    half2_allowed = str(len(shape) / 2 - 2 + num_allowed)
-    last = str(len(shape) - 1)
+"""
+This function gets a file index, the number of matchsticks for division and a shape (2D array)
+It creates a model file of the riddle
+Only basic area unit square is allowed here
+"""
+    half = str(len(shape) / 2 - 2)				# last index for storing the new part's original junctions (from the shape). There are len(shape) / 2 - 1 original junction indices for each part to store.
+    half_1 = str(len(shape) / 2 - 1)				# first index for storing the new part's cut junctions (one matchstick is new, one matchstick is from the original shape). There are 2 junctions represented as [match1_index, ang1, match2_index] for each part to store.
+    half_2 = str(len(shape) / 2)				# first index for storing the new part's new inner junctions (both matchsticks are new). There are num_allowed - 1 junctions represented as [match1_index, ang1, match2_index] for each part to store.
+    half1_allowed = str(len(shape) / 2 - 1 + num_allowed)	# last index for storing the new part's cut junctions (one matchstick is new, one matchstick is from the original shape). There are 2 junctions represented as [match1_index, ang1, match2_index] for each part to store.
+    half2_allowed = str(len(shape) / 2 - 2 + num_allowed)	# last index for storing the new part's new inner junctions (both matchsticks are new). There are num_allowed - 1 junctions represented as [match1_index, ang1, match2_index] for each part to store.
+    last = str(len(shape) - 1)					# last original matchstick's index 
     text_var = """MODULE main
 
             VAR
@@ -452,7 +462,8 @@ def write_model_sq(j, shape, num_allowed):
 
             LTLSPEC
             G !(state = correct)"""
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')	# change to your NuSMV bin directory
+									# writes to file
     code = '''j = ''' + str(j) + '''
 text_var = """''' + text_var + '''"""
 text_define = """''' + text_define + '''"""
@@ -468,12 +479,18 @@ f.close()'''
 
 
 def write_model_tri(j, shape, num_allowed):
-    half = str(len(shape) / 2 - 2)
-    half_1 = str(len(shape) / 2 - 1)
-    half_2 = str(len(shape) / 2)
-    half1_allowed = str(len(shape) / 2 - 1 + num_allowed)
-    half2_allowed = str(len(shape) / 2 - 2 + num_allowed)
-    last = str(len(shape) - 1)
+	"""
+	This function gets a file index, the number of matchsticks for division and a shape (2D array)
+	It creates a model file of the riddle
+	Only basic area unit square is allowed here
+	"""
+	
+    half = str(len(shape) / 2 - 2)				# last index for storing the new part's original junctions (from the shape). There are len(shape) / 2 - 1 original junction indices for each part to store.
+    half_1 = str(len(shape) / 2 - 1)				# first index for storing the new part's cut junctions (one matchstick is new, one matchstick is from the original shape). There are 2 junctions represented as [match1_index, ang1, match2_index] for each part to store.
+    half_2 = str(len(shape) / 2)				# first index for storing the new part's new inner junctions (both matchsticks are new). There are num_allowed - 1 junctions represented as [match1_index, ang1, match2_index] for each part to store.
+    half1_allowed = str(len(shape) / 2 - 1 + num_allowed)	# last index for storing the new part's cut junctions (one matchstick is new, one matchstick is from the original shape). There are 2 junctions represented as [match1_index, ang1, match2_index] for each part to store.
+    half2_allowed = str(len(shape) / 2 - 2 + num_allowed)	# last index for storing the new part's new inner junctions (both matchsticks are new). There are num_allowed - 1 junctions represented as [match1_index, ang1, match2_index] for each part to store.
+    last = str(len(shape) - 1)					# last original matchstick's index 
     text_var = """MODULE main
         
         VAR
@@ -807,7 +824,8 @@ next(cuts1[""" + half_1 + """][1]) := case
         
         LTLSPEC
         G !(state = correct)"""
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')	# change it to your NuSMV bin directory
+									# writes to file
     code = '''j = ''' + str(j) + '''
 text_var = """''' + text_var + '''"""
 text_define = """''' + text_define + '''"""
@@ -817,12 +835,15 @@ print >> f, text_var
 print >> f, text_define
 print >> f, text_assign
 f.close()'''
-    build_time = timeit.timeit(code, number=1)
-    run_model('areatri' + str(j) + '.smv', j, len(shape) / 2 + num_allowed + 3)
+    build_time = timeit.timeit(code, number=1)	
+    run_model('areatri' + str(j) + '.smv', j, len(shape) / 2 + num_allowed + 3)	# runs the file
     return build_time
 
 
 def run_model(file_model, j, len):
+	"""
+	This function gets a model file, its index and 
+	"""
     f = open(str(file_model), 'a')
     output_f = open('output_area' + str(j) + '.txt', 'w')
     subprocess.Popen("ptime.exe NuSMV -bmc -bmc_length " + str(len + 5) + " " + str(file_model), stdout=output_f, stderr=output_f)
