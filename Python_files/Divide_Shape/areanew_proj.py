@@ -8,7 +8,7 @@ import check_close
 import re
 
 
-def read_riddle(i, shape, num_allowed):
+def read_riddle(i, shape, num_allowed): 
     if check_valid(shape, num_allowed):
         return write_model_sq(i, shape, num_allowed)
     else:
