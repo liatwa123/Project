@@ -1018,7 +1018,14 @@ def build_dir(small):
 
 
 def get_shapes(j, original):
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
+	"""
+	This function checks that the output shapes are polygons. 
+	The shapes are recovered from the output file
+	If both new parts are polygons - the function returns True
+	else - it returns False and updates the model file's assertion
+	Basic area unit: triangle
+	"""
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')	# change to your NuSMV bin directory
     out = open('output_area' + str(j) + '.txt', 'r')
     text = out.read()
     if 'is false' in text:
@@ -1153,10 +1160,10 @@ def get_shapes(j, original):
         for ang3 in inside2:
             shape2.append(ang3)
 
-        cl1 = check_close.build_shape2(shape1, build_dir(shape1))
-        cl2 = check_close.build_shape2(shape2, build_dir(shape2))
+        cl1 = check_close.build_shape2(shape1, build_dir(shape1))	# check that part1 is a polygon
+        cl2 = check_close.build_shape2(shape2, build_dir(shape2))	# check that part2 is a polygon 
 
-        if not cl1 or not cl2:
+        if not cl1 or not cl2:						# at least one of the new parts is not a polygon - update the assertion
             str_another_sol = ""
             for i in range(0, len(arr_junct_1)):
                 str_another_sol += "arr_junct_1[" + str(i) + "] = " + str(arr_junct_1_i[i]) + " & arr_junct_2[" + str(
@@ -1205,7 +1212,14 @@ def get_shapes(j, original):
 
 
 def get_shapes2(j, original):
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
+	"""
+	This function checks that the output shapes are polygons. 
+	The shapes are recovered from the output file
+	If both new parts are polygons - the function returns True
+	else - it returns False and updates the model file's assertion
+	Basic area unit: square
+	"""
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')	# change to your NuSMV bin directory
     out = open('output_area' + str(j) + '.txt', 'r')
     text = out.read()
     if 'is false' in text:
@@ -1340,10 +1354,10 @@ def get_shapes2(j, original):
         for ang3 in inside2:
             shape2.append(ang3)
 
-        cl1 = check_close.build_shape2(shape1, build_dir(shape1))
-        cl2 = check_close.build_shape2(shape2, build_dir(shape2))
+        cl1 = check_close.build_shape2(shape1, build_dir(shape1))	# check that part1 is a polygon
+        cl2 = check_close.build_shape2(shape2, build_dir(shape2))	# check that part2 is a polygon
 
-        if not cl1 or not cl2:
+        if not cl1 or not cl2:						# at least one of the new parts is not a polygon - update the assertion
             str_another_sol = ""
             for i in range(0, len(arr_junct_1)):
                 str_another_sol += "arr_junct_1[" + str(i) + "] = " + str(arr_junct_1_i[i]) + " & arr_junct_2[" + str(
@@ -1368,6 +1382,7 @@ def get_shapes2(j, original):
                 cuts2[len(cuts1) - 1][0]) + " & cuts2[" + str(
                 len(arr_junct_1) + len(cuts1) - 1) + "][1] = " + str(cuts2[len(cuts1) - 1][1]) + " & cuts2[" + str(
                 len(arr_junct_1) + len(cuts1) - 1) + "][2] = " + str(cuts2[len(cuts1) - 1][2])
+	
             os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
             m = open('areasq' + str(j) + '.smv', 'r')
             lines = m.readlines()
@@ -1392,6 +1407,9 @@ def get_shapes2(j, original):
 
 
 def guess_shape(num_match):
+	"""
+	This function guesses a polygon with basic area unit: triangle
+	"""
     if num_match <= 3:
         return None
     shape = []
@@ -1405,7 +1423,7 @@ def guess_shape(num_match):
             ang = random.choice(angles)
             shape.append([k + 1, ang, k + 2])
 
-    while not check_close.build_shape2(shape, build_dir(shape)):
+    while not check_close.build_shape2(shape, build_dir(shape)):	# stop only when a polygon is found
         shape = []
         for k in range(0, num_match):
 
@@ -1418,6 +1436,9 @@ def guess_shape(num_match):
 
 
 def guess_shape2(num_match):
+	"""
+	This function guesses a polygon with basic area unit: square
+	"""
     if num_match <= 3:
         return None
     shape = []
@@ -1431,7 +1452,7 @@ def guess_shape2(num_match):
             ang = random.choice(angles)
             shape.append([k + 1, ang, k + 2])
 
-    while not check_close.build_shape2(shape, build_dir(shape)):
+    while not check_close.build_shape2(shape, build_dir(shape)):	# stop only when a polygon is found
         shape = []
         for k in range(0, num_match):
 
@@ -1444,6 +1465,10 @@ def guess_shape2(num_match):
 
 
 def create_shape(k):
+	"""
+	This function creates a shape with basic area unit: triangle
+	in the handbook : the input series for figures 5.3 and 5.4 in the chapter Shape Division into 2 Equal Parts
+	"""
     shape = [[1, 120, 2], [2, 240, 3], [3, 120, 4]]
 
     for i in range(4, k / 2 - 2):
@@ -1472,6 +1497,10 @@ def create_shape(k):
 
 
 def create_shape2(k):
+	"""
+	This function creates a shape with basic area unit: square
+	in the handbook : the input series for figures 5.3 and 5.4 in the chapter Shape Division into 2 Equal Parts
+	"""
     shape = [[1, 90, 2], [2, 270, 3], [3, 180, 4], [4, 90, 5]]
 
     for i in range(5, k / 2 - 3):
@@ -1504,12 +1533,12 @@ def main():
     count_sol = 0
     count_no = 0
 
-    for k in range(70, 78, 8):
+    for k in range(14, 78, 8):							# for square area unit: change to (18, 62, 4)
         for j in range(5, 4, -1):
-            original = create_shape(k)
-            bool1 = check_close.build_shape2(original, build_dir(original))
+            original = create_shape(k)						# new shape created - the input series in the handbook, triangle area unit , change to create_shape2(k) for square area unit
+            bool1 = check_close.build_shape2(original, build_dir(original)) 
             total = 0
-            num_m = j
+            num_m = j # num_allowed
             write_model_tri(j, original, num_m)
             flag_solved, run_time = find_solution(j)
             total += run_time
