@@ -1,0 +1,1864 @@
+*** This is NuSMV 2.6.0 (compiled on Wed Oct 14 15:37:51 2015)
+*** Enabled addons are: compass
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Please report bugs to <Please report bugs to <nusmv-users@fbk.eu>>
+
+*** Copyright (c) 2010-2014, Fondazione Bruno Kessler
+
+*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+*** This version of NuSMV is linked to the MiniSat SAT solver. 
+*** See http://minisat.se/MiniSat.html
+*** Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
+*** Copyright (c) 2007-2010, Niklas Sorensson
+
+Warning: cannot assign value 181 to variable cuts2[34][1]
+Warning: cannot assign value 93 to variable cuts2[34][1]
+Warning: cannot assign value 213 to variable cuts2[34][1]
+Warning: cannot assign value 77 to variable cuts2[34][1]
+Warning: cannot assign value 197 to variable cuts2[34][1]
+Warning: cannot assign value 109 to variable cuts2[34][1]
+Warning: cannot assign value 229 to variable cuts2[34][1]
+Warning: cannot assign value 189 to variable cuts2[34][1]
+Warning: cannot assign value 101 to variable cuts2[34][1]
+Warning: cannot assign value 221 to variable cuts2[34][1]
+Warning: cannot assign value 85 to variable cuts2[34][1]
+Warning: cannot assign value 205 to variable cuts2[34][1]
+Warning: cannot assign value 172 to variable cuts2[34][1]
+Warning: cannot assign value 117 to variable cuts2[34][1]
+Warning: cannot assign value 237 to variable cuts2[34][1]
+Warning: cannot assign value 185 to variable cuts2[34][1]
+Warning: cannot assign value 97 to variable cuts2[34][1]
+Warning: cannot assign value 217 to variable cuts2[34][1]
+Warning: cannot assign value 81 to variable cuts2[34][1]
+Warning: cannot assign value 201 to variable cuts2[34][1]
+Warning: cannot assign value 168 to variable cuts2[34][1]
+Warning: cannot assign value 113 to variable cuts2[34][1]
+Warning: cannot assign value 233 to variable cuts2[34][1]
+Warning: cannot assign value 193 to variable cuts2[34][1]
+Warning: cannot assign value 105 to variable cuts2[34][1]
+Warning: cannot assign value 225 to variable cuts2[34][1]
+Warning: cannot assign value 89 to variable cuts2[34][1]
+Warning: cannot assign value 209 to variable cuts2[34][1]
+Warning: cannot assign value 176 to variable cuts2[34][1]
+Warning: cannot assign value -60 to variable cuts2[34][1]
+Warning: cannot assign value 183 to variable cuts2[34][1]
+Warning: cannot assign value 95 to variable cuts2[34][1]
+Warning: cannot assign value 215 to variable cuts2[34][1]
+Warning: cannot assign value 79 to variable cuts2[34][1]
+Warning: cannot assign value 199 to variable cuts2[34][1]
+Warning: cannot assign value 166 to variable cuts2[34][1]
+Warning: cannot assign value 111 to variable cuts2[34][1]
+Warning: cannot assign value 231 to variable cuts2[34][1]
+Warning: cannot assign value 191 to variable cuts2[34][1]
+Warning: cannot assign value 103 to variable cuts2[34][1]
+Warning: cannot assign value 223 to variable cuts2[34][1]
+Warning: cannot assign value 87 to variable cuts2[34][1]
+Warning: cannot assign value 207 to variable cuts2[34][1]
+Warning: cannot assign value 174 to variable cuts2[34][1]
+Warning: cannot assign value 119 to variable cuts2[34][1]
+Warning: cannot assign value 239 to variable cuts2[34][1]
+Warning: cannot assign value 187 to variable cuts2[34][1]
+Warning: cannot assign value 99 to variable cuts2[34][1]
+Warning: cannot assign value 219 to variable cuts2[34][1]
+Warning: cannot assign value 83 to variable cuts2[34][1]
+Warning: cannot assign value 203 to variable cuts2[34][1]
+Warning: cannot assign value 170 to variable cuts2[34][1]
+Warning: cannot assign value 115 to variable cuts2[34][1]
+Warning: cannot assign value 235 to variable cuts2[34][1]
+Warning: cannot assign value 195 to variable cuts2[34][1]
+Warning: cannot assign value 107 to variable cuts2[34][1]
+Warning: cannot assign value 227 to variable cuts2[34][1]
+Warning: cannot assign value 91 to variable cuts2[34][1]
+Warning: cannot assign value 211 to variable cuts2[34][1]
+Warning: cannot assign value 178 to variable cuts2[34][1]
+Warning: cannot assign value 182 to variable cuts2[34][1]
+Warning: cannot assign value 94 to variable cuts2[34][1]
+Warning: cannot assign value 214 to variable cuts2[34][1]
+Warning: cannot assign value 78 to variable cuts2[34][1]
+Warning: cannot assign value 198 to variable cuts2[34][1]
+Warning: cannot assign value 165 to variable cuts2[34][1]
+Warning: cannot assign value 110 to variable cuts2[34][1]
+Warning: cannot assign value 230 to variable cuts2[34][1]
+Warning: cannot assign value 190 to variable cuts2[34][1]
+Warning: cannot assign value 102 to variable cuts2[34][1]
+Warning: cannot assign value 222 to variable cuts2[34][1]
+Warning: cannot assign value 86 to variable cuts2[34][1]
+Warning: cannot assign value 206 to variable cuts2[34][1]
+Warning: cannot assign value 173 to variable cuts2[34][1]
+Warning: cannot assign value 118 to variable cuts2[34][1]
+Warning: cannot assign value 238 to variable cuts2[34][1]
+Warning: cannot assign value 186 to variable cuts2[34][1]
+Warning: cannot assign value 98 to variable cuts2[34][1]
+Warning: cannot assign value 218 to variable cuts2[34][1]
+Warning: cannot assign value 82 to variable cuts2[34][1]
+Warning: cannot assign value 202 to variable cuts2[34][1]
+Warning: cannot assign value 169 to variable cuts2[34][1]
+Warning: cannot assign value 114 to variable cuts2[34][1]
+Warning: cannot assign value 234 to variable cuts2[34][1]
+Warning: cannot assign value 194 to variable cuts2[34][1]
+Warning: cannot assign value 106 to variable cuts2[34][1]
+Warning: cannot assign value 226 to variable cuts2[34][1]
+Warning: cannot assign value 90 to variable cuts2[34][1]
+Warning: cannot assign value 210 to variable cuts2[34][1]
+Warning: cannot assign value 177 to variable cuts2[34][1]
+Warning: cannot assign value -120 to variable cuts2[34][1]
+Warning: cannot assign value 184 to variable cuts2[34][1]
+Warning: cannot assign value 96 to variable cuts2[34][1]
+Warning: cannot assign value 216 to variable cuts2[34][1]
+Warning: cannot assign value 80 to variable cuts2[34][1]
+Warning: cannot assign value 200 to variable cuts2[34][1]
+Warning: cannot assign value 167 to variable cuts2[34][1]
+Warning: cannot assign value 112 to variable cuts2[34][1]
+Warning: cannot assign value 232 to variable cuts2[34][1]
+Warning: cannot assign value 192 to variable cuts2[34][1]
+Warning: cannot assign value 104 to variable cuts2[34][1]
+Warning: cannot assign value 224 to variable cuts2[34][1]
+Warning: cannot assign value 88 to variable cuts2[34][1]
+Warning: cannot assign value 208 to variable cuts2[34][1]
+Warning: cannot assign value 175 to variable cuts2[34][1]
+Warning: cannot assign value 188 to variable cuts2[34][1]
+Warning: cannot assign value 100 to variable cuts2[34][1]
+Warning: cannot assign value 220 to variable cuts2[34][1]
+Warning: cannot assign value 84 to variable cuts2[34][1]
+Warning: cannot assign value 204 to variable cuts2[34][1]
+Warning: cannot assign value 171 to variable cuts2[34][1]
+Warning: cannot assign value 116 to variable cuts2[34][1]
+Warning: cannot assign value 236 to variable cuts2[34][1]
+Warning: cannot assign value 76 to variable cuts2[34][1]
+Warning: cannot assign value 196 to variable cuts2[34][1]
+Warning: cannot assign value 108 to variable cuts2[34][1]
+Warning: cannot assign value 228 to variable cuts2[34][1]
+Warning: cannot assign value 92 to variable cuts2[34][1]
+Warning: cannot assign value 212 to variable cuts2[34][1]
+Warning: cannot assign value 179 to variable cuts2[34][1]
+Warning: cannot assign value 181 to variable cuts2[34][1]
+Warning: cannot assign value 93 to variable cuts2[34][1]
+Warning: cannot assign value 213 to variable cuts2[34][1]
+Warning: cannot assign value 77 to variable cuts2[34][1]
+Warning: cannot assign value 197 to variable cuts2[34][1]
+Warning: cannot assign value 109 to variable cuts2[34][1]
+Warning: cannot assign value 229 to variable cuts2[34][1]
+Warning: cannot assign value 189 to variable cuts2[34][1]
+Warning: cannot assign value 101 to variable cuts2[34][1]
+Warning: cannot assign value 221 to variable cuts2[34][1]
+Warning: cannot assign value 85 to variable cuts2[34][1]
+Warning: cannot assign value 205 to variable cuts2[34][1]
+Warning: cannot assign value 172 to variable cuts2[34][1]
+Warning: cannot assign value 117 to variable cuts2[34][1]
+Warning: cannot assign value 237 to variable cuts2[34][1]
+Warning: cannot assign value 185 to variable cuts2[34][1]
+Warning: cannot assign value 97 to variable cuts2[34][1]
+Warning: cannot assign value 217 to variable cuts2[34][1]
+Warning: cannot assign value 81 to variable cuts2[34][1]
+Warning: cannot assign value 201 to variable cuts2[34][1]
+Warning: cannot assign value 168 to variable cuts2[34][1]
+Warning: cannot assign value 113 to variable cuts2[34][1]
+Warning: cannot assign value 233 to variable cuts2[34][1]
+Warning: cannot assign value 193 to variable cuts2[34][1]
+Warning: cannot assign value 105 to variable cuts2[34][1]
+Warning: cannot assign value 225 to variable cuts2[34][1]
+Warning: cannot assign value 89 to variable cuts2[34][1]
+Warning: cannot assign value 209 to variable cuts2[34][1]
+Warning: cannot assign value 176 to variable cuts2[34][1]
+Warning: cannot assign value -60 to variable cuts2[34][1]
+Warning: cannot assign value 183 to variable cuts2[34][1]
+Warning: cannot assign value 95 to variable cuts2[34][1]
+Warning: cannot assign value 215 to variable cuts2[34][1]
+Warning: cannot assign value 79 to variable cuts2[34][1]
+Warning: cannot assign value 199 to variable cuts2[34][1]
+Warning: cannot assign value 166 to variable cuts2[34][1]
+Warning: cannot assign value 111 to variable cuts2[34][1]
+Warning: cannot assign value 231 to variable cuts2[34][1]
+Warning: cannot assign value 191 to variable cuts2[34][1]
+Warning: cannot assign value 103 to variable cuts2[34][1]
+Warning: cannot assign value 223 to variable cuts2[34][1]
+Warning: cannot assign value 87 to variable cuts2[34][1]
+Warning: cannot assign value 207 to variable cuts2[34][1]
+Warning: cannot assign value 174 to variable cuts2[34][1]
+Warning: cannot assign value 119 to variable cuts2[34][1]
+Warning: cannot assign value 239 to variable cuts2[34][1]
+Warning: cannot assign value 187 to variable cuts2[34][1]
+Warning: cannot assign value 99 to variable cuts2[34][1]
+Warning: cannot assign value 219 to variable cuts2[34][1]
+Warning: cannot assign value 83 to variable cuts2[34][1]
+Warning: cannot assign value 203 to variable cuts2[34][1]
+Warning: cannot assign value 170 to variable cuts2[34][1]
+Warning: cannot assign value 115 to variable cuts2[34][1]
+Warning: cannot assign value 235 to variable cuts2[34][1]
+Warning: cannot assign value 195 to variable cuts2[34][1]
+Warning: cannot assign value 107 to variable cuts2[34][1]
+Warning: cannot assign value 227 to variable cuts2[34][1]
+Warning: cannot assign value 91 to variable cuts2[34][1]
+Warning: cannot assign value 211 to variable cuts2[34][1]
+Warning: cannot assign value 178 to variable cuts2[34][1]
+Warning: cannot assign value 182 to variable cuts2[34][1]
+Warning: cannot assign value 94 to variable cuts2[34][1]
+Warning: cannot assign value 214 to variable cuts2[34][1]
+Warning: cannot assign value 78 to variable cuts2[34][1]
+Warning: cannot assign value 198 to variable cuts2[34][1]
+Warning: cannot assign value 165 to variable cuts2[34][1]
+Warning: cannot assign value 110 to variable cuts2[34][1]
+Warning: cannot assign value 230 to variable cuts2[34][1]
+Warning: cannot assign value 190 to variable cuts2[34][1]
+Warning: cannot assign value 102 to variable cuts2[34][1]
+Warning: cannot assign value 222 to variable cuts2[34][1]
+Warning: cannot assign value 86 to variable cuts2[34][1]
+Warning: cannot assign value 206 to variable cuts2[34][1]
+Warning: cannot assign value 173 to variable cuts2[34][1]
+Warning: cannot assign value 118 to variable cuts2[34][1]
+Warning: cannot assign value 238 to variable cuts2[34][1]
+Warning: cannot assign value 186 to variable cuts2[34][1]
+Warning: cannot assign value 98 to variable cuts2[34][1]
+Warning: cannot assign value 218 to variable cuts2[34][1]
+Warning: cannot assign value 82 to variable cuts2[34][1]
+Warning: cannot assign value 202 to variable cuts2[34][1]
+Warning: cannot assign value 169 to variable cuts2[34][1]
+Warning: cannot assign value 114 to variable cuts2[34][1]
+Warning: cannot assign value 234 to variable cuts2[34][1]
+Warning: cannot assign value 194 to variable cuts2[34][1]
+Warning: cannot assign value 106 to variable cuts2[34][1]
+Warning: cannot assign value 226 to variable cuts2[34][1]
+Warning: cannot assign value 90 to variable cuts2[34][1]
+Warning: cannot assign value 210 to variable cuts2[34][1]
+Warning: cannot assign value 177 to variable cuts2[34][1]
+Warning: cannot assign value -120 to variable cuts2[34][1]
+Warning: cannot assign value 184 to variable cuts2[34][1]
+Warning: cannot assign value 96 to variable cuts2[34][1]
+Warning: cannot assign value 216 to variable cuts2[34][1]
+Warning: cannot assign value 80 to variable cuts2[34][1]
+Warning: cannot assign value 200 to variable cuts2[34][1]
+Warning: cannot assign value 167 to variable cuts2[34][1]
+Warning: cannot assign value 112 to variable cuts2[34][1]
+Warning: cannot assign value 232 to variable cuts2[34][1]
+Warning: cannot assign value 192 to variable cuts2[34][1]
+Warning: cannot assign value 104 to variable cuts2[34][1]
+Warning: cannot assign value 224 to variable cuts2[34][1]
+Warning: cannot assign value 88 to variable cuts2[34][1]
+Warning: cannot assign value 208 to variable cuts2[34][1]
+Warning: cannot assign value 175 to variable cuts2[34][1]
+Warning: cannot assign value 188 to variable cuts2[34][1]
+Warning: cannot assign value 100 to variable cuts2[34][1]
+Warning: cannot assign value 220 to variable cuts2[34][1]
+Warning: cannot assign value 84 to variable cuts2[34][1]
+Warning: cannot assign value 204 to variable cuts2[34][1]
+Warning: cannot assign value 171 to variable cuts2[34][1]
+Warning: cannot assign value 116 to variable cuts2[34][1]
+Warning: cannot assign value 236 to variable cuts2[34][1]
+Warning: cannot assign value 76 to variable cuts2[34][1]
+Warning: cannot assign value 196 to variable cuts2[34][1]
+Warning: cannot assign value 108 to variable cuts2[34][1]
+Warning: cannot assign value 228 to variable cuts2[34][1]
+Warning: cannot assign value 92 to variable cuts2[34][1]
+Warning: cannot assign value 212 to variable cuts2[34][1]
+Warning: cannot assign value 179 to variable cuts2[34][1]
+Warning: cannot assign value 181 to variable cuts2[39][1]
+Warning: cannot assign value 93 to variable cuts2[39][1]
+Warning: cannot assign value 213 to variable cuts2[39][1]
+Warning: cannot assign value 77 to variable cuts2[39][1]
+Warning: cannot assign value 197 to variable cuts2[39][1]
+Warning: cannot assign value 109 to variable cuts2[39][1]
+Warning: cannot assign value 229 to variable cuts2[39][1]
+Warning: cannot assign value 189 to variable cuts2[39][1]
+Warning: cannot assign value 101 to variable cuts2[39][1]
+Warning: cannot assign value 221 to variable cuts2[39][1]
+Warning: cannot assign value 85 to variable cuts2[39][1]
+Warning: cannot assign value 205 to variable cuts2[39][1]
+Warning: cannot assign value 172 to variable cuts2[39][1]
+Warning: cannot assign value 117 to variable cuts2[39][1]
+Warning: cannot assign value 237 to variable cuts2[39][1]
+Warning: cannot assign value 185 to variable cuts2[39][1]
+Warning: cannot assign value 97 to variable cuts2[39][1]
+Warning: cannot assign value 217 to variable cuts2[39][1]
+Warning: cannot assign value 81 to variable cuts2[39][1]
+Warning: cannot assign value 201 to variable cuts2[39][1]
+Warning: cannot assign value 168 to variable cuts2[39][1]
+Warning: cannot assign value 113 to variable cuts2[39][1]
+Warning: cannot assign value 233 to variable cuts2[39][1]
+Warning: cannot assign value 193 to variable cuts2[39][1]
+Warning: cannot assign value 105 to variable cuts2[39][1]
+Warning: cannot assign value 225 to variable cuts2[39][1]
+Warning: cannot assign value 89 to variable cuts2[39][1]
+Warning: cannot assign value 209 to variable cuts2[39][1]
+Warning: cannot assign value 176 to variable cuts2[39][1]
+Warning: cannot assign value -60 to variable cuts2[39][1]
+Warning: cannot assign value 183 to variable cuts2[39][1]
+Warning: cannot assign value 95 to variable cuts2[39][1]
+Warning: cannot assign value 215 to variable cuts2[39][1]
+Warning: cannot assign value 79 to variable cuts2[39][1]
+Warning: cannot assign value 199 to variable cuts2[39][1]
+Warning: cannot assign value 166 to variable cuts2[39][1]
+Warning: cannot assign value 111 to variable cuts2[39][1]
+Warning: cannot assign value 231 to variable cuts2[39][1]
+Warning: cannot assign value 191 to variable cuts2[39][1]
+Warning: cannot assign value 103 to variable cuts2[39][1]
+Warning: cannot assign value 223 to variable cuts2[39][1]
+Warning: cannot assign value 87 to variable cuts2[39][1]
+Warning: cannot assign value 207 to variable cuts2[39][1]
+Warning: cannot assign value 174 to variable cuts2[39][1]
+Warning: cannot assign value 119 to variable cuts2[39][1]
+Warning: cannot assign value 239 to variable cuts2[39][1]
+Warning: cannot assign value 187 to variable cuts2[39][1]
+Warning: cannot assign value 99 to variable cuts2[39][1]
+Warning: cannot assign value 219 to variable cuts2[39][1]
+Warning: cannot assign value 83 to variable cuts2[39][1]
+Warning: cannot assign value 203 to variable cuts2[39][1]
+Warning: cannot assign value 170 to variable cuts2[39][1]
+Warning: cannot assign value 115 to variable cuts2[39][1]
+Warning: cannot assign value 235 to variable cuts2[39][1]
+Warning: cannot assign value 195 to variable cuts2[39][1]
+Warning: cannot assign value 107 to variable cuts2[39][1]
+Warning: cannot assign value 227 to variable cuts2[39][1]
+Warning: cannot assign value 91 to variable cuts2[39][1]
+Warning: cannot assign value 211 to variable cuts2[39][1]
+Warning: cannot assign value 178 to variable cuts2[39][1]
+Warning: cannot assign value 182 to variable cuts2[39][1]
+Warning: cannot assign value 94 to variable cuts2[39][1]
+Warning: cannot assign value 214 to variable cuts2[39][1]
+Warning: cannot assign value 78 to variable cuts2[39][1]
+Warning: cannot assign value 198 to variable cuts2[39][1]
+Warning: cannot assign value 165 to variable cuts2[39][1]
+Warning: cannot assign value 110 to variable cuts2[39][1]
+Warning: cannot assign value 230 to variable cuts2[39][1]
+Warning: cannot assign value 190 to variable cuts2[39][1]
+Warning: cannot assign value 102 to variable cuts2[39][1]
+Warning: cannot assign value 222 to variable cuts2[39][1]
+Warning: cannot assign value 86 to variable cuts2[39][1]
+Warning: cannot assign value 206 to variable cuts2[39][1]
+Warning: cannot assign value 173 to variable cuts2[39][1]
+Warning: cannot assign value 118 to variable cuts2[39][1]
+Warning: cannot assign value 238 to variable cuts2[39][1]
+Warning: cannot assign value 186 to variable cuts2[39][1]
+Warning: cannot assign value 98 to variable cuts2[39][1]
+Warning: cannot assign value 218 to variable cuts2[39][1]
+Warning: cannot assign value 82 to variable cuts2[39][1]
+Warning: cannot assign value 202 to variable cuts2[39][1]
+Warning: cannot assign value 169 to variable cuts2[39][1]
+Warning: cannot assign value 114 to variable cuts2[39][1]
+Warning: cannot assign value 234 to variable cuts2[39][1]
+Warning: cannot assign value 194 to variable cuts2[39][1]
+Warning: cannot assign value 106 to variable cuts2[39][1]
+Warning: cannot assign value 226 to variable cuts2[39][1]
+Warning: cannot assign value 90 to variable cuts2[39][1]
+Warning: cannot assign value 210 to variable cuts2[39][1]
+Warning: cannot assign value 177 to variable cuts2[39][1]
+Warning: cannot assign value -120 to variable cuts2[39][1]
+Warning: cannot assign value 184 to variable cuts2[39][1]
+Warning: cannot assign value 96 to variable cuts2[39][1]
+Warning: cannot assign value 216 to variable cuts2[39][1]
+Warning: cannot assign value 80 to variable cuts2[39][1]
+Warning: cannot assign value 200 to variable cuts2[39][1]
+Warning: cannot assign value 167 to variable cuts2[39][1]
+Warning: cannot assign value 112 to variable cuts2[39][1]
+Warning: cannot assign value 232 to variable cuts2[39][1]
+Warning: cannot assign value 192 to variable cuts2[39][1]
+Warning: cannot assign value 104 to variable cuts2[39][1]
+Warning: cannot assign value 224 to variable cuts2[39][1]
+Warning: cannot assign value 88 to variable cuts2[39][1]
+Warning: cannot assign value 208 to variable cuts2[39][1]
+Warning: cannot assign value 175 to variable cuts2[39][1]
+Warning: cannot assign value 188 to variable cuts2[39][1]
+Warning: cannot assign value 100 to variable cuts2[39][1]
+Warning: cannot assign value 220 to variable cuts2[39][1]
+Warning: cannot assign value 84 to variable cuts2[39][1]
+Warning: cannot assign value 204 to variable cuts2[39][1]
+Warning: cannot assign value 171 to variable cuts2[39][1]
+Warning: cannot assign value 116 to variable cuts2[39][1]
+Warning: cannot assign value 236 to variable cuts2[39][1]
+Warning: cannot assign value 76 to variable cuts2[39][1]
+Warning: cannot assign value 196 to variable cuts2[39][1]
+Warning: cannot assign value 108 to variable cuts2[39][1]
+Warning: cannot assign value 228 to variable cuts2[39][1]
+Warning: cannot assign value 92 to variable cuts2[39][1]
+Warning: cannot assign value 212 to variable cuts2[39][1]
+Warning: cannot assign value 179 to variable cuts2[39][1]
+Warning: cannot assign value 181 to variable cuts2[39][1]
+Warning: cannot assign value 93 to variable cuts2[39][1]
+Warning: cannot assign value 213 to variable cuts2[39][1]
+Warning: cannot assign value 77 to variable cuts2[39][1]
+Warning: cannot assign value 197 to variable cuts2[39][1]
+Warning: cannot assign value 109 to variable cuts2[39][1]
+Warning: cannot assign value 229 to variable cuts2[39][1]
+Warning: cannot assign value 189 to variable cuts2[39][1]
+Warning: cannot assign value 101 to variable cuts2[39][1]
+Warning: cannot assign value 221 to variable cuts2[39][1]
+Warning: cannot assign value 85 to variable cuts2[39][1]
+Warning: cannot assign value 205 to variable cuts2[39][1]
+Warning: cannot assign value 172 to variable cuts2[39][1]
+Warning: cannot assign value 117 to variable cuts2[39][1]
+Warning: cannot assign value 237 to variable cuts2[39][1]
+Warning: cannot assign value 185 to variable cuts2[39][1]
+Warning: cannot assign value 97 to variable cuts2[39][1]
+Warning: cannot assign value 217 to variable cuts2[39][1]
+Warning: cannot assign value 81 to variable cuts2[39][1]
+Warning: cannot assign value 201 to variable cuts2[39][1]
+Warning: cannot assign value 168 to variable cuts2[39][1]
+Warning: cannot assign value 113 to variable cuts2[39][1]
+Warning: cannot assign value 233 to variable cuts2[39][1]
+Warning: cannot assign value 193 to variable cuts2[39][1]
+Warning: cannot assign value 105 to variable cuts2[39][1]
+Warning: cannot assign value 225 to variable cuts2[39][1]
+Warning: cannot assign value 89 to variable cuts2[39][1]
+Warning: cannot assign value 209 to variable cuts2[39][1]
+Warning: cannot assign value 176 to variable cuts2[39][1]
+Warning: cannot assign value -60 to variable cuts2[39][1]
+Warning: cannot assign value 183 to variable cuts2[39][1]
+Warning: cannot assign value 95 to variable cuts2[39][1]
+Warning: cannot assign value 215 to variable cuts2[39][1]
+Warning: cannot assign value 79 to variable cuts2[39][1]
+Warning: cannot assign value 199 to variable cuts2[39][1]
+Warning: cannot assign value 166 to variable cuts2[39][1]
+Warning: cannot assign value 111 to variable cuts2[39][1]
+Warning: cannot assign value 231 to variable cuts2[39][1]
+Warning: cannot assign value 191 to variable cuts2[39][1]
+Warning: cannot assign value 103 to variable cuts2[39][1]
+Warning: cannot assign value 223 to variable cuts2[39][1]
+Warning: cannot assign value 87 to variable cuts2[39][1]
+Warning: cannot assign value 207 to variable cuts2[39][1]
+Warning: cannot assign value 174 to variable cuts2[39][1]
+Warning: cannot assign value 119 to variable cuts2[39][1]
+Warning: cannot assign value 239 to variable cuts2[39][1]
+Warning: cannot assign value 187 to variable cuts2[39][1]
+Warning: cannot assign value 99 to variable cuts2[39][1]
+Warning: cannot assign value 219 to variable cuts2[39][1]
+Warning: cannot assign value 83 to variable cuts2[39][1]
+Warning: cannot assign value 203 to variable cuts2[39][1]
+Warning: cannot assign value 170 to variable cuts2[39][1]
+Warning: cannot assign value 115 to variable cuts2[39][1]
+Warning: cannot assign value 235 to variable cuts2[39][1]
+Warning: cannot assign value 195 to variable cuts2[39][1]
+Warning: cannot assign value 107 to variable cuts2[39][1]
+Warning: cannot assign value 227 to variable cuts2[39][1]
+Warning: cannot assign value 91 to variable cuts2[39][1]
+Warning: cannot assign value 211 to variable cuts2[39][1]
+Warning: cannot assign value 178 to variable cuts2[39][1]
+Warning: cannot assign value 182 to variable cuts2[39][1]
+Warning: cannot assign value 94 to variable cuts2[39][1]
+Warning: cannot assign value 214 to variable cuts2[39][1]
+Warning: cannot assign value 78 to variable cuts2[39][1]
+Warning: cannot assign value 198 to variable cuts2[39][1]
+Warning: cannot assign value 165 to variable cuts2[39][1]
+Warning: cannot assign value 110 to variable cuts2[39][1]
+Warning: cannot assign value 230 to variable cuts2[39][1]
+Warning: cannot assign value 190 to variable cuts2[39][1]
+Warning: cannot assign value 102 to variable cuts2[39][1]
+Warning: cannot assign value 222 to variable cuts2[39][1]
+Warning: cannot assign value 86 to variable cuts2[39][1]
+Warning: cannot assign value 206 to variable cuts2[39][1]
+Warning: cannot assign value 173 to variable cuts2[39][1]
+Warning: cannot assign value 118 to variable cuts2[39][1]
+Warning: cannot assign value 238 to variable cuts2[39][1]
+Warning: cannot assign value 186 to variable cuts2[39][1]
+Warning: cannot assign value 98 to variable cuts2[39][1]
+Warning: cannot assign value 218 to variable cuts2[39][1]
+Warning: cannot assign value 82 to variable cuts2[39][1]
+Warning: cannot assign value 202 to variable cuts2[39][1]
+Warning: cannot assign value 169 to variable cuts2[39][1]
+Warning: cannot assign value 114 to variable cuts2[39][1]
+Warning: cannot assign value 234 to variable cuts2[39][1]
+Warning: cannot assign value 194 to variable cuts2[39][1]
+Warning: cannot assign value 106 to variable cuts2[39][1]
+Warning: cannot assign value 226 to variable cuts2[39][1]
+Warning: cannot assign value 90 to variable cuts2[39][1]
+Warning: cannot assign value 210 to variable cuts2[39][1]
+Warning: cannot assign value 177 to variable cuts2[39][1]
+Warning: cannot assign value -120 to variable cuts2[39][1]
+Warning: cannot assign value 184 to variable cuts2[39][1]
+Warning: cannot assign value 96 to variable cuts2[39][1]
+Warning: cannot assign value 216 to variable cuts2[39][1]
+Warning: cannot assign value 80 to variable cuts2[39][1]
+Warning: cannot assign value 200 to variable cuts2[39][1]
+Warning: cannot assign value 167 to variable cuts2[39][1]
+Warning: cannot assign value 112 to variable cuts2[39][1]
+Warning: cannot assign value 232 to variable cuts2[39][1]
+Warning: cannot assign value 192 to variable cuts2[39][1]
+Warning: cannot assign value 104 to variable cuts2[39][1]
+Warning: cannot assign value 224 to variable cuts2[39][1]
+Warning: cannot assign value 88 to variable cuts2[39][1]
+Warning: cannot assign value 208 to variable cuts2[39][1]
+Warning: cannot assign value 175 to variable cuts2[39][1]
+Warning: cannot assign value 188 to variable cuts2[39][1]
+Warning: cannot assign value 100 to variable cuts2[39][1]
+Warning: cannot assign value 220 to variable cuts2[39][1]
+Warning: cannot assign value 84 to variable cuts2[39][1]
+Warning: cannot assign value 204 to variable cuts2[39][1]
+Warning: cannot assign value 171 to variable cuts2[39][1]
+Warning: cannot assign value 116 to variable cuts2[39][1]
+Warning: cannot assign value 236 to variable cuts2[39][1]
+Warning: cannot assign value 76 to variable cuts2[39][1]
+Warning: cannot assign value 196 to variable cuts2[39][1]
+Warning: cannot assign value 108 to variable cuts2[39][1]
+Warning: cannot assign value 228 to variable cuts2[39][1]
+Warning: cannot assign value 92 to variable cuts2[39][1]
+Warning: cannot assign value 212 to variable cuts2[39][1]
+Warning: cannot assign value 179 to variable cuts2[39][1]
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 385: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+WARNING: line: 408: array access out of bounds
+Warning: cannot assign value 287 to variable inside2[35][1]
+Warning: cannot assign value 289 to variable inside2[35][1]
+Warning: cannot assign value 285 to variable inside2[35][1]
+Warning: cannot assign value 288 to variable inside2[35][1]
+Warning: cannot assign value 286 to variable inside2[35][1]
+Warning: cannot assign value 287 to variable inside2[36][1]
+Warning: cannot assign value 289 to variable inside2[36][1]
+Warning: cannot assign value 285 to variable inside2[36][1]
+Warning: cannot assign value 288 to variable inside2[36][1]
+Warning: cannot assign value 286 to variable inside2[36][1]
+Warning: cannot assign value 287 to variable inside2[37][1]
+Warning: cannot assign value 289 to variable inside2[37][1]
+Warning: cannot assign value 285 to variable inside2[37][1]
+Warning: cannot assign value 288 to variable inside2[37][1]
+Warning: cannot assign value 286 to variable inside2[37][1]
+Warning: cannot assign value 287 to variable inside2[38][1]
+Warning: cannot assign value 289 to variable inside2[38][1]
+Warning: cannot assign value 285 to variable inside2[38][1]
+Warning: cannot assign value 288 to variable inside2[38][1]
+Warning: cannot assign value 286 to variable inside2[38][1]
+Warning: at line 423 expression might result in array subscripting out of bounds.
+
+Warning: at line 421 expression might result in array subscripting out of bounds.
+
+Warning: at line 420 expression might result in array subscripting out of bounds.
+
+Warning: at line 419 expression might result in array subscripting out of bounds.
+
+Warning: at line 418 expression might result in array subscripting out of bounds.
+
+Warning: at line 417 expression might result in array subscripting out of bounds.
+
+Warning: at line 415 expression might result in array subscripting out of bounds.
+
+Warning: at line 413 expression might result in array subscripting out of bounds.
+
+Warning: at line 411 expression might result in array subscripting out of bounds.
+
+Warning: at line 410 expression might result in array subscripting out of bounds.
+
+Warning: at line 409 expression might result in array subscripting out of bounds.
+
+Warning: at line 408 expression might result in array subscripting out of bounds.
+
+Warning: at line 401 expression might result in array subscripting out of bounds.
+
+Warning: at line 399 expression might result in array subscripting out of bounds.
+
+Warning: at line 397 expression might result in array subscripting out of bounds.
+
+Warning: at line 396 expression might result in array subscripting out of bounds.
+
+Warning: at line 395 expression might result in array subscripting out of bounds.
+
+Warning: at line 394 expression might result in array subscripting out of bounds.
+
+Warning: at line 392 expression might result in array subscripting out of bounds.
+
+Warning: at line 390 expression might result in array subscripting out of bounds.
+
+Warning: at line 388 expression might result in array subscripting out of bounds.
+
+Warning: at line 387 expression might result in array subscripting out of bounds.
+
+Warning: at line 386 expression might result in array subscripting out of bounds.
+
+Warning: at line 385 expression might result in array subscripting out of bounds.
+
+-- no counterexample found with bound 0
+-- no counterexample found with bound 1
+-- no counterexample found with bound 2
+-- no counterexample found with bound 3
+-- no counterexample found with bound 4
+-- no counterexample found with bound 5
+-- no counterexample found with bound 6
+-- no counterexample found with bound 7
+-- no counterexample found with bound 8
+-- no counterexample found with bound 9
+-- no counterexample found with bound 10
+-- no counterexample found with bound 11
+-- no counterexample found with bound 12
+-- no counterexample found with bound 13
+-- no counterexample found with bound 14
+-- no counterexample found with bound 15
+-- no counterexample found with bound 16
+-- no counterexample found with bound 17
+-- no counterexample found with bound 18
+-- no counterexample found with bound 19
+-- no counterexample found with bound 20
+-- no counterexample found with bound 21
+-- no counterexample found with bound 22
+-- no counterexample found with bound 23
+-- no counterexample found with bound 24
+-- no counterexample found with bound 25
+-- no counterexample found with bound 26
+-- no counterexample found with bound 27
+-- no counterexample found with bound 28
+-- no counterexample found with bound 29
+-- no counterexample found with bound 30
+-- no counterexample found with bound 31
+-- no counterexample found with bound 32
+-- no counterexample found with bound 33
+-- no counterexample found with bound 34
+-- no counterexample found with bound 35
+-- no counterexample found with bound 36
+-- no counterexample found with bound 37
+-- no counterexample found with bound 38
+-- no counterexample found with bound 39
+-- no counterexample found with bound 40
+-- no counterexample found with bound 41
+-- no counterexample found with bound 42
+-- specification  G !(state = correct & !(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((arr_junct_1[0] = 25 & arr_junct_2[0] = 60) & arr_junct_1[1] = 26) & arr_junct_2[1] = 61) & arr_junct_1[2] = 27) & arr_junct_2[2] = 62) & arr_junct_1[3] = 28) & arr_junct_2[3] = 63) & arr_junct_1[4] = 29) & arr_junct_2[4] = 64) & arr_junct_1[5] = 30) & arr_junct_2[5] = 65) & arr_junct_1[6] = 31) & arr_junct_2[6] = 66) & arr_junct_1[7] = 32) & arr_junct_2[7] = 67) & arr_junct_1[8] = 33) & arr_junct_2[8] = 68) & arr_junct_1[9] = 34) & arr_junct_2[9] = 69) & arr_junct_1[10] = 35) & arr_junct_2[10] = 0) & arr_junct_1[11] = 36) & arr_junct_2[11] = 1) & arr_junct_1[12] = 37) & arr_junct_2[12] = 2) & arr_junct_1[13] = 38) & arr_junct_2[13] = 3) & arr_junct_1[14] = 39) & arr_junct_2[14] = 4) & arr_junct_1[15] = 40) & arr_junct_2[15] = 5) & arr_junct_1[16] = 41) & arr_junct_2[16] = 6) & arr_junct_1[17] = 42) & arr_junct_2[17] = 7) & arr_junct_1[18] = 43) & arr_junct_2[18] = 8) & arr_junct_1[19] = 44) & arr_junct_2[19] = 9) & arr_junct_1[20] = 45) & arr_junct_2[20] = 10) & arr_junct_1[21] = 46) & arr_junct_2[21] = 11) & arr_junct_1[22] = 47) & arr_junct_2[22] = 12) & arr_junct_1[23] = 48) & arr_junct_2[23] = 13) & arr_junct_1[24] = 49) & arr_junct_2[24] = 14) & arr_junct_1[25] = 50) & arr_junct_2[25] = 15) & arr_junct_1[26] = 51) & arr_junct_2[26] = 16) & arr_junct_1[27] = 52) & arr_junct_2[27] = 17) & arr_junct_1[28] = 53) & arr_junct_2[28] = 18) & arr_junct_1[29] = 54) & arr_junct_2[29] = 19) & arr_junct_1[30] = 55) & arr_junct_2[30] = 20) & arr_junct_1[31] = 56) & arr_junct_2[31] = 21) & arr_junct_1[32] = 57) & arr_junct_2[32] = 22) & arr_junct_1[33] = 58) & arr_junct_2[33] = 23) & inside1[35][0] = 74) & inside1[35][1] = 300) & inside1[35][2] = 75) & inside2[35][0] = 71) & inside2[35][1] = 300) & inside2[35][2] = 72) & inside1[36][0] = 73) & inside1[36][1] = 300) & inside1[36][2] = 74) & inside2[36][0] = 72) & inside2[36][1] = 300) & inside2[36][2] = 73) & inside1[37][0] = 72) & inside1[37][1] = 60) & inside1[37][2] = 73) & inside2[37][0] = 73) & inside2[37][1] = 60) & inside2[37][2] = 74) & inside1[38][0] = 71) & inside1[38][1] = 60) & inside1[38][2] = 72) & inside2[38][0] = 74) & inside2[38][1] = 60) & inside2[38][2] = 75) & cuts1[34][0] = 71) & cuts1[34][1] = 180) & cuts1[34][2] = 26) & cuts1[39][0] = 75) & cuts1[39][1] = 60) & cuts1[39][2] = 60) & cuts2[34][0] = 71) & cuts2[34][1] = 60) & cuts2[34][2] = 25) & cuts2[39][0] = 75) & cuts2[39][1] = 180) & cuts2[39][2] = 61))    is false
+-- as demonstrated by the following execution sequence
+Trace Description: BMC Counterexample 
+Trace Type: Counterexample 
+  -> State: 1.1 <-
+    state = initial
+    arr_junct_1[0] = 1
+    arr_junct_1[1] = 1
+    arr_junct_1[2] = 1
+    arr_junct_1[3] = 1
+    arr_junct_1[4] = 1
+    arr_junct_1[5] = 1
+    arr_junct_1[6] = 1
+    arr_junct_1[7] = 1
+    arr_junct_1[8] = 1
+    arr_junct_1[9] = 1
+    arr_junct_1[10] = 1
+    arr_junct_1[11] = 1
+    arr_junct_1[12] = 1
+    arr_junct_1[13] = 1
+    arr_junct_1[14] = 1
+    arr_junct_1[15] = 1
+    arr_junct_1[16] = 1
+    arr_junct_1[17] = 1
+    arr_junct_1[18] = 1
+    arr_junct_1[19] = 1
+    arr_junct_1[20] = 1
+    arr_junct_1[21] = 1
+    arr_junct_1[22] = 1
+    arr_junct_1[23] = 1
+    arr_junct_1[24] = 1
+    arr_junct_1[25] = 1
+    arr_junct_1[26] = 1
+    arr_junct_1[27] = 1
+    arr_junct_1[28] = 1
+    arr_junct_1[29] = 1
+    arr_junct_1[30] = 1
+    arr_junct_1[31] = 1
+    arr_junct_1[32] = 1
+    arr_junct_1[33] = 1
+    arr_junct_2[0] = 1
+    arr_junct_2[1] = 1
+    arr_junct_2[2] = 1
+    arr_junct_2[3] = 1
+    arr_junct_2[4] = 1
+    arr_junct_2[5] = 1
+    arr_junct_2[6] = 1
+    arr_junct_2[7] = 1
+    arr_junct_2[8] = 1
+    arr_junct_2[9] = 1
+    arr_junct_2[10] = 1
+    arr_junct_2[11] = 1
+    arr_junct_2[12] = 1
+    arr_junct_2[13] = 1
+    arr_junct_2[14] = 1
+    arr_junct_2[15] = 1
+    arr_junct_2[16] = 1
+    arr_junct_2[17] = 1
+    arr_junct_2[18] = 1
+    arr_junct_2[19] = 1
+    arr_junct_2[20] = 1
+    arr_junct_2[21] = 1
+    arr_junct_2[22] = 1
+    arr_junct_2[23] = 1
+    arr_junct_2[24] = 1
+    arr_junct_2[25] = 1
+    arr_junct_2[26] = 1
+    arr_junct_2[27] = 1
+    arr_junct_2[28] = 1
+    arr_junct_2[29] = 1
+    arr_junct_2[30] = 1
+    arr_junct_2[31] = 1
+    arr_junct_2[32] = 1
+    arr_junct_2[33] = 1
+    num_it = 1
+    cuts1[34][0] = 71
+    cuts1[34][1] = 180
+    cuts1[34][2] = 1
+    cuts1[35][0] = 71
+    cuts1[35][1] = 180
+    cuts1[35][2] = 1
+    cuts1[36][0] = 71
+    cuts1[36][1] = 180
+    cuts1[36][2] = 1
+    cuts1[37][0] = 71
+    cuts1[37][1] = 180
+    cuts1[37][2] = 1
+    cuts1[38][0] = 71
+    cuts1[38][1] = 180
+    cuts1[38][2] = 1
+    cuts1[39][0] = 71
+    cuts1[39][1] = 180
+    cuts1[39][2] = 1
+    cuts2[34][0] = 71
+    cuts2[34][1] = 180
+    cuts2[34][2] = 1
+    cuts2[35][0] = 71
+    cuts2[35][1] = 180
+    cuts2[35][2] = 1
+    cuts2[36][0] = 71
+    cuts2[36][1] = 180
+    cuts2[36][2] = 1
+    cuts2[37][0] = 71
+    cuts2[37][1] = 180
+    cuts2[37][2] = 1
+    cuts2[38][0] = 71
+    cuts2[38][1] = 180
+    cuts2[38][2] = 1
+    cuts2[39][0] = 71
+    cuts2[39][1] = 180
+    cuts2[39][2] = 1
+    inside1[35][0] = 71
+    inside1[35][1] = 180
+    inside1[35][2] = 72
+    inside1[36][0] = 71
+    inside1[36][1] = 180
+    inside1[36][2] = 72
+    inside1[37][0] = 71
+    inside1[37][1] = 180
+    inside1[37][2] = 72
+    inside1[38][0] = 71
+    inside1[38][1] = 180
+    inside1[38][2] = 72
+    inside2[35][0] = 71
+    inside2[35][1] = 180
+    inside2[35][2] = 72
+    inside2[36][0] = 71
+    inside2[36][1] = 180
+    inside2[36][2] = 72
+    inside2[37][0] = 71
+    inside2[37][1] = 180
+    inside2[37][2] = 72
+    inside2[38][0] = 71
+    inside2[38][1] = 180
+    inside2[38][2] = 72
+    equal1 = TRUE
+    equal2 = TRUE
+    legal = TRUE
+    ind1 = 0
+    ind2 = 0
+    ind3 = 0
+    init_ind1 = 0
+    init_ind2 = 0
+    finished = FALSE
+    ins_in[0][0] = 71
+    ins_in[0][1] = 180
+    ins_in[0][2] = 72
+    ins_in[1][0] = 71
+    ins_in[1][1] = 180
+    ins_in[1][2] = 72
+    ins_in[2][0] = 71
+    ins_in[2][1] = 180
+    ins_in[2][2] = 72
+    ins_in[3][0] = 71
+    ins_in[3][1] = 180
+    ins_in[3][2] = 72
+    ins_in[4][0] = 71
+    ins_in[4][1] = 180
+    ins_in[4][2] = 72
+    ins_in[5][0] = 71
+    ins_in[5][1] = 180
+    ins_in[5][2] = 72
+    ins_in[6][0] = 71
+    ins_in[6][1] = 180
+    ins_in[6][2] = 72
+    ins_in[7][0] = 71
+    ins_in[7][1] = 180
+    ins_in[7][2] = 72
+    ins_in[8][0] = 71
+    ins_in[8][1] = 180
+    ins_in[8][2] = 72
+    ins_in[9][0] = 71
+    ins_in[9][1] = 180
+    ins_in[9][2] = 72
+    ins_in[10][0] = 71
+    ins_in[10][1] = 180
+    ins_in[10][2] = 72
+    ins_in[11][0] = 71
+    ins_in[11][1] = 180
+    ins_in[11][2] = 72
+    ins_in[12][0] = 71
+    ins_in[12][1] = 180
+    ins_in[12][2] = 72
+    ins_in[13][0] = 71
+    ins_in[13][1] = 180
+    ins_in[13][2] = 72
+    ins_in[14][0] = 71
+    ins_in[14][1] = 180
+    ins_in[14][2] = 72
+    ins_in[15][0] = 71
+    ins_in[15][1] = 180
+    ins_in[15][2] = 72
+    ins_in[16][0] = 71
+    ins_in[16][1] = 180
+    ins_in[16][2] = 72
+    ins_in[17][0] = 71
+    ins_in[17][1] = 180
+    ins_in[17][2] = 72
+    ins_in[18][0] = 71
+    ins_in[18][1] = 180
+    ins_in[18][2] = 72
+    ins_in[19][0] = 71
+    ins_in[19][1] = 180
+    ins_in[19][2] = 72
+    ins_in[20][0] = 71
+    ins_in[20][1] = 180
+    ins_in[20][2] = 72
+    ins_in[21][0] = 71
+    ins_in[21][1] = 180
+    ins_in[21][2] = 72
+    ins_in[22][0] = 71
+    ins_in[22][1] = 180
+    ins_in[22][2] = 72
+    ins_in[23][0] = 71
+    ins_in[23][1] = 180
+    ins_in[23][2] = 72
+    ins_in[24][0] = 71
+    ins_in[24][1] = 180
+    ins_in[24][2] = 72
+    ins_in[25][0] = 71
+    ins_in[25][1] = 180
+    ins_in[25][2] = 72
+    ins_in[26][0] = 71
+    ins_in[26][1] = 180
+    ins_in[26][2] = 72
+    ins_in[27][0] = 71
+    ins_in[27][1] = 180
+    ins_in[27][2] = 72
+    ins_in[28][0] = 71
+    ins_in[28][1] = 180
+    ins_in[28][2] = 72
+    ins_in[29][0] = 71
+    ins_in[29][1] = 180
+    ins_in[29][2] = 72
+    ins_in[30][0] = 71
+    ins_in[30][1] = 180
+    ins_in[30][2] = 72
+    ins_in[31][0] = 71
+    ins_in[31][1] = 180
+    ins_in[31][2] = 72
+    ins_in[32][0] = 71
+    ins_in[32][1] = 180
+    ins_in[32][2] = 72
+    ins_in[33][0] = 71
+    ins_in[33][1] = 180
+    ins_in[33][2] = 72
+    ins_in[34][0] = 71
+    ins_in[34][1] = 180
+    ins_in[34][2] = 72
+    ins_in[35][0] = 71
+    ins_in[35][1] = 180
+    ins_in[35][2] = 72
+    ins_in[36][0] = 71
+    ins_in[36][1] = 180
+    ins_in[36][2] = 72
+    ins_in[37][0] = 71
+    ins_in[37][1] = 180
+    ins_in[37][2] = 72
+    ins_in[38][0] = 71
+    ins_in[38][1] = 180
+    ins_in[38][2] = 72
+    junct_in[0] = 1
+    junct_in[1] = 1
+    junct_in[2] = 1
+    junct_in[3] = 1
+    junct_in[4] = 1
+    junct_in[5] = 1
+    junct_in[6] = 1
+    junct_in[7] = 1
+    junct_in[8] = 1
+    junct_in[9] = 1
+    junct_in[10] = 1
+    junct_in[11] = 1
+    junct_in[12] = 1
+    junct_in[13] = 1
+    junct_in[14] = 1
+    junct_in[15] = 1
+    junct_in[16] = 1
+    junct_in[17] = 1
+    junct_in[18] = 1
+    junct_in[19] = 1
+    junct_in[20] = 1
+    junct_in[21] = 1
+    junct_in[22] = 1
+    junct_in[23] = 1
+    junct_in[24] = 1
+    junct_in[25] = 1
+    junct_in[26] = 1
+    junct_in[27] = 1
+    junct_in[28] = 1
+    junct_in[29] = 1
+    junct_in[30] = 1
+    junct_in[31] = 1
+    junct_in[32] = 1
+    junct_in[33] = 1
+    cut_in[0][0] = 71
+    cut_in[0][1] = 180
+    cut_in[0][2] = 1
+    cut_in[1][0] = 71
+    cut_in[1][1] = 180
+    cut_in[1][2] = 1
+    cut_in[2][0] = 71
+    cut_in[2][1] = 180
+    cut_in[2][2] = 1
+    cut_in[3][0] = 71
+    cut_in[3][1] = 180
+    cut_in[3][2] = 1
+    cut_in[4][0] = 71
+    cut_in[4][1] = 180
+    cut_in[4][2] = 1
+    cut_in[5][0] = 71
+    cut_in[5][1] = 180
+    cut_in[5][2] = 1
+    cut_in[6][0] = 71
+    cut_in[6][1] = 180
+    cut_in[6][2] = 1
+    cut_in[7][0] = 71
+    cut_in[7][1] = 180
+    cut_in[7][2] = 1
+    cut_in[8][0] = 71
+    cut_in[8][1] = 180
+    cut_in[8][2] = 1
+    cut_in[9][0] = 71
+    cut_in[9][1] = 180
+    cut_in[9][2] = 1
+    cut_in[10][0] = 71
+    cut_in[10][1] = 180
+    cut_in[10][2] = 1
+    cut_in[11][0] = 71
+    cut_in[11][1] = 180
+    cut_in[11][2] = 1
+    cut_in[12][0] = 71
+    cut_in[12][1] = 180
+    cut_in[12][2] = 1
+    cut_in[13][0] = 71
+    cut_in[13][1] = 180
+    cut_in[13][2] = 1
+    cut_in[14][0] = 71
+    cut_in[14][1] = 180
+    cut_in[14][2] = 1
+    cut_in[15][0] = 71
+    cut_in[15][1] = 180
+    cut_in[15][2] = 1
+    cut_in[16][0] = 71
+    cut_in[16][1] = 180
+    cut_in[16][2] = 1
+    cut_in[17][0] = 71
+    cut_in[17][1] = 180
+    cut_in[17][2] = 1
+    cut_in[18][0] = 71
+    cut_in[18][1] = 180
+    cut_in[18][2] = 1
+    cut_in[19][0] = 71
+    cut_in[19][1] = 180
+    cut_in[19][2] = 1
+    cut_in[20][0] = 71
+    cut_in[20][1] = 180
+    cut_in[20][2] = 1
+    cut_in[21][0] = 71
+    cut_in[21][1] = 180
+    cut_in[21][2] = 1
+    cut_in[22][0] = 71
+    cut_in[22][1] = 180
+    cut_in[22][2] = 1
+    cut_in[23][0] = 71
+    cut_in[23][1] = 180
+    cut_in[23][2] = 1
+    cut_in[24][0] = 71
+    cut_in[24][1] = 180
+    cut_in[24][2] = 1
+    cut_in[25][0] = 71
+    cut_in[25][1] = 180
+    cut_in[25][2] = 1
+    cut_in[26][0] = 71
+    cut_in[26][1] = 180
+    cut_in[26][2] = 1
+    cut_in[27][0] = 71
+    cut_in[27][1] = 180
+    cut_in[27][2] = 1
+    cut_in[28][0] = 71
+    cut_in[28][1] = 180
+    cut_in[28][2] = 1
+    cut_in[29][0] = 71
+    cut_in[29][1] = 180
+    cut_in[29][2] = 1
+    cut_in[30][0] = 71
+    cut_in[30][1] = 180
+    cut_in[30][2] = 1
+    cut_in[31][0] = 71
+    cut_in[31][1] = 180
+    cut_in[31][2] = 1
+    cut_in[32][0] = 71
+    cut_in[32][1] = 180
+    cut_in[32][2] = 1
+    cut_in[33][0] = 71
+    cut_in[33][1] = 180
+    cut_in[33][2] = 1
+    cut_in[34][0] = 71
+    cut_in[34][1] = 180
+    cut_in[34][2] = 1
+    cut_in[35][0] = 71
+    cut_in[35][1] = 180
+    cut_in[35][2] = 1
+    cut_in[36][0] = 71
+    cut_in[36][1] = 180
+    cut_in[36][2] = 1
+    cut_in[37][0] = 71
+    cut_in[37][1] = 180
+    cut_in[37][2] = 1
+    cut_in[38][0] = 71
+    cut_in[38][1] = 180
+    cut_in[38][2] = 1
+    cut_in[39][0] = 71
+    cut_in[39][1] = 180
+    cut_in[39][2] = 1
+    cut_in[40][0] = 71
+    cut_in[40][1] = 180
+    cut_in[40][2] = 1
+    shape[0][0] = 1
+    shape[0][1] = 120
+    shape[0][2] = 2
+    shape[1][0] = 2
+    shape[1][1] = 240
+    shape[1][2] = 3
+    shape[2][0] = 3
+    shape[2][1] = 120
+    shape[2][2] = 4
+    shape[3][0] = 4
+    shape[3][1] = 120
+    shape[3][2] = 5
+    shape[4][0] = 5
+    shape[4][1] = 240
+    shape[4][2] = 6
+    shape[5][0] = 6
+    shape[5][1] = 120
+    shape[5][2] = 7
+    shape[6][0] = 7
+    shape[6][1] = 240
+    shape[6][2] = 8
+    shape[7][0] = 8
+    shape[7][1] = 120
+    shape[7][2] = 9
+    shape[8][0] = 9
+    shape[8][1] = 240
+    shape[8][2] = 10
+    shape[9][0] = 10
+    shape[9][1] = 120
+    shape[9][2] = 11
+    shape[10][0] = 11
+    shape[10][1] = 240
+    shape[10][2] = 12
+    shape[11][0] = 12
+    shape[11][1] = 120
+    shape[11][2] = 13
+    shape[12][0] = 13
+    shape[12][1] = 240
+    shape[12][2] = 14
+    shape[13][0] = 14
+    shape[13][1] = 120
+    shape[13][2] = 15
+    shape[14][0] = 15
+    shape[14][1] = 240
+    shape[14][2] = 16
+    shape[15][0] = 16
+    shape[15][1] = 120
+    shape[15][2] = 17
+    shape[16][0] = 17
+    shape[16][1] = 240
+    shape[16][2] = 18
+    shape[17][0] = 18
+    shape[17][1] = 120
+    shape[17][2] = 19
+    shape[18][0] = 19
+    shape[18][1] = 240
+    shape[18][2] = 20
+    shape[19][0] = 20
+    shape[19][1] = 120
+    shape[19][2] = 21
+    shape[20][0] = 21
+    shape[20][1] = 240
+    shape[20][2] = 22
+    shape[21][0] = 22
+    shape[21][1] = 120
+    shape[21][2] = 23
+    shape[22][0] = 23
+    shape[22][1] = 240
+    shape[22][2] = 24
+    shape[23][0] = 24
+    shape[23][1] = 120
+    shape[23][2] = 25
+    shape[24][0] = 25
+    shape[24][1] = 240
+    shape[24][2] = 26
+    shape[25][0] = 26
+    shape[25][1] = 120
+    shape[25][2] = 27
+    shape[26][0] = 27
+    shape[26][1] = 240
+    shape[26][2] = 28
+    shape[27][0] = 28
+    shape[27][1] = 120
+    shape[27][2] = 29
+    shape[28][0] = 29
+    shape[28][1] = 240
+    shape[28][2] = 30
+    shape[29][0] = 30
+    shape[29][1] = 120
+    shape[29][2] = 31
+    shape[30][0] = 31
+    shape[30][1] = 240
+    shape[30][2] = 32
+    shape[31][0] = 32
+    shape[31][1] = 120
+    shape[31][2] = 33
+    shape[32][0] = 33
+    shape[32][1] = 120
+    shape[32][2] = 34
+    shape[33][0] = 34
+    shape[33][1] = 240
+    shape[33][2] = 35
+    shape[34][0] = 35
+    shape[34][1] = 120
+    shape[34][2] = 36
+    shape[35][0] = 36
+    shape[35][1] = 120
+    shape[35][2] = 37
+    shape[36][0] = 37
+    shape[36][1] = 240
+    shape[36][2] = 38
+    shape[37][0] = 38
+    shape[37][1] = 120
+    shape[37][2] = 39
+    shape[38][0] = 39
+    shape[38][1] = 120
+    shape[38][2] = 40
+    shape[39][0] = 40
+    shape[39][1] = 240
+    shape[39][2] = 41
+    shape[40][0] = 41
+    shape[40][1] = 120
+    shape[40][2] = 42
+    shape[41][0] = 42
+    shape[41][1] = 240
+    shape[41][2] = 43
+    shape[42][0] = 43
+    shape[42][1] = 120
+    shape[42][2] = 44
+    shape[43][0] = 44
+    shape[43][1] = 240
+    shape[43][2] = 45
+    shape[44][0] = 45
+    shape[44][1] = 120
+    shape[44][2] = 46
+    shape[45][0] = 46
+    shape[45][1] = 240
+    shape[45][2] = 47
+    shape[46][0] = 47
+    shape[46][1] = 120
+    shape[46][2] = 48
+    shape[47][0] = 48
+    shape[47][1] = 240
+    shape[47][2] = 49
+    shape[48][0] = 49
+    shape[48][1] = 120
+    shape[48][2] = 50
+    shape[49][0] = 50
+    shape[49][1] = 240
+    shape[49][2] = 51
+    shape[50][0] = 51
+    shape[50][1] = 120
+    shape[50][2] = 52
+    shape[51][0] = 52
+    shape[51][1] = 240
+    shape[51][2] = 53
+    shape[52][0] = 53
+    shape[52][1] = 120
+    shape[52][2] = 54
+    shape[53][0] = 54
+    shape[53][1] = 240
+    shape[53][2] = 55
+    shape[54][0] = 55
+    shape[54][1] = 120
+    shape[54][2] = 56
+    shape[55][0] = 56
+    shape[55][1] = 240
+    shape[55][2] = 57
+    shape[56][0] = 57
+    shape[56][1] = 120
+    shape[56][2] = 58
+    shape[57][0] = 58
+    shape[57][1] = 240
+    shape[57][2] = 59
+    shape[58][0] = 59
+    shape[58][1] = 120
+    shape[58][2] = 60
+    shape[59][0] = 60
+    shape[59][1] = 240
+    shape[59][2] = 61
+    shape[60][0] = 61
+    shape[60][1] = 120
+    shape[60][2] = 62
+    shape[61][0] = 62
+    shape[61][1] = 240
+    shape[61][2] = 63
+    shape[62][0] = 63
+    shape[62][1] = 120
+    shape[62][2] = 64
+    shape[63][0] = 64
+    shape[63][1] = 240
+    shape[63][2] = 65
+    shape[64][0] = 65
+    shape[64][1] = 120
+    shape[64][2] = 66
+    shape[65][0] = 66
+    shape[65][1] = 240
+    shape[65][2] = 67
+    shape[66][0] = 67
+    shape[66][1] = 120
+    shape[66][2] = 68
+    shape[67][0] = 68
+    shape[67][1] = 120
+    shape[67][2] = 69
+    shape[68][0] = 69
+    shape[68][1] = 240
+    shape[68][2] = 70
+    shape[69][0] = 70
+    shape[69][1] = 120
+    shape[69][2] = 1
+  -> State: 1.2 <-
+    state = guess
+    arr_junct_1[0] = 53
+    arr_junct_1[1] = 54
+    arr_junct_1[2] = 55
+    arr_junct_1[3] = 56
+    arr_junct_1[4] = 57
+    arr_junct_1[5] = 58
+    arr_junct_1[6] = 59
+    arr_junct_1[7] = 60
+    arr_junct_1[8] = 61
+    arr_junct_1[9] = 62
+    arr_junct_1[10] = 63
+    arr_junct_1[11] = 64
+    arr_junct_1[12] = 65
+    arr_junct_1[13] = 66
+    arr_junct_1[14] = 67
+    arr_junct_1[15] = 68
+    arr_junct_1[16] = 69
+    arr_junct_1[17] = 0
+    arr_junct_1[19] = 2
+    arr_junct_1[20] = 3
+    arr_junct_1[21] = 4
+    arr_junct_1[22] = 5
+    arr_junct_1[23] = 6
+    arr_junct_1[24] = 7
+    arr_junct_1[25] = 8
+    arr_junct_1[26] = 9
+    arr_junct_1[27] = 10
+    arr_junct_1[28] = 11
+    arr_junct_1[29] = 12
+    arr_junct_1[30] = 13
+    arr_junct_1[31] = 14
+    arr_junct_1[32] = 15
+    arr_junct_1[33] = 16
+    arr_junct_2[0] = 18
+    arr_junct_2[1] = 19
+    arr_junct_2[2] = 20
+    arr_junct_2[3] = 21
+    arr_junct_2[4] = 22
+    arr_junct_2[5] = 23
+    arr_junct_2[6] = 24
+    arr_junct_2[7] = 25
+    arr_junct_2[8] = 26
+    arr_junct_2[9] = 27
+    arr_junct_2[10] = 28
+    arr_junct_2[11] = 29
+    arr_junct_2[12] = 30
+    arr_junct_2[13] = 31
+    arr_junct_2[14] = 32
+    arr_junct_2[15] = 33
+    arr_junct_2[16] = 34
+    arr_junct_2[17] = 35
+    arr_junct_2[18] = 36
+    arr_junct_2[19] = 37
+    arr_junct_2[20] = 38
+    arr_junct_2[21] = 39
+    arr_junct_2[22] = 40
+    arr_junct_2[23] = 41
+    arr_junct_2[24] = 42
+    arr_junct_2[25] = 43
+    arr_junct_2[26] = 44
+    arr_junct_2[27] = 45
+    arr_junct_2[28] = 46
+    arr_junct_2[29] = 47
+    arr_junct_2[30] = 48
+    arr_junct_2[31] = 49
+    arr_junct_2[32] = 50
+    arr_junct_2[33] = 51
+    num_it = 2
+    cuts1[34][1] = 60
+    cuts1[34][2] = 54
+    cuts1[35][0] = 60
+    cuts1[35][1] = 60
+    cuts1[35][2] = 60
+    cuts1[36][0] = 60
+    cuts1[36][1] = 60
+    cuts1[36][2] = 60
+    cuts1[37][0] = 60
+    cuts1[37][1] = 60
+    cuts1[37][2] = 60
+    cuts1[38][0] = 60
+    cuts1[38][1] = 60
+    cuts1[38][2] = 60
+    cuts1[39][0] = 75
+    cuts1[39][1] = 60
+    cuts1[39][2] = 18
+    cuts2[34][1] = 60
+    cuts2[34][2] = 53
+    cuts2[35][0] = 60
+    cuts2[35][1] = 60
+    cuts2[35][2] = 60
+    cuts2[36][0] = 60
+    cuts2[36][1] = 60
+    cuts2[36][2] = 60
+    cuts2[37][0] = 60
+    cuts2[37][1] = 60
+    cuts2[37][2] = 60
+    cuts2[38][0] = 60
+    cuts2[38][1] = 60
+    cuts2[38][2] = 60
+    cuts2[39][0] = 75
+    cuts2[39][1] = 60
+    cuts2[39][2] = 19
+    inside1[36][0] = 72
+    inside1[36][2] = 73
+    inside1[37][0] = 73
+    inside1[37][2] = 74
+    inside1[38][0] = 74
+    inside1[38][2] = 75
+    inside2[36][0] = 72
+    inside2[36][2] = 73
+    inside2[37][0] = 73
+    inside2[37][2] = 74
+    inside2[38][0] = 74
+    inside2[38][2] = 75
+  -> State: 1.3 <-
+    state = calc_cons
+    num_it = 3
+    cuts1[35][0] = 3
+    cuts2[36][1] = 3
+    ind1 = 33
+    ind3 = 33
+    init_ind1 = 33
+  -> State: 1.4 <-
+    num_it = 4
+    cuts1[35][0] = 60
+    cuts2[36][1] = 60
+    ind1 = 39
+    ind2 = 1
+    ind3 = 32
+  -> State: 1.5 <-
+    num_it = 5
+    cuts1[35][1] = 3
+    cuts1[35][2] = 3
+    cuts2[36][2] = 3
+    cuts2[37][0] = 3
+    equal1 = FALSE
+    ind1 = 38
+    ind2 = 2
+    ind3 = 31
+  -> State: 1.6 <-
+    num_it = 6
+    cuts1[35][1] = 60
+    cuts1[35][2] = 60
+    cuts1[37][1] = 3
+    cuts2[36][2] = 60
+    cuts2[37][0] = 60
+    ind1 = 37
+    ind2 = 3
+    ind3 = 30
+  -> State: 1.7 <-
+    num_it = 7
+    cuts1[37][1] = 60
+    cuts1[37][2] = 3
+    ind1 = 36
+    ind2 = 4
+    ind3 = 29
+  -> State: 1.8 <-
+    num_it = 8
+    cuts1[36][0] = 3
+    cuts1[36][2] = 3
+    cuts1[37][2] = 60
+    ind1 = 35
+    ind2 = 5
+    ind3 = 28
+  -> State: 1.9 <-
+    num_it = 9
+    cuts1[36][0] = 60
+    cuts1[36][2] = 60
+    cuts1[37][1] = 3
+    cuts1[37][2] = 3
+    cuts2[35][1] = 3
+    cuts2[35][2] = 3
+    ind1 = 34
+    ind2 = 6
+    ind3 = 27
+  -> State: 1.10 <-
+    num_it = 10
+    cuts1[37][1] = 60
+    cuts1[37][2] = 60
+    cuts2[35][1] = 60
+    cuts2[35][2] = 60
+    ind1 = 0
+    ind2 = 7
+    ind3 = 26
+  -> State: 1.11 <-
+    num_it = 11
+    cuts1[35][0] = 3
+    cuts1[35][1] = 3
+    ind1 = 1
+    ind2 = 8
+    ind3 = 25
+  -> State: 1.12 <-
+    num_it = 12
+    cuts1[35][0] = 60
+    cuts1[35][1] = 60
+    ind1 = 2
+    ind2 = 9
+    ind3 = 24
+  -> State: 1.13 <-
+    num_it = 13
+    ind1 = 3
+    ind2 = 10
+    ind3 = 23
+  -> State: 1.14 <-
+    num_it = 14
+    cuts1[37][1] = 3
+    ind1 = 4
+    ind2 = 11
+    ind3 = 22
+  -> State: 1.15 <-
+    num_it = 15
+    cuts1[37][1] = 60
+    ind1 = 5
+    ind2 = 12
+    ind3 = 21
+  -> State: 1.16 <-
+    num_it = 16
+    ind1 = 6
+    ind2 = 13
+    ind3 = 20
+  -> State: 1.17 <-
+    num_it = 17
+    cuts1[36][0] = 3
+    ind1 = 7
+    ind2 = 14
+    ind3 = 19
+  -> State: 1.18 <-
+    num_it = 18
+    cuts1[37][1] = 3
+    cuts1[38][0] = 3
+    cuts2[35][0] = 3
+    cuts2[35][1] = 3
+    cuts2[37][1] = 3
+    cuts2[37][2] = 3
+    cuts2[38][1] = 3
+    cuts2[38][2] = 3
+    ind1 = 8
+    ind2 = 15
+    ind3 = 18
+  -> State: 1.19 <-
+    num_it = 19
+    cuts1[35][1] = 3
+    cuts1[35][2] = 3
+    cuts1[36][0] = 60
+    cuts1[36][2] = 3
+    cuts1[37][1] = 60
+    cuts1[38][0] = 60
+    cuts1[38][2] = 3
+    cuts2[35][0] = 60
+    cuts2[35][2] = 3
+    cuts2[37][0] = 3
+    cuts2[37][1] = 60
+    cuts2[37][2] = 60
+    cuts2[38][1] = 60
+    ind1 = 9
+    ind2 = 16
+    ind3 = 17
+  -> State: 1.20 <-
+    num_it = 20
+    cuts1[35][2] = 60
+    cuts1[36][1] = 3
+    cuts1[36][2] = 60
+    cuts2[35][0] = 3
+    cuts2[35][1] = 60
+    cuts2[35][2] = 60
+    cuts2[36][1] = 3
+    cuts2[36][2] = 3
+    cuts2[37][0] = 60
+    cuts2[37][1] = 3
+    cuts2[38][1] = 3
+    cuts2[38][2] = 60
+    ind1 = 10
+    ind2 = 17
+    ind3 = 16
+  -> State: 1.21 <-
+    num_it = 21
+    cuts1[36][0] = 3
+    cuts1[36][1] = 60
+    cuts1[37][1] = 3
+    cuts1[38][2] = 60
+    cuts2[35][1] = 3
+    cuts2[35][2] = 3
+    cuts2[36][1] = 60
+    cuts2[36][2] = 60
+    cuts2[37][1] = 60
+    cuts2[38][1] = 60
+    cuts2[38][2] = 3
+    ind1 = 11
+    ind2 = 18
+    ind3 = 15
+  -> State: 1.22 <-
+    num_it = 22
+    cuts1[35][1] = 60
+    cuts1[36][0] = 60
+    cuts1[36][1] = 3
+    cuts1[37][1] = 60
+    cuts1[37][2] = 3
+    cuts1[38][0] = 3
+    cuts1[38][2] = 3
+    cuts2[35][0] = 60
+    cuts2[35][1] = 60
+    cuts2[35][2] = 60
+    cuts2[37][2] = 3
+    ind1 = 12
+    ind2 = 19
+    ind3 = 14
+  -> State: 1.23 <-
+    num_it = 23
+    cuts1[36][0] = 3
+    cuts1[36][1] = 60
+    cuts1[37][1] = 3
+    cuts1[38][0] = 60
+    cuts1[38][1] = 3
+    cuts2[37][2] = 60
+    ind1 = 13
+    ind2 = 20
+    ind3 = 13
+  -> State: 1.24 <-
+    num_it = 24
+    cuts1[36][0] = 60
+    cuts1[37][1] = 60
+    cuts1[37][2] = 60
+    cuts1[38][1] = 60
+    cuts1[38][2] = 60
+    cuts2[38][2] = 60
+    ind1 = 14
+    ind2 = 21
+    ind3 = 12
+  -> State: 1.25 <-
+    num_it = 25
+    cuts1[37][2] = 3
+    cuts1[38][0] = 3
+    cuts2[35][2] = 3
+    cuts2[36][0] = 3
+    cuts2[37][2] = 3
+    cuts2[38][2] = 3
+    ind1 = 15
+    ind2 = 22
+    ind3 = 11
+  -> State: 1.26 <-
+    num_it = 26
+    cuts1[37][2] = 60
+    cuts1[38][0] = 60
+    cuts2[35][2] = 60
+    cuts2[36][0] = 60
+    cuts2[37][2] = 60
+    cuts2[38][2] = 60
+    ind1 = 16
+    ind2 = 23
+    ind3 = 10
+  -> State: 1.27 <-
+    num_it = 27
+    ind1 = 17
+    ind2 = 24
+    ind3 = 9
+  -> State: 1.28 <-
+    num_it = 28
+    cuts1[35][0] = 3
+    cuts1[37][1] = 3
+    cuts1[37][2] = 3
+    cuts2[35][1] = 3
+    cuts2[35][2] = 3
+    cuts2[38][0] = 3
+    ind1 = 18
+    ind2 = 25
+    ind3 = 8
+  -> State: 1.29 <-
+    num_it = 29
+    cuts1[35][0] = 60
+    cuts1[37][1] = 60
+    cuts1[37][2] = 60
+    cuts2[35][1] = 60
+    cuts2[35][2] = 60
+    cuts2[38][0] = 60
+    ind1 = 19
+    ind2 = 26
+    ind3 = 7
+  -> State: 1.30 <-
+    num_it = 30
+    ind1 = 20
+    ind2 = 27
+    ind3 = 6
+  -> State: 1.31 <-
+    num_it = 31
+    ind1 = 21
+    ind2 = 28
+    ind3 = 5
+  -> State: 1.32 <-
+    num_it = 32
+    ind1 = 22
+    ind2 = 29
+    ind3 = 4
+  -> State: 1.33 <-
+    num_it = 33
+    ind1 = 23
+    ind2 = 30
+    ind3 = 3
+  -> State: 1.34 <-
+    num_it = 34
+    cuts1[35][2] = 3
+    cuts1[38][1] = 3
+    cuts2[37][1] = 3
+    ind1 = 24
+    ind2 = 31
+    ind3 = 2
+  -> State: 1.35 <-
+    num_it = 35
+    cuts1[35][2] = 60
+    cuts1[38][1] = 60
+    cuts2[37][1] = 60
+    ind1 = 25
+    ind2 = 32
+    ind3 = 1
+  -> State: 1.36 <-
+    num_it = 36
+    ind1 = 26
+    ind2 = 33
+    ind3 = 0
+  -> State: 1.37 <-
+    num_it = 37
+    ind1 = 27
+    ind2 = 34
+    ind3 = 34
+  -> State: 1.38 <-
+    num_it = 38
+    ind1 = 28
+    ind2 = 35
+    ind3 = 35
+  -> State: 1.39 <-
+    num_it = 39
+    ind1 = 29
+    ind2 = 36
+    ind3 = 36
+  -> State: 1.40 <-
+    num_it = 40
+    cuts1[36][2] = 3
+    ind1 = 30
+    ind2 = 37
+    ind3 = 37
+  -> State: 1.41 <-
+    num_it = 41
+    cuts1[35][2] = 3
+    cuts1[36][1] = 3
+    cuts2[35][1] = 3
+    cuts2[37][1] = 3
+    cuts2[37][2] = 3
+    ind1 = 31
+    ind2 = 38
+    ind3 = 38
+  -> State: 1.42 <-
+    num_it = 42
+    cuts1[35][2] = 60
+    cuts1[36][1] = 60
+    cuts1[36][2] = 60
+    cuts2[35][1] = 60
+    cuts2[36][2] = 3
+    cuts2[37][1] = 60
+    ind1 = 32
+    ind2 = 39
+    ind3 = 39
+  -> State: 1.43 <-
+    num_it = 43
+    cuts2[36][2] = 60
+    cuts2[37][2] = 60
+    ind1 = 33
+    ind2 = 0
+    ind3 = 33
+    finished = TRUE
+  -> State: 1.44 <-
+    state = correct
+    num_it = 0
+    cuts1[36][0] = 3
+    cuts1[36][2] = 3
+    cuts1[37][2] = 3
+    cuts1[38][2] = 3
+    cuts2[35][1] = 3
+    cuts2[36][1] = 3
+    cuts2[36][2] = 3
+    cuts2[38][0] = 3
+    finished = FALSE
+
+ptime 1.0 for Win32, Freeware - http://www.pc-tools.net/
+Copyright(C) 2002, Jem Berkes <jberkes@pc-tools.net>
+
+=== NuSMV -bmc -bmc_length 45 areatri75.smv ===
+
+Execution time: 283.478 s
