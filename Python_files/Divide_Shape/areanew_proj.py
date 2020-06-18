@@ -474,7 +474,7 @@ print >> f, text_define
 print >> f, text_assign
 f.close()'''
     build_time = timeit.timeit(code, number=1)
-    run_model('areasq' + str(j) + '.smv', j, len(shape) / 2 + num_allowed + 3)
+    run_model('areasq' + str(j) + '.smv', j, len(shape) / 2 + num_allowed)
     return build_time
 
 
@@ -836,13 +836,14 @@ print >> f, text_define
 print >> f, text_assign
 f.close()'''
     build_time = timeit.timeit(code, number=1)	
-    run_model('areatri' + str(j) + '.smv', j, len(shape) / 2 + num_allowed + 3)	# runs the file
+    run_model('areatri' + str(j) + '.smv', j, len(shape) / 2 + num_allowed)	# runs the file, bmc bound: half shape's length (half of the number of original matchsticks) + num_allowed + 5
     return build_time
 
 
 def run_model(file_model, j, len):
 	"""
-	This function gets a model file, its index and 
+	This function gets a model file, its index and number of matchsticks in a new part (number of original matchsticks / 2 + num_allowed)
+	Runs the file in bmc mode
 	"""
     f = open(str(file_model), 'a')
     output_f = open('output_area' + str(j) + '.txt', 'w')
@@ -852,6 +853,9 @@ def run_model(file_model, j, len):
 
 
 def find_solution(j):
+	"""
+	This function returns the execution time of the riddle; flag - 2 if there is a solution for the riddle, else 1;
+	"""
     run_time = 0
 
     f = open('output_area' + str(j) + '.txt', 'r')
@@ -872,6 +876,16 @@ def find_solution(j):
 
 
 def build_dir(small):
+	"""
+	This function returns a directions array, given a shape. 
+	The shape - represented by a 2-D array:
+    	Every row represents a junction between 2 matchsticks
+    	Each row includes 3 matchsticks: indices 0,2 represent the matchsticks and index 1 represents the angle between them.
+    	Area units: the shape's area can be divided to 1-match-length squares or 1-match-length triangles.
+    	The angles of the shape must be: 0,90,180,270 or: 0,60,120,180,240,300.
+    	Every matchstick has an index - an integer between 1 - (# of matchsticks)
+	
+	"""
     dir1 = [1]
     m = 0   # m is negative (-1) positive (1) or zero (0)
     for i in range(0, len(small) - 1):
