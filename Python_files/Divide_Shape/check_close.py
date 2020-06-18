@@ -85,22 +85,18 @@ def build_edges2(shape):
 def build_shape2(shape, arr_dir):
     """
     This function calculates the shape's points. Using the list of points (coordinates), the function determines if the shape is a polygon:
-    -For each new point: the new point must not be in the list of previous points. (Except for the last point)
-    -The sum of angles must be: 180 * (number of matchsticks - 2)
-    -Last point's x = First point's x , Last point's y = First point's y 
+    For each new point: the new point must not be in the list of previous points. (Except for the last point)
+    The sum of angles must be: 180 * (number of matchsticks - 2)
+    Last point's x = First point's x , Last point's y = First point's y
     Every point is a matchstick head's location, represented by [x,y].
     The function gets:
-    -The shape - represented by a 2-D array: 
-        Every row represents a junction between 2 matchsticks: 
-        Each row includes 3 matchsticks: indices 0,2 represent the matchsticks and index 1 represents the angle between them. 
-        Area units: the shape's area can be divided to 1-match-length squares or 1-match-length triangles.
-        The angles of the shape must be: 0,90,180,270 or: 0,60,120,180,240,300.
-        Every matchstick has an index – an integer between 1 – (# of matchsticks)
-    -arr_dir - an array of 1's and 2's:
-        1 : if the slope is not inf or -inf, the next point's x > the current point's x
-            otherwise: the next point's y > the current point's y
-        2 : if the slope is not inf or -inf, the next point's x < the current point's x
-            otherwise: the next point's y < the current point's y
+    The shape - represented by a 2-D array:
+    Every row represents a junction between 2 matchsticks
+    Each row includes 3 matchsticks: indices 0,2 represent the matchsticks and index 1 represents the angle between them.
+    Area units: the shape's area can be divided to 1-match-length squares or 1-match-length triangles.
+    The angles of the shape must be: 0,90,180,270 or: 0,60,120,180,240,300.
+    Every matchstick has an index - an integer between 1 - (# of matchsticks)
+
     """
     list_points = [[0, 0]]
     init_point_x = 0
