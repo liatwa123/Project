@@ -561,11 +561,14 @@ esac;\n\
 LTLSPEC\n\
 G !(state = correct)"
 
+# squares' matchstick indices.
 list_square_1 = [[0,3,4,7],[1,4,5,8],[5,2,6,9],[10,7,11,14],[11,8,12,15],[12,13,16,9],[17,14,18,21],[18,15,19,22],
-                 [19,20,16,23]]
-list_square_2 = [[0,3,10,14,15,12,5,1],[1,2,6,13,16,15,11,4],[7,8,12,19,22,21,17,10],[8,9,13,20,22,23,18,11]]
-list_square_3 = [0,1,2,6,13,20,23,22,21,17,10,3]
+                 [19,20,16,23]]                                                                                # 1-match-length squares, each inner array represents a square
+list_square_2 = [[0,3,10,14,15,12,5,1],[1,2,6,13,16,15,11,4],[7,8,12,19,22,21,17,10],[8,9,13,20,22,23,18,11]]  # 2-match-length squares, each inner array represents a square
+list_square_3 = [0,1,2,6,13,20,23,22,21,17,10,3]                                                               # 3-match-length square
 
+
+# input arrays initialization
 init_sq1 = [True,False,False,True,True,False,False,True,True]
 init_sq2 = [False,False,False,False]
 
@@ -574,6 +577,13 @@ bool1 = [True,False,False,True,True,False,False,True,True,False,True,True,True,F
 
 
 def solve_rid(i, num_allowed):
+    """
+    This function gets i - file index and num_allowed - the number of matchsticks to move
+    It generates a random input for the squares riddle
+    It checks if the input is valid if it is, generates an input - model file and runs it
+    """
+    
+    # generating the input
     num_squares_1_beg = random.randint(0, 9)
     num_squares_3_beg = random.randint(0, 1)
     num_squares_2_beg = random.randint(0, 4)
@@ -602,10 +612,12 @@ def solve_rid(i, num_allowed):
 
     flag_solved = 0
     run_time = -1
+    
+    # checking if the input is valid, if it is - generating an input - model file and running it
     times = read_sq_riddle(i, num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num_squares_3_beg,
                            num_squares_end, num_allowed, matchsticks, sq_1_bool, sq_2_bool, sq_3_bool)
-    if times != -1:
-        flag_solved, run_time = find_solution(i)
+    if times != -1:  # valid input
+        flag_solved, run_time = find_solution(i)  # getting execution time and status - solved / no solution
     return times, flag_solved, run_time
 
 
@@ -626,6 +638,9 @@ def read_sq_riddle(i, num_squares_beginning, num_squares_1_beg, num_squares_2_be
 
 def check_valid(num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num_squares_3_beg, num_squares_end,
                 num_allowed, matchsticks, sq_1_bool, sq_2_bool, sq_3_bool):
+    """
+    This function gets the input parameters and determines their validity.
+    """
     if num_squares_beginning > 14 or num_squares_end > 14 or num_squares_beginning <= 0 or num_squares_end <= 0:
         return False
     if num_squares_beginning != num_squares_1_beg + num_squares_2_beg + num_squares_3_beg:
@@ -640,6 +655,8 @@ def check_valid(num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num
         return False
     if sum(sq_2_bool) + sum(sq_1_bool) + sum([sq_3_bool]) != num_squares_beginning:
         return False
+    
+    # checks that all the squares from the boolean squares arrays appear in the matchsticks configuration  
     for i in range(0, 9):
         if sq_1_bool[i] and (not matchsticks[list_square_1[i][0]] or not matchsticks[list_square_1[i][1]] or
                              not matchsticks[list_square_1[i][2]] or not matchsticks[list_square_1[i][3]]):
@@ -647,7 +664,7 @@ def check_valid(num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num
         if not sq_1_bool[i] and (matchsticks[list_square_1[i][0]] and matchsticks[list_square_1[i][1]] and
                                  matchsticks[list_square_1[i][2]] and matchsticks[list_square_1[i][3]]):
             return False
-
+  
     for k in range(0, 4):
         if sq_2_bool[k]:
             for m in range(0, 8):
@@ -671,6 +688,8 @@ def check_valid(num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num
             if t == 11 and matchsticks[list_square_3[t]]:
                 return False
 
+              
+     # checks that there are no free matchsticks which do not belong to any square
     for s in range(0, 24):
         if matchsticks[s] and not is_in_sq1(s, sq_1_bool) and not is_in_sq2(s, sq_2_bool) and not is_in_sq3(s, sq_3_bool):
             return False
@@ -679,6 +698,10 @@ def check_valid(num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num
 
 
 def is_in_sq1(s, sq_1_bool):
+  """
+  This function gets the list of existing 1-match-length squares and a matchstick's index - s 
+  It checks that the matchstick indexed s belongs to a 1-match-length square 
+  """
     for k in range(0, 9):
         if sq_1_bool[k] and s in list_square_1[k]:
             return True
@@ -686,6 +709,10 @@ def is_in_sq1(s, sq_1_bool):
 
 
 def is_in_sq2(s, sq_2_bool):
+  """
+  This function gets the list of existing 2-match-length squares and a matchstick's index - s 
+  It checks that the matchstick indexed s belongs to a 2-match-length square 
+  """
     for k in range(0, 4):
         if sq_2_bool[k] and s in list_square_2[k]:
             return True
@@ -693,6 +720,10 @@ def is_in_sq2(s, sq_2_bool):
 
 
 def is_in_sq3(s, sq_3_bool):
+  """
+  This function gets the list of existing 3-match-length squares and a matchstick's index - s 
+  It checks that the matchstick indexed s belongs to a 3-match-length square 
+  """
     if sq_3_bool and s in list_square_3:
         return True
     return False
@@ -700,6 +731,10 @@ def is_in_sq3(s, sq_3_bool):
 
 def write_model(j, num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num_squares_3_beg, num_squares_end,
                 num_allowed, matchsticks, sq_1_bool, sq_2_bool, sq_3_bool):
+    """
+    This funcion gets the riddle's input parameters and writes a model file indexed j for the riddle
+    It runs the model file in NuSMV and prints the output to the output file indexed j
+    """
     matchsticks_str = ""
     sq_1_bool_str = ""
     sq_2_bool_str = ""
@@ -760,6 +795,9 @@ f.close()'''
 
 
 def run_model(file_model, j):
+    """
+    This function writes
+    """
     f = open(str(file_model), 'a')
     output_f = open('output_sq' + str(j) + '.txt', 'a')
     subprocess.Popen("ptime.exe NuSMV -bmc -bmc_length 51 " + str(file_model), stdout=output_f, stderr=output_f)
@@ -770,18 +808,19 @@ def run_model(file_model, j):
 def find_solution(j):
     """
     reads the relevant file according to the operations
-    finds the solution in the file and prints it
+    finds the solution in the file and prints it to the output file indexed j
     """
     run_time = 0
-    time.sleep(50)
+    time.sleep(50) # wait for output
     f = open('output_sq' + str(j) + '.txt', 'r')
     text = f.read()
+    # gets execution time from output file
     if "Execution time: " in text:
         run_str = (text.split("Execution time: "))[1].split(" s")[0]
         run_time = float(run_str)
     f = open('output_sq' + str(j) + '.txt', 'r')
     text = f.read()
-
+    # gets riddle's status: 1 - no-solution, 2 - solved
     if 'is false' in text:
         f.close()
         return 2, run_time
@@ -791,6 +830,9 @@ def find_solution(j):
 
 
 def calculate_avg(index, num_allowed):
+    """
+    This function calculates the average execution time
+    """
     avg_build = 0
     avg_solved_run = 0
     avg_not_solved_run = 0
@@ -807,14 +849,14 @@ def calculate_avg(index, num_allowed):
             if flag_solved == 1:
                 count_no_solution += 1
                 avg_not_solved_run += run_time
-            if count_solved == 1:
+            if count_solved == 10:
                 break
     return avg_solved_run / count_solved
 
 
 def main():
     os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
-    run_model('sq2.smv', 2)
+    calculate_avg(0, 2)
 
 
 if __name__ == '__main__':
