@@ -48,6 +48,9 @@ arr_trans_remove:=[[{0},{0},{0},{7},{1},{0}],\n\
 
 
 def create_minus_add_next(N):
+    """
+    This function generates the text for the model file , operation: add matchsticks, operator: minus, number of digits: N
+    """
     text_minus_add_next = "/--next values--/\n\
     /--constants--/\n\
     \n\
@@ -183,6 +186,9 @@ def create_minus_add_next(N):
 
 
 def create_minus_remove_next(N):
+    """
+    This function generates the text for the model file , operation: remove matchsticks, operator: minus, number of digits: N
+    """
     text_minus_remove_next = "/--next values--/\n\
         /--constants--/\n\
         \n\
@@ -319,6 +325,9 @@ def create_minus_remove_next(N):
 
 
 def create_plus_add_next(N):
+    """
+    This function generates the text for the model file , operation: add matchsticks, operator: plus, number of digits: N
+    """
     text_plus_add_next = "/--next values--/\n\
         /--constants--/\n\
         \n\
@@ -455,6 +464,9 @@ def create_plus_add_next(N):
 
 
 def create_plus_remove_next(N):
+    """
+    This function generates the text for the model file , operation: remove matchsticks, operator: plus, number of digits: N
+    """
     text_plus_remove_next = "/--next values--/\n\
         /--constants--/\n\
         \n\
@@ -603,7 +615,8 @@ def read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, remove_o
 
 def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, remove_or_add, N):
     """
-        this function gets the user's input and writes a model according to these values.
+        this function gets the user's input and writes a model file according to these values.
+        It runs the model file in NuSMV.
     """
     text_var = "MODULE main\n\
     \n\
@@ -912,6 +925,10 @@ def check_num_allowed(num1, num2, result, remove_or_add, num_allowed, N):
 
 
 def run_model(file_model, j):
+    """
+    This function gets a model file and an index - j
+    It runs the model file in NuSMV and prints the results to the output file indexed j
+    """
     f = open(str(file_model), 'a')
     output_f = open('output' + str(j) + '.txt', 'a')
     subprocess.Popen("ptime.exe NuSMV -bmc -bmc_length 10 " + str(file_model), stdout=output_f, stderr=output_f)
@@ -941,6 +958,10 @@ def solve_equation(j, plus_or_minus, num_allowed, remove_or_add, N):
 
 
 def find_solution(j):
+    """
+    This function gets the execution time and the status of the riddle in the input file indexed j.
+    Status: 1 - no-solution, 2 - solved
+    """
     run_time = 0
 
     f = open('output' + str(j) + '.txt', 'r')
@@ -949,18 +970,22 @@ def find_solution(j):
         time.sleep(1)
         f = open('output' + str(j) + '.txt', 'r')
         text = f.read()
-    run_str = (text.split("Execution time: "))[1].split(" s")[0]
+    run_str = (text.split("Execution time: "))[1].split(" s")[0]  # gets the execution time
     run_time = float(run_str)
 
-    if 'is false' in text:
+    if 'is false' in text:  # solved riddle
         f.close()
         return 2, run_time
-    else:
+    else:                   # no-solution riddle
         f.close()
         return 1, run_time
 
 
 def calculate_avg(plus_or_minus, num_allowed, remove_or_add, N, index):
+    """
+    This function gets the operation (add or remove), the operator (minus or plus), the number of matchsticks to add/remove, N - number of digits in a number, index - starting index for the input files.
+    It calculates the average execution time 
+    """
     avg_build = 0
     avg_solved_run = 0
     avg_not_solved_run = 0
@@ -978,7 +1003,7 @@ def calculate_avg(plus_or_minus, num_allowed, remove_or_add, N, index):
             if flag_solved == 1:
                 count_no_solution += 1
                 avg_not_solved_run = avg_not_solved_run + run_time
-            if count_solved == 1:
+            if count_solved == 10:
                 break
     return avg_solved_run / count_solved
 
