@@ -772,12 +772,17 @@ G !(state = correct)"
 
 
 def solve_rid(j):
+    """
+    This function chooses input values for the model file indexed j. 
+    It solves the input riddle from the model file indexed j.
+    """
     match_rows = []
     match_cols = []
     match_dis = []
     row = 0
     col = 0
     di = 0
+    # choosing the input values for the rows, columns and diagonals
     for i in range(0, 24):
         if 0 <= i <= 2:
             row = 1
@@ -845,11 +850,18 @@ def read_sq_riddle(match_rows, match_cols, match_dis, j):
 
 
 def check_valid(match_rows, match_cols, match_dis):
+    """
+    This function gets the input riddle before writing the model and checks if it is a valid input.
+    """
     row_options = [[1], [1, 2], [2], [2, 3], [3], [3, 4], [4]]
     col_options = [[1, 2], [2, 3], [3, 4], [1], [2], [3], [4]]
     di_options = [[0, 1], [0], [0, 2], [1, 2]]
+    
+    # checking the input arrays' length
     if len(match_cols) != 24 or len(match_dis) != 24 or len(match_rows) != 24:
         return False
+    
+    # checking the pointing directions of the matchsticks
     for i in range(0, 24):
         if 0 <= i <= 2:
             if match_rows[i] not in row_options[0]:
@@ -925,7 +937,10 @@ def check_di(match_rows, match_cols, match_dis, k):
 
 
 def write_model(match_rows, match_cols, match_dis, j):
-
+    """
+    This function writes the input into the model file indexed j.
+    Then, it runs the model file in NuSMV
+    """
     text_define = "DEFINE\n\
     row_options:=[1,{1,2},2,{2,3},3,{3,4},4];\n\
     col_options:=row_options;\n\
@@ -952,6 +967,9 @@ f.close()
 
 
 def run_model(file_model, j):
+    """
+    This function runs the model file indexed j with NuSMV and prints the results into the output file indexed j.
+    """
     f = open(str(file_model), 'a')
     output_f = open('output_head' + str(j) + '.txt', 'a')
     subprocess.Popen("ptime.exe NuSMV.exe -bmc -bmc_length 31 " + str(file_model), stdout=output_f, stderr=output_f)
@@ -961,8 +979,8 @@ def run_model(file_model, j):
 
 def find_solution(j):
     """
-            reads the relevant file according to the operations
-            finds the solution in the file and prints it
+    This function reads the relevant file according to the operations
+    It finds the solution in the file and prints it
     """
     f = open('output_head' + str(j) + '.txt', 'r')
     text = f.read()
@@ -970,9 +988,9 @@ def find_solution(j):
         time.sleep(1)
         f = open('output_head' + str(j) + '.txt', 'r')
         text = f.read()
-    run_str = (text.split("Execution time: "))[1].split(" s")[0]
+    run_str = (text.split("Execution time: "))[1].split(" s")[0] # finds the execution time in the output file
     run_time = float(run_str)
-
+    # 2 - solved , 1 - no solution
     if 'is false' in text:
         f.close()
         return 2, run_time
@@ -982,6 +1000,9 @@ def find_solution(j):
 
 
 def calculate_avg(index):
+    """
+    This function calculates the average execution time solving the riddles.
+    """
     avg_build = 0
     avg_solved_run = 0
     avg_not_solved_run = 0
@@ -991,12 +1012,12 @@ def calculate_avg(index):
     for i in range(index, 1200000 + index):
         times, flag_solved, run_time = solve_rid(i)
 
-        if times != -1:
+        if times != -1: # legal input
             avg_build = avg_build + times
-            if flag_solved == 2:
+            if flag_solved == 2:                  # solved riddle
                 count_solved += 1
                 avg_solved_run += run_time
-            if flag_solved == 1:
+            if flag_solved == 1:                  # no-solution riddle
                 count_no_solution += 1
                 avg_not_solved_run += run_time
             if count_solved == 20:
