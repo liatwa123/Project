@@ -1002,6 +1002,7 @@ def find_solution(j):
 def calculate_avg(index):
     """
     This function calculates the average execution time solving the riddles.
+    The index argument is the beginning index for building the model files.
     """
     avg_build = 0
     avg_solved_run = 0
@@ -1026,9 +1027,9 @@ def calculate_avg(index):
 
 
 def main():
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
-    run_model('mat_h1.smv', 1)
-
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin') # change to your NuSMV bin directory
+    # run_model('mat_h1.smv', 1)
+    calculate_avg(0)
 if __name__ == '__main__':
     main()
 
