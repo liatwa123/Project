@@ -777,7 +777,7 @@ def write_model(j, num_squares_beginning, num_squares_1_beg, num_squares_2_beg, 
     init(sq_3_bool):=" + str(sq_3_bool).upper() + ";\n\
     \n\n"
 
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')  # change to your NuSMV bin directory
     code = '''j = ''' + str(j) + '''
 text_var = """''' + text_var + '''"""
 text_define = """''' + text_define + '''"""
@@ -855,7 +855,7 @@ def calculate_avg(index, num_allowed):
 
 
 def main():
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')  # change to your NuSMV directory
     calculate_avg(0, 2)
 
 
