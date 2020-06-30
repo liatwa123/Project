@@ -12,15 +12,6 @@ import math
 
 
 def read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, N):
-    """
-    This function gets the input for the riddle:
-    model file index - j
-    3 numbers (dig, dig2, result)
-    operator (minus / plus)
-    number of matchsticks to move (num allowed)
-    number of digits per number (N)
-    It checks that the input is valid, if it is - it writes a model file and runs it in NuSMV
-    """
     if check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
         return write_model(j, dig1, dig2, result, plus_or_minus, num_allowed, N)
     else:
@@ -29,10 +20,10 @@ def read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, N):
 
 def check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
     """
-        this function returns true if the input is a legal mathematical equation.
+        this function gets a string and returns true if it is a legal mathematical equation.
         a legal mathematical equation is:
         x+y=z or x-y=z
-        x,y,z are integers
+        x,y,z are digits in the range 0-9
         num_allowed is an integer - the number of add/remove operations allowed by the user
         add_remove must be 'add' or 'remove'
         else, it returns false.
@@ -44,10 +35,80 @@ def check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
     return True
 
 
+def find_info(j):
+    f = open('output' + str(j) + '.txt', 'r')
+    text = f.read()
+    while "Execution time: " not in text:
+        time.sleep(1)
+        f = open('output' + str(j) + '.txt', 'r')
+        text = f.read()
+
+    rows = text.split('\n')
+    list_dig1 = []
+    dig1 = []
+    list_dig2 = []
+    dig2 = []
+    list_result = []
+    result = []
+    for row in rows:
+        if 'digits[0]' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+            if st not in list_dig1:
+                list_dig1.append(st)
+                dig1.append(int(val))
+            else:
+                txt, ind = st.split('s[0][')
+                ind = ind[:-1]
+                dig1[int(ind)] = int(val)
+
+        elif 'digits[1]' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+            if st not in list_dig2:
+                list_dig2.append(st)
+                dig2.append(int(val))
+            else:
+                txt, ind = st.split('s[1][')
+                ind = ind[:-1]
+                dig2[int(ind)] = int(val)
+
+        elif 'digits[2]' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+            if st not in list_result:
+                list_result.append(st)
+                result.append(int(val))
+            else:
+                txt, ind = st.split('s[2][')
+                ind = ind[:-1]
+                result[int(ind)] = int(val)
+
+    num_dig1, num_dig2, num_result = to_numbers(dig1, dig2, result)
+    return num_dig1, num_dig2, num_result
+
+
+def to_numbers(li_dig1, li_dig2, li_result):
+    dig1 = li_dig1[0]
+    dig2 = li_dig2[0]
+    result = li_result[0]
+    for i in range(0, len(li_dig1) - 1):
+        dig1 = dig1 * 10 + li_dig1[i + 1]
+        dig2 = dig2 * 10 + li_dig2[i + 1]
+        result = result * 10 + li_result[i + 1]
+    return dig1, dig2, result
+
+
+def solve_equation_input(j, dig1, dig2, result, plus_or_minus, num_allowed, num_digits):
+    flag_solved = 0
+    run_time = -1
+    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, num_digits)
+    if times != -1:
+        flag_solved, run_time = find_solution(j)
+    return times, flag_solved, run_time
+    pass
+
+
 def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     """
-    This function gets the user's input and writes a model file according to these values.
-    It runs the model file in NuSMV.
+        this function gets the user's input and writes a model according to these values.
     """
     text_var ="""MODULE main
         
@@ -139,7 +200,8 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     text_num1 = text_num1[:-2]
     text_num2 = text_num2[:-2]
     text_num3 = text_num3[:-2]
-    text_assign += """state = calc_cons & num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ - (""" + text_num2 + """) = """ + text_num3 + """: correct;
+    if plus_or_minus == 'minus':
+        text_assign += """state = calc_cons & num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ - (""" + text_num2 + """) = """ + text_num3 + """: correct;
                       state = calc_cons & !(num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ - (""" + text_num2 + """) = """ + text_num3 + """): guess;
 				      state = correct: correct;
 				      TRUE: calc_cons;
@@ -147,6 +209,15 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
 				      
 				      next(num_match_beg):=num_match_beg;
 				      next(num_match_end):="""
+    elif plus_or_minus == 'plus':
+        text_assign += """state = calc_cons & num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ + (""" + text_num2 + """) = """ + text_num3 + """: correct;
+                              state = calc_cons & !(num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ + (""" + text_num2 + """) = """ + text_num3 + """): guess;
+        				      state = correct: correct;
+        				      TRUE: calc_cons;
+        				      esac;
+
+        				      next(num_match_beg):=num_match_beg;
+        				      next(num_match_end):="""
     for i in range(0, 3):
         for j1 in range(0, N):
             for k in range(0, 7):
@@ -190,7 +261,9 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-'
              r''
              r'2.6.0-win64\bin')
-    code = '''
+    code = ''''''
+    if plus_or_minus == 'minus':
+        code = '''
 j = ''' + str(j) + '''
 text_var = """''' + str(text_var) + '''"""
 text_define = """''' + str(text_define) + '''"""
@@ -201,16 +274,24 @@ print >> f, text_define
 print >> f, text_assign
 f.close()
         '''
+    elif plus_or_minus == 'plus':
+        code = '''
+j = ''' + str(j) + '''
+text_var = """''' + str(text_var) + '''"""
+text_define = """''' + str(text_define) + '''"""
+text_assign = """''' + str(text_assign) + '''"""
+f = open('plus_move' + str(j) + '.smv', 'a')
+print >> f, text_var
+print >> f, text_define
+print >> f, text_assign
+f.close()
+        '''
     build_time = timeit.timeit(code, number=1)
-    run_model('minus_move' + str(j) + '.smv', j)
+    run_model(plus_or_minus + '_move' + str(j) + '.smv', j)
     return build_time
 
 
 def run_model(file_model, j):
-    """
-    This function gets a model file and its index - j
-    It runs the model file in NuSMV and prints the results to an output file indexed j
-    """
     f = open(str(file_model), 'a')
     output_f = open('output' + str(j) + '.txt', 'a')
     subprocess.Popen("ptime.exe NuSMV -bmc -bmc_length 10 " + str(file_model), stdout=output_f, stderr=output_f)
@@ -220,11 +301,11 @@ def run_model(file_model, j):
 
 def solve_equation(j, plus_or_minus, num_allowed, N):
     """
-    this function: generates a random mathematical equation - a matchsticks riddle
+    this function: gets a mathematical equation - a matchsticks riddle
     encodes the riddle in NuSMV and runs NuSMV to find a solution
     writes the NuSMV output in a file
     reads the file
-    returns the status: 1 - no-solution, 2 - solved, and the execution time
+    returns the solution coded as an equation
     """
 
     dig1 = random.randint(0, 10**N - 1)
@@ -235,16 +316,12 @@ def solve_equation(j, plus_or_minus, num_allowed, N):
     flag_solved = 0
     run_time = -1
     times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, N)
-    if times != -1: # valid input
+    if times != -1:
         flag_solved, run_time = find_solution(j)
     return times, flag_solved, run_time
 
 
 def find_solution(j):
-    """
-    This function gets an output file's index - j
-    It returns the execution time and the riddle's status: 1 - no-solution, 2 - solved
-    """
     run_time = 0
 
     f = open('output' + str(j) + '.txt', 'r')
@@ -265,14 +342,6 @@ def find_solution(j):
 
 
 def calculate_avg(plus_or_minus, num_allowed, N, index):
-    """
-    This function gets the input parameters:
-    operator - plus / minus
-    number of matchsticks to move - num allowed
-    number of digits per number - N
-    starting index for the output files - index
-    It returns the average execution time
-    """
     avg_build = 0
     avg_solved_run = 0
     avg_not_solved_run = 0
@@ -290,33 +359,23 @@ def calculate_avg(plus_or_minus, num_allowed, N, index):
             if flag_solved == 1:
                 count_no_solution += 1
                 avg_not_solved_run = avg_not_solved_run + run_time
-            if count_no_solution == 10:
+            if count_no_solution == 5:
                 return avg_not_solved_run / count_no_solution
     return 0
 
 
 def find_all(j, plus_or_minus, num_allowed, N):
-    """
-    This function gets a model file's index - j, operator - plus/minus, number of matchsticks to move - num_allowed, number of digits per number - N
-    It generates new model files until all possible solutions have been found - reaching a model file with no solution.
-    """
     times, flag_solved, run_time = solve_equation(j, plus_or_minus, num_allowed, N)
     while flag_solved != 1:
-        update_assertion(j, plus_or_minus)  # generating a new model file with an updated assertion in order to find new solutions (different than the solutions in the previous output files)
+        update_assertion(j, plus_or_minus)
         j += 1
-        run_model(plus_or_minus + "_move" + str(j) + '.smv', j)  # running the new model file with the updated assertion 
-        flag_solved, run_time = find_solution(j)		 # returning the execution time and the status: 1 - no-solution, 2 - solved
+        run_model(plus_or_minus + "_move" + str(j) + '.smv', j)
+        flag_solved, run_time = find_solution(j)
 
 
 def update_assertion(j, plus_or_minus):
-    """
-    This function gets an operator - plus/minus, and an index of a model file (or output file, they are equal for each riddle)
-    It generates a new model file in the index j+1, including the same input parameters and an updated assertion
-    The assertion: old assertion & !(previous solution from the j'th output file)
-    The assertion is updated in order to find new solutions 
-    """
     str_another_sol = ""
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')  # change to your NuSMV bin directory
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
     out = open('output' + str(j) + '.txt', 'r')
     lines_out = out.readlines()
 
