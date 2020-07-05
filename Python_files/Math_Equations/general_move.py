@@ -12,6 +12,19 @@ import math
 
 
 def read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, N):
+    """
+    This function gets:
+    j - index of an input/output file
+    dig1 - operand 1
+    dig2 - operand 2
+    result - the 3rd number
+    plus_or_minus - operator, must be 'plus' or 'minus'
+    num_allowed - number of matchsticks required for solving the riddle
+    N - number of digits per operand
+    It checks if the input equation is valid.
+    If yes - it writes a model file and runs it
+    Else - returns -1
+    """
     if check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
         return write_model(j, dig1, dig2, result, plus_or_minus, num_allowed, N)
     else:
@@ -23,7 +36,7 @@ def check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
         this function gets a string and returns true if it is a legal mathematical equation.
         a legal mathematical equation is:
         x+y=z or x-y=z
-        x,y,z are digits in the range 0-9
+        x,y,z are natural numbers
         num_allowed is an integer - the number of add/remove operations allowed by the user
         add_remove must be 'add' or 'remove'
         else, it returns false.
@@ -36,6 +49,10 @@ def check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
 
 
 def find_info(j):
+    """
+    This function gets an index of an output file
+    It returns the solved equation as received in the output file
+    """
     f = open('output' + str(j) + '.txt', 'r')
     text = f.read()
     while "Execution time: " not in text:
@@ -86,6 +103,10 @@ def find_info(j):
 
 
 def to_numbers(li_dig1, li_dig2, li_result):
+    """
+    This function gets 3 lists of numbers which represent the operands' digits
+    It returns the operands as integers
+    """
     dig1 = li_dig1[0]
     dig2 = li_dig2[0]
     result = li_result[0]
@@ -97,6 +118,21 @@ def to_numbers(li_dig1, li_dig2, li_result):
 
 
 def solve_equation_input(j, dig1, dig2, result, plus_or_minus, num_allowed, num_digits):
+    """
+    This function gets:
+    j - index of an input/output file
+    dig1 - operand 1
+    dig2 - operand 2
+    result - the 3rd number
+    plus_or_minus - operator, must be 'plus' or 'minus'
+    num_allowed - number of matchsticks required for solving the riddle
+    num_digits - number of digits per operand
+    It checks if the input equation is valid.
+    If yes - it writes a model file and runs it
+    It returns:
+    times - if this parameter equals -1: invalid riddle input
+    flag_solved - 1 represents 'no-solution', 2 represents 'solved'
+    """
     flag_solved = 0
     run_time = -1
     times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, num_digits)
@@ -149,7 +185,7 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     num1_arr.reverse()
     num2_arr.reverse()
     num3_arr.reverse()
-    arr_tot = [num1_arr, num2_arr, num3_arr]
+    arr_tot = [num1_arr, num2_arr, num3_arr]    # these lists represent the digits in each operand
 
     digits_arr = ["""[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE]""", """[FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE]""", """[TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE]""", """[FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE]""", """[FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE]""", """[FALSE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE]""", """[TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE]""", """[FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE]""", """[TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]""", """[FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]"""]
     text_define += str(arr_tot) + """;
@@ -287,11 +323,17 @@ print >> f, text_assign
 f.close()
         '''
     build_time = timeit.timeit(code, number=1)
-    run_model(plus_or_minus + '_move' + str(j) + '.smv', j)
+    run_model(plus_or_minus + '_move' + str(j) + '.smv', j) # runs the model
     return build_time
 
 
 def run_model(file_model, j):
+    """
+    This function gets:
+    file_model: name of an input file
+    j: index of its matching output file
+    It runs the model file in NuSMV
+    """
     f = open(str(file_model), 'a')
     output_f = open('output' + str(j) + '.txt', 'a')
     subprocess.Popen("ptime.exe NuSMV -bmc -bmc_length 10 " + str(file_model), stdout=output_f, stderr=output_f)
@@ -301,11 +343,23 @@ def run_model(file_model, j):
 
 def solve_equation(j, plus_or_minus, num_allowed, N):
     """
-    this function: gets a mathematical equation - a matchsticks riddle
-    encodes the riddle in NuSMV and runs NuSMV to find a solution
-    writes the NuSMV output in a file
-    reads the file
-    returns the solution coded as an equation
+    This function gets:
+    j - index of an input/output file
+    plus_or_minus - operator, must be 'plus' or 'minus'
+    num_allowed - number of matchsticks required for solving the riddle
+    N - number of digits per operand
+
+    It randomly chooses:
+    dig1 - operand 1
+    dig2 - operand 2
+    result - the 3rd number
+
+    It checks if the input equation is valid.
+    If yes - it writes a model file and runs it
+    It returns:
+    times - if this parameter equals -1: invalid riddle input
+    flag_solved - 1 represents 'no-solution', 2 represents 'solved'
+    run_time - the riddle's execution time
     """
 
     dig1 = random.randint(0, 10**N - 1)
@@ -322,6 +376,11 @@ def solve_equation(j, plus_or_minus, num_allowed, N):
 
 
 def find_solution(j):
+    """
+    This function gets:
+    j - index of an input/output file
+    It returns the riddle's execution time
+    """
     run_time = 0
 
     f = open('output' + str(j) + '.txt', 'r')
@@ -342,6 +401,23 @@ def find_solution(j):
 
 
 def calculate_avg(plus_or_minus, num_allowed, N, index):
+    """
+       This function gets:
+       index - starting index for the input/output files
+       plus_or_minus - operator, must be 'plus' or 'minus'
+       num_allowed - number of matchsticks required for solving the riddle
+       N - number of digits per operand
+
+       It randomly chooses:
+       dig1 - operand 1
+       dig2 - operand 2
+       result - the 3rd number
+
+       It checks if the input equation is valid.
+       If yes - it writes a model file and runs it
+       It calculates the average execution time for no-solution riddles
+       """
+
     avg_build = 0
     avg_solved_run = 0
     avg_not_solved_run = 0
@@ -365,6 +441,16 @@ def calculate_avg(plus_or_minus, num_allowed, N, index):
 
 
 def find_all(j, plus_or_minus, num_allowed, N):
+    """
+           This function gets:
+           j - an index of an input/output file
+           plus_or_minus - operator, must be 'plus' or 'minus'
+           num_allowed - number of matchsticks required for solving the riddle
+           N - number of digits per operand
+           It checks if the input equation is valid.
+           If yes - it writes a model file and runs it.
+           It finds all the possible solutions for the riddle.
+           """
     times, flag_solved, run_time = solve_equation(j, plus_or_minus, num_allowed, N)
     while flag_solved != 1:
         update_assertion(j, plus_or_minus)
@@ -374,6 +460,14 @@ def find_all(j, plus_or_minus, num_allowed, N):
 
 
 def update_assertion(j, plus_or_minus):
+    """
+        This function gets:
+        j - an index of an input/output file
+        plus_or_minus - operator, must be 'plus' or 'minus'
+        It creates a new input file indexed j + 1
+        There, it updates the riddle's assertion in the input file indexed j in order to find new solutions (different
+        from the previous ones)
+    """
     str_another_sol = ""
     os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
     out = open('output' + str(j) + '.txt', 'r')
