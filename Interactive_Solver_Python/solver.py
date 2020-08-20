@@ -607,6 +607,7 @@ def menu_sum():
 
 
 def main():
+    # menu_math()
     menu_sum()
 
 
