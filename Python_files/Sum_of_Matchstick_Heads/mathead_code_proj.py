@@ -771,10 +771,46 @@ LTLSPEC\n\
 G !(state = correct)"
 
 
+def solve_rid_input(j, match_rows, match_cols, match_dis):
+    """
+    This function gets:
+    :param j: a starting index for input/output files
+    :param match_rows: integers input array - the rows that the matchsticks point to (must be 1 - 4)
+    :param match_cols: integers input array - the columns that the matchsticks point to (must be 1 - 4)
+    :param match_dis: integers input array - the diagonals that the matchsticks point to (must be 1 - 2, 0:
+     no diagonal was pointed by this match)
+
+     It solves the riddle
+
+    :return: flag_solved - 1: no solution, 2: solved
+    run_time - execution time
+    times - if the input is invalid: -1
+    """
+    flag_solved = 0
+    run_time = -1
+    times = read_sq_riddle(match_rows, match_cols, match_dis, j)
+    if times != -1:
+        flag_solved, run_time = find_solution(j)
+    return times, flag_solved, run_time
+
+
 def solve_rid(j):
     """
-    This function chooses input values for the model file indexed j. 
-    It solves the input riddle from the model file indexed j.
+    This function gets:
+    :param j: a starting index for input/output files
+
+    This function chooses randomly:
+
+    :param match_rows: integers input array - the rows that the matchsticks point to (must be 1 - 4)
+    :param match_cols: integers input array - the columns that the matchsticks point to (must be 1 - 4)
+    :param match_dis: integers input array - the diagonals that the matchsticks point to (must be 1 - 2, 0:
+     no diagonal was pointed by this match)
+
+     It solves the riddle
+
+    :return: flag_solved - 1: no solution, 2: solved
+    run_time - execution time
+    times - if the input is invalid: -1
     """
     match_rows = []
     match_cols = []
@@ -782,7 +818,6 @@ def solve_rid(j):
     row = 0
     col = 0
     di = 0
-    # choosing the input values for the rows, columns and diagonals
     for i in range(0, 24):
         if 0 <= i <= 2:
             row = 1
@@ -839,7 +874,7 @@ def solve_rid(j):
 
 def read_sq_riddle(match_rows, match_cols, match_dis, j):
     """
-       this function: gets a squares riddle
+       this function: gets a riddle
        encodes the riddle in NuSMV and runs NuSMV to find a solution
        writes the NuSMV output in a file
        """
@@ -851,17 +886,22 @@ def read_sq_riddle(match_rows, match_cols, match_dis, j):
 
 def check_valid(match_rows, match_cols, match_dis):
     """
-    This function gets the input riddle before writing the model and checks if it is a valid input.
+
+    This function gets:
+
+    :param match_rows: integers input array - the rows that the matchsticks point to (must be 1 - 4)
+    :param match_cols: integers input array - the columns that the matchsticks point to (must be 1 - 4)
+    :param match_dis: integers input array - the diagonals that the matchsticks point to (must be 1 - 2, 0:
+     no diagonal was pointed by this match)
+
+    :return: True - the input is valid, False otherwise
+
     """
     row_options = [[1], [1, 2], [2], [2, 3], [3], [3, 4], [4]]
     col_options = [[1, 2], [2, 3], [3, 4], [1], [2], [3], [4]]
     di_options = [[0, 1], [0], [0, 2], [1, 2]]
-    
-    # checking the input arrays' length
     if len(match_cols) != 24 or len(match_dis) != 24 or len(match_rows) != 24:
         return False
-    
-    # checking the pointing directions of the matchsticks
     for i in range(0, 24):
         if 0 <= i <= 2:
             if match_rows[i] not in row_options[0]:
@@ -938,9 +978,10 @@ def check_di(match_rows, match_cols, match_dis, k):
 
 def write_model(match_rows, match_cols, match_dis, j):
     """
-    This function writes the input into the model file indexed j.
-    Then, it runs the model file in NuSMV
+        This function writes the input into the model file indexed j.
+        Then, it runs the model file in NuSMV
     """
+
     text_define = "DEFINE\n\
     row_options:=[1,{1,2},2,{2,3},3,{3,4},4];\n\
     col_options:=row_options;\n\
@@ -968,7 +1009,7 @@ f.close()
 
 def run_model(file_model, j):
     """
-    This function runs the model file indexed j with NuSMV and prints the results into the output file indexed j.
+        This function runs the model file indexed j with NuSMV and prints the results into the output file indexed j.
     """
     f = open(str(file_model), 'a')
     output_f = open('output_head' + str(j) + '.txt', 'a')
@@ -988,9 +1029,9 @@ def find_solution(j):
         time.sleep(1)
         f = open('output_head' + str(j) + '.txt', 'r')
         text = f.read()
-    run_str = (text.split("Execution time: "))[1].split(" s")[0] # finds the execution time in the output file
+    run_str = (text.split("Execution time: "))[1].split(" s")[0]
     run_time = float(run_str)
-    # 2 - solved , 1 - no solution
+
     if 'is false' in text:
         f.close()
         return 2, run_time
@@ -999,11 +1040,73 @@ def find_solution(j):
         return 1, run_time
 
 
+def find_info(j):
+    """
+        This function gets:
+        j - index of an input/output file
+        It returns the riddle's solution:
+        arr_rows: integers input array - the rows that the matchsticks point to (must be 1 - 4)
+        arr_cols: integers input array - the columns that the matchsticks point to (must be 1 - 4)
+        arr_dis: integers input array - the diagonals that the matchsticks point to (must be 1 - 2, 0:
+        no diagonal was pointed by this match)
+
+    """
+    f = open('output_head' + str(j) + '.txt', 'r')
+    text = f.read()
+    while "Execution time: " not in text:
+        time.sleep(1)
+        f = open('output_head' + str(j) + '.txt', 'r')
+        text = f.read()
+
+    rows = text.split('\n')
+    list_rows_ind = []
+    arr_rows = []
+    list_cols_ind = []
+    arr_cols = []
+    list_dis_ind = []
+    arr_dis = []
+
+    for row in rows:
+        if 'arr_rows' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+
+            if st not in list_rows_ind:
+                list_rows_ind.append(st)
+                arr_rows.append(int(val))
+
+            else:
+                st = st.replace(']', '[')
+                var, ind, var2 = st.split('[')
+                arr_rows[int(ind)] = int(val)
+
+        if 'arr_cols' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+
+            if st not in list_cols_ind:
+                list_cols_ind.append(st)
+                arr_cols.append(int(val))
+
+            else:
+                st = st.replace(']', '[')
+                var, ind, var2 = st.split('[')
+                arr_cols[int(ind)] = int(val)
+
+        if 'arr_dis' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+
+            if st not in list_dis_ind:
+                list_dis_ind.append(st)
+                arr_dis.append(int(val))
+
+            else:
+                st = st.replace(']', '[')
+                var, ind, var2 = st.split('[')
+                arr_dis[int(ind)] = int(val)
+
+    return arr_rows, arr_cols, arr_dis
+
+
 def calculate_avg(index):
-    """
-    This function calculates the average execution time solving the riddles.
-    The index argument is the beginning index for building the model files.
-    """
     avg_build = 0
     avg_solved_run = 0
     avg_not_solved_run = 0
@@ -1013,12 +1116,12 @@ def calculate_avg(index):
     for i in range(index, 1200000 + index):
         times, flag_solved, run_time = solve_rid(i)
 
-        if times != -1: # legal input
+        if times != -1:
             avg_build = avg_build + times
-            if flag_solved == 2:                  # solved riddle
+            if flag_solved == 2:
                 count_solved += 1
                 avg_solved_run += run_time
-            if flag_solved == 1:                  # no-solution riddle
+            if flag_solved == 1:
                 count_no_solution += 1
                 avg_not_solved_run += run_time
             if count_solved == 20:
@@ -1027,9 +1130,10 @@ def calculate_avg(index):
 
 
 def main():
-    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin') # change to your NuSMV bin directory
-    # run_model('mat_h1.smv', 1)
-    calculate_avg(0)
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')
+    run_model('mat_h1.smv', 1)
+
+
 if __name__ == '__main__':
     main()
 
