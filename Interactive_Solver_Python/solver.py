@@ -1,6 +1,16 @@
+import inline as inline
+import matplotlib as matplotlib
+from matplotlib import transforms
 from termcolor import colored, cprint
 import general_move
 import general2
+import mathead_code_proj
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import scipy.misc
+from scipy import ndimage
+import numpy as np
+from PIL import Image
 
 # Constant for printing the digits and operators. Each digit / operator is splitted by the 'enter' characters.
 digits_dict = {'minus': '        \n' + ' __     \n' + '        ',
@@ -16,6 +26,73 @@ digits_dict = {'minus': '        \n' + ' __     \n' + '        ',
                7: ' __     \n' + '   |    \n' + '   |    ',
                8: ' __     \n' + '|__|    \n' + '|__|    ',
                9: ' __     \n' + '|__|    \n' + ' __|    '}
+
+
+def print_match_cons_sum(arr_rows, arr_cols, title):
+    """
+    This function gets:
+    :param arr_rows: an array of 24 integers, each integer represents a matchstick direction:
+    1 - the matchstick points to row 1
+    2 - the matchstick points to row 2,
+    3 - the matchstick points to row 3,
+    4 - the matchstick points to row 4
+
+    :param arr_cols: an array of 24 integers, each integer represents a matchstick direction:
+    1 - the matchstick points to col 1
+    2 - the matchstick points to col 2,
+    3 - the matchstick points to col 3,
+    4 - the matchstick points to col 4
+
+    :param title: the configuration's title: input / solution
+    It prints the matchsticks configuration
+    """
+    font = {'family': 'serif',
+            'color': 'darkred',
+            'weight': 'bold',
+            'size': 26,
+            }
+
+    rows = 4
+    cols = 7
+    fig = plt.figure(figsize=(18, 18))
+    plt.title(title, fontdict=font)
+    plt.axis('off')
+    for i in range(1, rows * cols + 1):
+        if i <= 21 or i == 23 or i == 25 or i == 27:
+            if (i % 7) % 2 == 0 and i % 7 != 0:
+                img = mpimg.imread('./match2.jpg')
+            else:
+                img = mpimg.imread('./match5.jpg')
+        else:
+            img = mpimg.imread('./white.jpg')
+        fig.add_subplot(rows, cols, i)
+        plt.axis('off')
+        if i % 7 == 2:
+            if arr_cols[i - 2] != 1:
+                img = np.fliplr(img)
+
+        elif i % 7 == 4:
+            if arr_cols[i - 3] != 2:
+                img = np.fliplr(img)
+
+        elif i % 7 == 6:
+            if arr_cols[i - 4] != 3:
+                img = np.fliplr(img)
+
+        elif i != 22 and i % 7 == 1:
+            if arr_rows[i + 2] == i / 7 + 2:
+                img = ndimage.rotate(img, 180)
+        elif i != 24 and i % 7 == 3:
+            if arr_rows[i + 1] == i / 7 + 2:
+                img = ndimage.rotate(img, 180)
+        elif i != 26 and i % 7 == 5:
+            if arr_rows[i] == i / 7 + 2:
+                img = ndimage.rotate(img, 180)
+        elif i != 28 and i % 7 == 0:
+            if arr_rows[i - 1] == i / 7 + 1:
+                img = ndimage.rotate(img, 180)
+        plt.imshow(img)
+    plt.show()
 
 
 def operand_input(num_digits, i):
@@ -270,6 +347,164 @@ def general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, o
     print """---------------------------------------------------------------------------------------------------------"""
 
 
+def matchsticks_input():
+    """
+    This function receives input from the user - matchsticks' directions: up('U')/down('D')/left('L')/right('R')
+    :return: Integer arrays, representing the row/column/diagonal that each matchstick points to.
+    (Each index represents a matchstick, and each array value represents a row/column/diagonal)
+    """
+    arr_dir = []
+    for i in range(0, 24):
+
+        if 3 <= i <= 6 or 10 <= i <= 13 or 17 <= i <= 20:
+
+            while True:
+                direction = raw_input("INDEX " + str(i) + " - ENTER UP - 'U' OR DOWN - 'D': ")
+                if direction == 'U' or direction == 'D':
+                    arr_dir.append(direction)
+                    break
+
+        else:
+
+            while True:
+                direction = raw_input("INDEX " + str(i) + " - ENTER RIGHT - 'R' OR LEFT - 'L': ")
+                if direction == 'R' or direction == 'L':
+                    arr_dir.append(direction)
+                    break
+
+    match_rows, match_cols, match_dis = create_arrays_from_input(arr_dir)
+    return match_rows, match_cols, match_dis
+
+
+def create_arrays_from_input(dir_arr):
+    """
+    This function gets:
+    :param dir_arr: an array of 24 strings: matchsticks' directions: up('U')/down('D')/left('L')/right('R')
+    :return: 3 arrays of 24 integers:
+    Each index represents a matchstick
+    The values represent rows, columns and diagonals: matchsticks' directions:
+    row - must be 1 - 4
+    col - must be 1 - 4
+    di - must be 1 or 2 (0 - not pointing to any diagonal)
+    """
+    match_rows = []
+    match_cols = []
+    match_dis = []
+    row = 0
+    col = 0
+    di = 0
+    for i in range(0, 24):
+        if 0 <= i <= 2:
+            row = 1
+        if 3 <= i <= 6:
+            if dir_arr[i] == 'U':
+                row = 1
+            elif dir_arr[i] == 'D':
+                row = 2
+        if 7 <= i <= 9:
+            row = 2
+        if 10 <= i <= 13:
+            if dir_arr[i] == 'U':
+                row = 2
+            elif dir_arr[i] == 'D':
+                row = 3
+        if 14 <= i <= 16:
+            row = 3
+        if 17 <= i <= 20:
+            if dir_arr[i] == 'U':
+                row = 3
+            elif dir_arr[i] == 'D':
+                row = 4
+        if 21 <= i <= 23:
+            row = 4
+        match_rows.append(row)
+        if i % 7 == 3:
+            col = 1
+        if i % 7 == 4:
+            col = 2
+        if i % 7 == 5:
+            col = 3
+        if i % 7 == 6:
+            col = 4
+        if i % 7 == 0:
+            if dir_arr[i] == 'L':
+                col = 1
+            elif dir_arr[i] == 'R':
+                col = 2
+        if i % 7 == 1:
+            if dir_arr[i] == 'L':
+                col = 2
+            elif dir_arr[i] == 'R':
+                col = 3
+        if i % 7 == 2:
+            if dir_arr[i] == 'L':
+                col = 3
+            elif dir_arr[i] == 'R':
+                col = 4
+        match_cols.append(col)
+        if i == 1 or i == 10 or i == 13 or i == 22:
+            di = 0
+
+        if i == 8:
+            if dir_arr[i] == 'R':
+                di = 2
+            if dir_arr[i] == 'L':
+                di = 1
+
+        if i == 15:
+            if dir_arr[i] == 'R':
+                di = 1
+            if dir_arr[i] == 'L':
+                di = 2
+
+        if i == 11:
+            if dir_arr[i] == 'U':
+                di = 1
+            if dir_arr[i] == 'D':
+                di = 2
+
+        if i == 12:
+            if dir_arr[i] == 'U':
+                di = 2
+            if dir_arr[i] == 'D':
+                di = 1
+
+        if i in [0, 3, 4, 7, 16, 19, 20, 23]:
+            if match_cols[i] == match_rows[i]:
+                di = 1
+            else:
+                di = 0
+        if i in [2, 5, 6, 9, 14, 17, 18, 21]:
+            if match_cols[i] == 5 - match_rows[i]:
+                di = 2
+            else:
+                di = 0
+        match_dis.append(di)
+    return match_rows, match_cols, match_dis
+
+
+def print_structure():
+    """
+    This function prints the basic structure of the input, not including matchsticks' directions
+    :return:
+    """
+    im = Image.open('./sum_con.jpg')
+    a = np.asarray(im)
+    im = Image.fromarray(a)
+    im.show()
+    print """              _____________________________________________________________________________________________
+             |                                                                                             |
+             |              THE BASIC STRUCTURE: 24 MATCHSTICKS, INDEXED 0 - 23.                           |
+             |                                                                                             |
+             |              FOR EACH MATCHSTICK, YOU NEED TO CHOOSE AN INITIAL DIRECTION:                  |
+             |                                                                                             |
+             |              FOR INDICES: 0 - 2, 7 - 9, 14 - 16, 21 - 23: CHOOSE RIGHT - 'R' OR LEFT - 'L'  |
+             |              FOR INDICES: 3 - 6, 10 - 13, 17 - 20: CHOOSE 'U' - UP OR 'D' - DOWN            |
+             |                                                                                             |
+              _____________________________________________________________________________________________
+    """
+
+
 def menu_math():
     """
     User menu for solving mathematical equations riddles
@@ -338,71 +573,43 @@ Enter your decision here: """)
 
 
 def menu_sum():
-    print """Welcome to our matchstick riddles solver!
-You can solve: mathematical equations"""
     j = 0
+    print """
+    
+    WELCOME TO OUR RIDDLES SOLVER!
+    
+    HERE YOU CAN SOLVE SUM OF MATCHSTICK HEADS RIDDLES.
+    
+    A SOLUTION IS: A MATCHSTICK CONFIGURATION WHICH HAS 6 MATCHSTICK HEADS IN EVERY ROW, COLUMN AND DIAGONAL.
+    
+    A MATCHSTICKS CONSTRUCTION WILL BE SOON PRINTED ON THE SCREEN. 
+    YOU NEED TO CHOOSE A DIRECTION FOR EACH MATCHSTICK HEAD FOR THE INITIAL INPUT: UP/DOWN/LEFT/RIGHT.
+    THIS PROGRAM CHANGES SOME MATCHSTICK DIRECTIONS IN ORDER TO FIND A CORRECT SOLUTION. 
+    FOR EACH INPUT, A CORRECT OUTPUT - SOLUTION - WILL BE PRINTED.
+    
+    
+    """
+    print_structure()
     while True:
         j += 1
-        operation = raw_input("""
-Now you need to choose your input.
-The operations are:
-Add matchsticks - enter 'ADD' 
-Remove matchsticks - enter 'REMOVE'
-Move matchsticks - enter 'MOVE'
-Exit - enter 'EXIT' 
-Enter your decision here: """)
+        match_rows, match_cols, match_dis = matchsticks_input()
+        print_match_cons_sum(match_rows, match_cols, 'THE INPUT\n')
+        times, flag_solved, run_time = mathead_code_proj.solve_rid_input(j, match_rows, match_cols, match_dis)
+        if flag_solved == 1:
+            print colored("""                                NO SOLUTION                               """, 'red')
 
-        if operation == 'ADD':
-            num_digits = add()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                         plus_or_minus, int(num_allowed), 'add',
-                                                                         int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general2.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'ADD')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
+        elif flag_solved == 2:
+            arr_rows, arr_cols, arr_dis = mathead_code_proj.find_info(j)
+            print_match_cons_sum(arr_rows, arr_cols, 'THE SOLUTION\n')
 
-        elif operation == 'REMOVE':
-            num_digits = remove()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                         plus_or_minus, int(num_allowed), 'remove',
-                                                                         int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general2.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'REMOVE')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
-
-        elif operation == 'MOVE':
-            num_digits = move()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general_move.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                         plus_or_minus, int(num_allowed),
-                                                                         int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general_move.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'MOVE')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
-
-        elif operation == 'EXIT':
-            print 'Bye'
-            break
         else:
-            print 'Error! Invalid operation.'
+            print colored("""                                NO SOLUTION                               """, 'red')
 
 
 def main():
-    menu_math()
+    menu_sum()
+
+
 
 
 if __name__ == '__main__':
