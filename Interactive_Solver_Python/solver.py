@@ -1,16 +1,19 @@
-import inline as inline
-import matplotlib as matplotlib
-from matplotlib import transforms
-from termcolor import colored, cprint
+from termcolor import colored
 import general_move
 import general2
 import mathead_code_proj
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import scipy.misc
+import sqr_code_proj
 from scipy import ndimage
 import numpy as np
 from PIL import Image
+
+"""
+                ---------------------------------------------------------------------------
+                                    MATHEMATICAL RIDDLES GUI FUNCTIONS
+                ---------------------------------------------------------------------------
+"""
 
 # Constant for printing the digits and operators. Each digit / operator is splitted by the 'enter' characters.
 digits_dict = {'minus': '        \n' + ' __     \n' + '        ',
@@ -347,6 +350,80 @@ def general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, o
     print """---------------------------------------------------------------------------------------------------------"""
 
 
+def menu_math():
+    """
+    User menu for solving mathematical equations riddles
+    """
+    print """Welcome to our matchstick riddles solver!
+You can solve: mathematical equations"""
+    j = 0
+    while True:
+        j += 1
+        operation = raw_input("""
+Now you need to choose your input.
+The operations are:
+Add matchsticks - enter 'ADD' 
+Remove matchsticks - enter 'REMOVE'
+Move matchsticks - enter 'MOVE'
+Exit - enter 'EXIT' 
+Enter your decision here: """)
+
+        if operation == 'ADD':
+            num_digits = add()
+            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
+            times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
+                                                                         plus_or_minus, int(num_allowed), 'add',
+                                                                         int(num_digits))
+            if flag_solved == 1:
+                print colored("""                                NO SOLUTION                               """, 'red')
+            elif flag_solved == 2:
+                dig1, dig2, result = general2.find_info(j)
+                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'ADD')
+            else:
+                print colored("""                                NO SOLUTION                               """, 'red')
+
+        elif operation == 'REMOVE':
+            num_digits = remove()
+            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
+            times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
+                                                                         plus_or_minus, int(num_allowed), 'remove',
+                                                                         int(num_digits))
+            if flag_solved == 1:
+                print colored("""                                NO SOLUTION                               """, 'red')
+            elif flag_solved == 2:
+                dig1, dig2, result = general2.find_info(j)
+                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'REMOVE')
+            else:
+                print colored("""                                NO SOLUTION                               """, 'red')
+
+        elif operation == 'MOVE':
+            num_digits = move()
+            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
+            times, flag_solved, run_time = general_move.solve_equation_input(j, int(dig1), int(dig2), int(result),
+                                                                             plus_or_minus, int(num_allowed),
+                                                                             int(num_digits))
+            if flag_solved == 1:
+                print colored("""                                NO SOLUTION                               """, 'red')
+            elif flag_solved == 2:
+                dig1, dig2, result = general_move.find_info(j)
+                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'MOVE')
+            else:
+                print colored("""                                NO SOLUTION                               """, 'red')
+
+        elif operation == 'EXIT':
+            print 'Bye'
+            break
+        else:
+            print 'Error! Invalid operation.'
+
+
+"""
+-----------------------------------------------------------------------------------------------------------
+                            SUM OF MATCHSTICK HEADS RIDDLES GUI FUNCTIONS
+-----------------------------------------------------------------------------------------------------------
+"""
+
+
 def matchsticks_input():
     """
     This function receives input from the user - matchsticks' directions: up('U')/down('D')/left('L')/right('R')
@@ -505,73 +582,6 @@ def print_structure():
     """
 
 
-def menu_math():
-    """
-    User menu for solving mathematical equations riddles
-    """
-    print """Welcome to our matchstick riddles solver!
-You can solve: mathematical equations"""
-    j = 0
-    while True:
-        j += 1
-        operation = raw_input("""
-Now you need to choose your input.
-The operations are:
-Add matchsticks - enter 'ADD' 
-Remove matchsticks - enter 'REMOVE'
-Move matchsticks - enter 'MOVE'
-Exit - enter 'EXIT' 
-Enter your decision here: """)
-
-        if operation == 'ADD':
-            num_digits = add()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                         plus_or_minus, int(num_allowed), 'add',
-                                                                         int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general2.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'ADD')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
-
-        elif operation == 'REMOVE':
-            num_digits = remove()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                         plus_or_minus, int(num_allowed), 'remove',
-                                                                         int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general2.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'REMOVE')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
-
-        elif operation == 'MOVE':
-            num_digits = move()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general_move.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                         plus_or_minus, int(num_allowed),
-                                                                         int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general_move.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'MOVE')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
-
-        elif operation == 'EXIT':
-            print 'Bye'
-            break
-        else:
-            print 'Error! Invalid operation.'
-
-
 def menu_sum():
     j = 0
     print """
@@ -606,11 +616,390 @@ def menu_sum():
             print colored("""                                NO SOLUTION                               """, 'red')
 
 
+"""
+-----------------------------------------------------------------------------------------------------------
+                            SQUARE RIDDLES GUI FUNCTIONS
+-----------------------------------------------------------------------------------------------------------
+"""
+
+
+def sq1_input():
+    """
+    This function receives input - the 1-match-length squares that the user wants to appear on the screen
+    The squares are indexed: 0-8
+    A picture of the squares indexing in the matchsticks construction is printed on the screen.
+    For each index: the user enters 'T' - the square appears
+                                    'F' - the square does not appear
+    :return: arr_dir - an array of strings ('T' / 'F') which represents the 1-match-length squares that
+     will appear on the screen as input.
+    """
+    im = Image.open('./1-sqr.jpg')
+    a = np.asarray(im)
+    im = Image.fromarray(a)
+    im.show()
+    print """
+    NOW, YOU NEED TO DECIDE WHICH 1-MATCH-LENGTH SQUARES YOU WANT TO APPEAR ON YOUR SCREEN.
+    THE 1-MATCH-LENGTH SQUARES INDEXING APPEARS ON YOUR SCREEN. 
+    FOR EACH INDEX: ENTER 'T' - IF YOU WANT THE SQUARE TO APPEAR, 'F' - OTHERWISE
+    """
+    arr_dir = []
+    for i in range(0, 9):
+        while True:
+            direction = raw_input("INDEX " + str(i) + " - ENTER APPEARS - 'T' OR DOESN'T APPEAR - 'F': ")
+            if direction == 'T' or direction == 'F':
+                arr_dir.append(direction)
+                break
+    return arr_dir
+
+
+def sq2_input():
+    """
+        This function receives input - the 2-match-length squares that the user wants to appear on the screen
+        The squares are indexed: 0-3
+        A picture of the squares indexing in the matchsticks construction is printed on the screen.
+        For each index: the user enters 'T' - the square appears
+                                        'F' - the square does not appear
+        :return: arr_dir - an array of strings ('T' / 'F') which represents the 2-match-length squares that
+         will appear on the screen as input.
+        """
+    im = Image.open('./2-sqr.jpg')
+    a = np.asarray(im)
+    im = Image.fromarray(a)
+    im.show()
+    print """
+        NOW, YOU NEED TO DECIDE WHICH 2-MATCH-LENGTH SQUARES YOU WANT TO APPEAR ON YOUR SCREEN.
+        THE 2-MATCH-LENGTH SQUARES INDEXING APPEARS ON YOUR SCREEN. 
+        FOR EACH INDEX: ENTER 'T' - IF YOU WANT THE SQUARE TO APPEAR, 'F' - OTHERWISE
+        """
+    arr_dir = []
+    for i in range(0, 4):
+        while True:
+            direction = raw_input("INDEX " + str(i) + " - ENTER APPEARS - 'T' OR DOESN'T APPEAR - 'F': ")
+            if direction == 'T' or direction == 'F':
+                arr_dir.append(direction)
+                break
+    return arr_dir
+
+
+def sq3_input():
+    """
+        This function receives input -
+        A picture of the 3-match-length squares indexing in the matchsticks construction is printed on the screen.
+        For the 3-match-length square: the user enters 'T' - the square appears
+                                                       'F' - the square does not appear
+        :return: direction - a string ('T' / 'F') which represents the 3-match-length square:
+         will appear / will not appear on the screen as input.
+        """
+    im = Image.open('./3-sqr.jpg')
+    a = np.asarray(im)
+    im = Image.fromarray(a)
+    im.show()
+    print """
+        NOW, YOU NEED TO DECIDE IF YOU WANT THE 3-MATCH-LENGTH SQUARE TO APPEAR ON YOUR SCREEN AS AN INITIAL INPUT
+        FOR THE RIDDLE.
+        THE 1-MATCH-LENGTH SQUARES INDEXING APPEARS ON YOUR SCREEN. 
+        FOR EACH INDEX: ENTER 'T' - IF YOU WANT THE SQUARE TO APPEAR, 'F' - OTHERWISE
+        """
+    while True:
+        direction = raw_input("ENTER APPEARS - 'T' OR DOESN'T APPEAR - 'F': ")
+        if direction == 'T' or direction == 'F':
+            break
+    return direction
+
+
+def to_bool(arr_sq_1, arr_sq_2, sq3):
+    """
+    This function gets:
+    :param arr_sq_1: an array of strings ('T' / 'F') which represents the 1-match-length squares that
+     will appear on the screen as input.
+    :param arr_sq_2: an array of strings ('T' / 'F') which represents the 2-match-length squares that
+     will appear on the screen as input.
+    :param sq3: a string ('T' / 'F') which represents the 3-match-length square that
+     will appear / will not appear on the screen as input.
+
+     It transforms the arrays into Boolean arrays.
+
+    :return: sq_1_bool, sq_2_bool - Boolean arrays which represent the 1 / 2 - match - length squares that will appear
+    on the screen as input.
+
+    sq_3_bool - Boolean variable which represent the 3 - match - length square that will appear / will not appear
+    on the screen as input.
+
+    matchsticks - the matchsticks configuration, calculated by the Boolean arrays.
+    The matchsticks are indexed: 0 - 23;
+    True - the matchstick appears on the screen
+    False - the matchstick does not appear on the screen
+    """
+    sq_1_bool = [True if item == 'T' else False for item in arr_sq_1]
+    sq_2_bool = [True if item == 'T' else False for item in arr_sq_2]
+    sq_3_bool = True if sq3 == 'T' else False
+    matchsticks = [False] * 24
+
+    list_square_1, list_square_2, list_square_3 = sqr_code_proj.get_list_sq()
+
+    for index in range(0, 9):
+        if sq_1_bool[index]:
+            for item in list_square_1[index]:
+                matchsticks[item] = True
+
+    for index in range(0, 4):
+        if sq_2_bool[index]:
+            for item in list_square_2[index]:
+                matchsticks[item] = True
+
+    if sq_3_bool:
+        for item in list_square_3:
+            matchsticks[item] = True
+
+    return sq_1_bool, sq_2_bool, sq_3_bool, matchsticks
+
+
+def num_sqr_end_input():
+    """
+    This function receives user input: Y - the final number of squares which
+    will be created by moving X matchsticks.
+    """
+    while True:
+        num_sq_end = raw_input("ENTER THE FINAL NUMBER OF SQUARES: ")
+        if num_sq_end.isdigit():
+            if 0 <= int(num_sq_end) <= 14:
+                break
+    return int(num_sq_end)
+
+
+def num_allowed_sq_input():
+    """
+    This function receives user input: X - the number of matchsticks to move.
+    """
+    while True:
+        num_allowed = raw_input("ENTER THE NUMBER OF MATCHSTICKS TO MOVE: ")
+        if num_allowed.isdigit():
+            if 0 <= int(num_allowed) <= 24:
+                break
+    return int(num_allowed)
+
+
+def print_sq(matchsticks, title, input_mat=None):
+    """
+    This function gets:
+    :param matchsticks:a Boolean array which represents the current matchsticks configuration:
+    Each matchstick is indexed 0 - 23.
+    True - the matchstick appears, False - the matchstick does not appear.
+    This function prints the current matchsticks configuration.
+    If this is the output: the removed matchsticks will be printed in grey, the added ones will be printed in green
+    :param title: the title that will be printed: 'The input' / 'The solution'
+    :param input_mat: if the input is printed - 'None'
+                      if the output is printed - the original input
+    :return:
+    """
+    font = {'family': 'serif',
+            'color': 'darkred',
+            'weight': 'bold',
+            'size': 26,
+            }
+
+    rows = 4
+    cols = 7
+    fig = plt.figure(figsize=(6, 6))
+    plt.title(title, fontdict=font)
+    plt.axis('off')
+    for i in range(1, rows * cols + 1):
+        if i <= 21 or i == 23 or i == 25 or i == 27:
+            if (i % 7) % 2 == 0 and i % 7 != 0:
+                img = mpimg.imread('./match2.jpg')
+                plt.axis('off')
+            else:
+                img = mpimg.imread('./match5.jpg')
+                plt.axis('off')
+        else:
+            img = mpimg.imread('./white.jpg')
+            plt.axis('off')
+        fig.add_subplot(rows, cols, i)
+
+        if i % 7 == 2:
+            if not matchsticks[i - 2]:
+                if not input_mat or not input_mat[i - 2]:
+                    img = mpimg.imread('./white.jpg')
+                    plt.axis('off')
+                elif input_mat[i - 2]:
+                    img = mpimg.imread('./removed2.jpg')
+                    plt.axis('off')
+            else:
+                if input_mat and not input_mat[i - 2]:
+                    img = mpimg.imread('./added2.jpg')
+                    plt.axis('off')
+
+        elif i % 7 == 4:
+            if not matchsticks[i - 3]:
+                if not input_mat or not input_mat[i - 3]:
+                    img = mpimg.imread('./white.jpg')
+                    plt.axis('off')
+                elif input_mat[i - 3]:
+                    img = mpimg.imread('./removed2.jpg')
+                    plt.axis('off')
+            else:
+                if input_mat and not input_mat[i - 3]:
+                    img = mpimg.imread('./added2.jpg')
+                    plt.axis('off')
+
+        elif i % 7 == 6:
+            if not matchsticks[i - 4]:
+                if not input_mat or not input_mat[i - 4]:
+                    img = mpimg.imread('./white.jpg')
+                    plt.axis('off')
+                elif input_mat[i - 4]:
+                    img = mpimg.imread('./removed2.jpg')
+                    plt.axis('off')
+            else:
+                if input_mat and not input_mat[i - 4]:
+                    img = mpimg.imread('./added2.jpg')
+                    plt.axis('off')
+
+        elif i != 22 and i % 7 == 1:
+            if not matchsticks[i + 2]:
+                if not input_mat or not input_mat[i + 2]:
+                    img = mpimg.imread('./white.jpg')
+                    img = ndimage.rotate(img, 90)
+                    plt.axis('off')
+                elif input_mat[i + 2]:
+                    img = mpimg.imread('./removed5.jpg')
+                    plt.axis('off')
+            else:
+                if input_mat and not input_mat[i + 2]:
+                    img = mpimg.imread('./added5.jpg')
+                    plt.axis('off')
+
+        elif i != 24 and i % 7 == 3:
+            if not matchsticks[i + 1]:
+                if not input_mat or not input_mat[i + 1]:
+                    img = mpimg.imread('./white.jpg')
+                    img = ndimage.rotate(img, 90)
+                    plt.axis('off')
+                elif input_mat[i + 1]:
+                    img = mpimg.imread('./removed5.jpg')
+                    plt.axis('off')
+            else:
+                if input_mat and not input_mat[i + 1]:
+                    img = mpimg.imread('./added5.jpg')
+                    plt.axis('off')
+
+        elif i != 26 and i % 7 == 5:
+            if not matchsticks[i]:
+                if not input_mat or not input_mat[i]:
+                    img = mpimg.imread('./white.jpg')
+                    img = ndimage.rotate(img, 90)
+                    plt.axis('off')
+                elif input_mat[i]:
+                    img = mpimg.imread('./removed5.jpg')
+                    plt.axis('off')
+            else:
+                if input_mat and not input_mat[i]:
+                    img = mpimg.imread('./added5.jpg')
+                    plt.axis('off')
+
+        elif i != 28 and i % 7 == 0:
+            if not matchsticks[i - 1]:
+                if not input_mat or not input_mat[i - 1]:
+                    img = mpimg.imread('./white.jpg')
+                    img = ndimage.rotate(img, 90)
+                    plt.axis('off')
+                elif input_mat[i - 1]:
+                    img = mpimg.imread('./removed5.jpg')
+                    plt.axis('off')
+            else:
+                if input_mat and not input_mat[i - 1]:
+                    img = mpimg.imread('./added5.jpg')
+                    plt.axis('off')
+        plt.axis('off')
+        plt.imshow(img)
+    plt.subplots_adjust(left=0.1,
+                        bottom=0.14,
+                        right=0.9,
+                        top=0.79,
+                        wspace=0,
+                        hspace=0.05)
+    plt.show()
+
+
+def menu_sqr():
+    j = 0
+    print """
+
+        WELCOME TO OUR RIDDLES SOLVER!
+
+        HERE YOU CAN SOLVE SQUARE RIDDLES.
+        
+        ------------------------------------------ RIDDLE DEFINITION: -----------------------------------------------
+        
+        GIVEN AN INITIAL SQUARES CONSTRUCTION, X - A NUMBER OF MATCHSTICKS TO MOVE AND Y - A FINAL TOTAL NUMBER OF SQUARES:
+        A SOLUTION IS - A NEW CONSTRUCTION WHICH INCLUDES EXACTLY Y SQUARES AND X MATCHSTICKS ARE MOVED 
+        (THE OTHER MATCHSTICKS' LOCATIONS REMAIN THE SAME)
+        
+        -------------------------------------------------------------------------------------------------------------
+        
+        THERE ARE 14 SQUARES: 1-MATCH-LENGTH, 2-MATCH-LENGTH AND 3-MATCH-LENGTH SQUARES.
+        
+        1-MATCH-LENGTH SQUARES: INDEXED - 0-8
+        2-MATCH-LENGTH SQUARES: INDEXED 0-3
+        3-MATCH-LENGTH SQUARE
+        
+        YOU NEED TO CHOOSE Y - THE TOTAL NUMBER OF SQUARES THAT YOU WANT TO CREATE BY MOVING X MATCHSTICKS.
+        THEN, YOU NEED TO CHOOSE X - THE NUMBER OF MATCHSTICKS TO MOVE.
+        FINALLY, YOU NEED TO CHOOSE THE SQUARES THAT YOU WANT TO APPEAR ON THE SCREEN.
+        
+        THIS PROGRAM MOVES X MATCHSTICKS (IF POSSIBLE) IN ORDER TO FIND A CORRECT SOLUTION. 
+        FOR EACH INPUT, A CORRECT OUTPUT - SOLUTION - WILL BE PRINTED.
+
+        """
+
+    while True:
+        num_sqr_end = num_sqr_end_input()
+        num_allowed = num_allowed_sq_input()
+
+        arr_sq_1 = sq1_input()
+        arr_sq_2 = sq2_input()
+        sq_3 = sq3_input()
+        sq_1_bool, sq_2_bool, sq_3_bool, matchsticks = to_bool(arr_sq_1, arr_sq_2, sq_3)
+
+        num_sqr_1_beg = sum(sq_1_bool)
+        num_sqr_2_beg = sum(sq_2_bool)
+        num_sqr_3_beg = sum([sq_3_bool])
+        num_sqr_beg = num_sqr_1_beg + num_sqr_2_beg + num_sqr_3_beg
+
+        valid = sqr_code_proj.check_valid(num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, num_sqr_end,
+                                          num_allowed,
+                                          matchsticks, sq_1_bool, sq_2_bool, sq_3_bool)
+        if valid:
+            print_sq(matchsticks, 'THE INPUT\n')
+            times, flag_solved, run_time = sqr_code_proj.solve_rid_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg,
+                                                                         num_sqr_3_beg, num_sqr_end,
+                                                                         num_allowed,
+                                                                         matchsticks, sq_1_bool, sq_2_bool, sq_3_bool)
+            if flag_solved == 1:
+                print colored("""                                NO SOLUTION                               """, 'red')
+
+            elif flag_solved == 2:
+                matchsticks2 = sqr_code_proj.find_info(j)
+                print_sq(matchsticks2, 'THE SOLUTION\n', matchsticks)
+
+            else:
+                print colored("""                                NO SOLUTION                               """, 'red')
+
+        else:
+            print """------------------------------------ERROR - INVALID INPUT----------------------------------------------
+                                    SOMETHING IS WRONG WITH THE SQUARES INPUT. 
+                                    YOU HAVE FORGOTTEN SOME EXISTING SQUARES...
+                                    ENTER YOUR INPUT AGAIN.
+-------------------------------------------------------------------------------------------------------
+    """
+
+        j += 1
+
+
 def main():
     # menu_math()
-    menu_sum()
-
-
+    # menu_sum()
+    menu_sqr()
 
 
 if __name__ == '__main__':
