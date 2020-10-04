@@ -11,7 +11,7 @@ import threading
 import math
 
 
-def read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, N):
+def read_math_riddle(j, dig1, dig2, result, plus_or_minus, N, num_allowed=-1, lower=-1, upper=-1):
     """
     This function gets:
     j - index of an input/output file
@@ -19,19 +19,23 @@ def read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, N):
     dig2 - operand 2
     result - the 3rd number
     plus_or_minus - operator, must be 'plus' or 'minus'
-    num_allowed - number of matchsticks required for solving the riddle
+    If the riddle is not an optimization problem: num_allowed - number of matchsticks required for solving the riddle
     N - number of digits per operand
+    If the riddle is an optimization problem: lower, upper - search limits for the minimal solution
     It checks if the input equation is valid.
     If yes - it writes a model file and runs it
     Else - returns -1
     """
-    if check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
-        return write_model(j, dig1, dig2, result, plus_or_minus, num_allowed, N)
+    if num_allowed != -1:
+        if check_valid(dig1, dig2, result, plus_or_minus):
+            return write_model(j, dig1, dig2, result, plus_or_minus, N, num_allowed)
+        else:
+            return -1
     else:
-        return -1
+        return write_model(j, dig1, dig2, result, plus_or_minus, N, -1, lower, upper)
 
 
-def check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
+def check_valid(dig1, dig2, result, plus_or_minus):
     """
         this function gets a string and returns true if it is a legal mathematical equation.
         a legal mathematical equation is:
@@ -48,10 +52,14 @@ def check_valid(dig1, dig2, result, plus_or_minus, num_allowed, N):
     return True
 
 
-def find_info(j):
+def find_info(j, find_min=False):
     """
-    This function gets an index of an output file
-    It returns the solved equation as received in the output file
+        This function gets:
+        j - index of an input/output file
+        find_min - True: optimization riddle, False otherwise
+        It returns:
+        The correct equation - normal riddle
+        The correct equation and the minimal number of matchsticks for the operation(move) - optimization riddle
     """
     f = open('output' + str(j) + '.txt', 'r')
     text = f.read()
@@ -67,6 +75,7 @@ def find_info(j):
     dig2 = []
     list_result = []
     result = []
+    num_allowed = 0
     for row in rows:
         if 'digits[0]' in row and 'specification' not in row:
             st, val = row.split(' = ')
@@ -98,7 +107,13 @@ def find_info(j):
                 ind = ind[:-1]
                 result[int(ind)] = int(val)
 
+        elif 'num_allowed' in row and '>' not in row:
+            st, val = row.split(' = ')
+            num_allowed = int(val)
+
     num_dig1, num_dig2, num_result = to_numbers(dig1, dig2, result)
+    if find_min:
+        return num_dig1, num_dig2, num_result, num_allowed
     return num_dig1, num_dig2, num_result
 
 
@@ -119,34 +134,38 @@ def to_numbers(li_dig1, li_dig2, li_result):
 
 def solve_equation_input(j, dig1, dig2, result, plus_or_minus, num_allowed, num_digits):
     """
-    This function gets:
-    j - index of an input/output file
-    dig1 - operand 1
-    dig2 - operand 2
-    result - the 3rd number
-    plus_or_minus - operator, must be 'plus' or 'minus'
-    num_allowed - number of matchsticks required for solving the riddle
-    num_digits - number of digits per operand
-    It checks if the input equation is valid.
-    If yes - it writes a model file and runs it
-    It returns:
-    times - if this parameter equals -1: invalid riddle input
-    flag_solved - 1 represents 'no-solution', 2 represents 'solved'
+        This function gets:
+        j - index of an input/output file
+        dig1 - operand 1
+        dig2 - operand 2
+        result - the 3rd number
+        plus_or_minus - operator, must be 'plus' or 'minus'
+        num_allowed - number of matchsticks required for solving the riddle
+        num_digits - number of digits per operand
+        It checks if the input equation is valid.
+        If yes - it writes a model file and runs it
+        It returns:
+        times - if this parameter equals -1: invalid riddle input
+        flag_solved - 1 represents 'no-solution', 2 represents 'solved'
+        run_time - the riddle's execution time
     """
     flag_solved = 0
     run_time = -1
-    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, num_digits)
+    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_digits, num_allowed)
     if times != -1:
         flag_solved, run_time = find_solution(j)
     return times, flag_solved, run_time
     pass
 
 
-def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
+def write_model(j, num1, num2, num3, plus_or_minus, N, num_allowed=-1, lower=-1, upper=-1):
     """
-        this function gets the user's input and writes a model according to these values.
+        This function gets the user's input and writes a model according to these values.
+        If this is a normal riddle: num_allowed must be entered.
+        If this is an optimization riddle: lower and upper (search limits) must be entered.
     """
-    text_var ="""MODULE main
+
+    text_var = """MODULE main
         
 				/--state variables--/
 				VAR
@@ -161,6 +180,10 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
 				num_match_beg: 0..""" + str(N * 7 * 3) + """;
 				num_match_end: 0..""" + str(N * 7 * 3) + """;
 				"""
+
+    if num_allowed == -1:
+        text_var += """num_allowed:0..""" + str(15 * N) + """;"""
+
     text_define = """DEFINE
 				/--7-segment representation array--/
 				digit_bool:=[[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE],[FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE],[TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE],[FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE],[FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE],[FALSE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE],[TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE],[FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE],[TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE],[FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]];
@@ -185,9 +208,13 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     num1_arr.reverse()
     num2_arr.reverse()
     num3_arr.reverse()
-    arr_tot = [num1_arr, num2_arr, num3_arr]    # these lists represent the digits in each operand
+    arr_tot = [num1_arr, num2_arr, num3_arr]  # these lists represent the digits in each operand
 
-    digits_arr = ["""[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE]""", """[FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE]""", """[TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE]""", """[FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE]""", """[FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE]""", """[FALSE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE]""", """[TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE]""", """[FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE]""", """[TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]""", """[FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]"""]
+    digits_arr = ["""[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE]""", """[FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE]""",
+                  """[TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE]""", """[FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE]""",
+                  """[FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE]""", """[FALSE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE]""",
+                  """[TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE]""", """[FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE]""",
+                  """[TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]""", """[FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]"""]
     text_define += str(arr_tot) + """;
     init_xor := ["""
     arr_cp = []
@@ -195,15 +222,18 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     for element in arr_tot:
         text_define += """["""
         for dig in element:
-             text_define += digits_arr[int(dig)] + """, """
+            text_define += digits_arr[int(dig)] + """, """
 
         text_define = text_define[:-2]
         text_define += """], """
 
     text_define = text_define[:-2]
     text_define += """];
-			    num_allowed:=""" + str(num_allowed) + """;
-				/--end-input--/
+    """
+    if num_allowed != -1:
+        text_define += """num_allowed:=""" + str(num_allowed) + """;"""
+
+    text_define += """/--end-input--/
     """
     text_assign = """ASSIGN
 		
@@ -221,14 +251,19 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     
     init(num_match_end):=0;
 	init(num_move):=0;
-		
+	"""
+
+    if num_allowed == -1:
+        text_assign += """next(num_allowed):=num_allowed;"""
+
+    text_assign += """	
 	next(state):=case
 	state = initial: guess;
 	"""
     text_num1 = """"""
     text_num2 = """"""
     text_num3 = """"""
-    for k in range(1, N+1):
+    for k in range(1, N + 1):
         text_num1 += "digits[0][" + str(k - 1) + "] * " + str(10 ** (N - k)) + " + "
         text_num2 += "digits[1][" + str(k - 1) + "] * " + str(10 ** (N - k)) + " + "
         text_num3 += "digits[2][" + str(k - 1) + "] * " + str(10 ** (N - k)) + " + "
@@ -257,7 +292,8 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     for i in range(0, 3):
         for j1 in range(0, N):
             for k in range(0, 7):
-                text_assign += """count(digit_bool[digits[""" + str(i) + """][""" + str(j1) + """]][""" + str(k) + """]) + """
+                text_assign += """count(digit_bool[digits[""" + str(i) + """][""" + str(j1) + """]][""" + str(
+                    k) + """]) + """
     text_assign = text_assign[:-3]
     text_assign += """;
     
@@ -266,7 +302,8 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
     for i in range(0, 3):
         for j1 in range(0, N):
             for k in range(0, 7):
-                text_assign += """count(next(xor_arr[""" + str(i) + """][""" + str(j1) + """][""" + str(k) + """])) + """
+                text_assign += """count(next(xor_arr[""" + str(i) + """][""" + str(j1) + """][""" + str(
+                    k) + """])) + """
     text_assign = text_assign[:-3]
     text_assign += """;
     TRUE: num_move;
@@ -277,7 +314,8 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
         for j1 in range(0, N):
             for k in range(0, 7):
                 text_assign += """next(xor_arr[""" + str(i) + """][""" + str(j1) + """][""" + str(k) + """]):=case
-                next(state)=calc_cons:(init_xor[""" + str(i) + """][""" + str(j1) + """][""" + str(k) + """])xor(digit_bool[digits[""" + str(i) + """][""" + str(j1) + """]][""" + str(k) + """]);
+                next(state)=calc_cons:(init_xor[""" + str(i) + """][""" + str(j1) + """][""" + str(
+                    k) + """])xor(digit_bool[digits[""" + str(i) + """][""" + str(j1) + """]][""" + str(k) + """]);
                 TRUE:xor_arr[""" + str(i) + """][""" + str(j1) + """][""" + str(k) + """];
                 esac;
                 
@@ -290,15 +328,20 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, N):
             TRUE: {0,1,2,3,4,5,6,7,8,9};
             esac;
             """
-    text_assign += """
-		LTLSPEC
-		G !(state = correct)"""
+    if num_allowed != -1:
+        text_assign += """LTLSPEC
+          G ! (state=correct)"""
+    else:
+        text_assign += """LTLSPEC
+         G ! (state=correct & num_allowed >= """ + str(lower) + """ & num_allowed <= """ + str(upper) + """)"""
 
     os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-'
              r''
              r'2.6.0-win64\bin')
+
     code = ''''''
     if plus_or_minus == 'minus':
+        open('minus_move' + str(j) + ".smv", 'w').close()
         code = '''
 j = ''' + str(j) + '''
 text_var = """''' + str(text_var) + '''"""
@@ -311,6 +354,7 @@ print >> f, text_assign
 f.close()
         '''
     elif plus_or_minus == 'plus':
+        open('plus_move' + str(j) + ".smv", 'w').close()
         code = '''
 j = ''' + str(j) + '''
 text_var = """''' + str(text_var) + '''"""
@@ -323,7 +367,7 @@ print >> f, text_assign
 f.close()
         '''
     build_time = timeit.timeit(code, number=1)
-    run_model(plus_or_minus + '_move' + str(j) + '.smv', j) # runs the model
+    run_model(plus_or_minus + '_move' + str(j) + '.smv', j)  # runs the model
     return build_time
 
 
@@ -335,6 +379,7 @@ def run_model(file_model, j):
     It runs the model file in NuSMV
     """
     f = open(str(file_model), 'a')
+    open('output' + str(j) + '.txt', 'w').close()
     output_f = open('output' + str(j) + '.txt', 'a')
     subprocess.Popen("ptime.exe NuSMV -bmc -bmc_length 10 " + str(file_model), stdout=output_f, stderr=output_f)
     output_f.close()
@@ -345,15 +390,12 @@ def solve_equation(j, plus_or_minus, num_allowed, N):
     """
     This function gets:
     j - index of an input/output file
-    plus_or_minus - operator, must be 'plus' or 'minus'
-    num_allowed - number of matchsticks required for solving the riddle
-    N - number of digits per operand
-
-    It randomly chooses:
     dig1 - operand 1
     dig2 - operand 2
     result - the 3rd number
-
+    plus_or_minus - operator, must be 'plus' or 'minus'
+    num_allowed - number of matchsticks required for solving the riddle
+    N - number of digits per operand
     It checks if the input equation is valid.
     If yes - it writes a model file and runs it
     It returns:
@@ -362,24 +404,120 @@ def solve_equation(j, plus_or_minus, num_allowed, N):
     run_time - the riddle's execution time
     """
 
-    dig1 = random.randint(0, 10**N - 1)
-    dig2 = random.randint(0, 10**N - 1)
-    result = random.randint(0, 10**N - 1)
-
+    dig1 = random.randint(0, 10 ** N - 1)
+    dig2 = random.randint(0, 10 ** N - 1)
+    result = random.randint(0, 10 ** N - 1)
 
     flag_solved = 0
     run_time = -1
-    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, N)
+    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, N, num_allowed)
     if times != -1:
         flag_solved, run_time = find_solution(j)
     return times, flag_solved, run_time
 
 
-def find_solution(j):
+def solve_equation_opt_input(j, dig1, dig2, result, plus_or_minus, N):
+    """
+            This function gets:
+            j - index of an input/output file
+            dig1 - operand 1
+            dig2 - operand 2
+            result - the 3rd number
+            plus_or_minus - operator, must be 'plus' or 'minus'
+            N - number of digits per operand
+            It checks if the input equation is valid.
+            If yes - it writes a model file and runs it
+            It returns:
+            times - if this parameter equals -1: invalid riddle input
+            flag_solved - 1 represents 'no-solution', 2 represents 'solved'
+            run_time - the riddle's execution time
+            sol1, sol2, sol3, current_min - the operands and the minimal number of move operations
+    """
+    flag_solved = 0
+    flag_solved1 = 0  # draft for computations of the minimal num_allowed
+    run_time = -1
+    total = 0
+    times = 0
+    sol1, sol2, sol3, current_min = (dig1, dig2, result, 0)
+    lower, upper, mid_or_last_sol = limits( dig1, dig2, result, N, plus_or_minus)
+    if (lower, upper, mid_or_last_sol) != (None, None, None):
+        flag_solved = 1
+    while (lower, upper, mid_or_last_sol) != (None, None, None):
+        times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, N, -1, lower, upper)
+        flag_solved1, run_time = find_solution(j)
+        total += run_time
+        if flag_solved1 == 2:
+            flag_solved = 2
+            sol1, sol2, sol3, current_min = find_info(j, True)
+        lower, upper, mid_or_last_sol = limits(dig1, dig2, result, N, plus_or_minus,
+                                                                 mid_or_last_sol, lower, upper,
+                                                                 sol1, sol2, sol3, current_min, flag_solved1)
+    return times, flag_solved, run_time, sol1, sol2, sol3, current_min
+
+
+def limits(num1, num2, result, N, plus_or_minus, mid_or_last_sol='', last_lower=-1, last_upper=-1,
+           sol1=0, sol2=0, sol3=0, current_min=0, flag_solved=0):
     """
     This function gets:
-    j - index of an input/output file
-    It returns the riddle's execution time
+    :param remove_or_add: remove / add matchsticks
+    :param num1: 1st operand - input
+    :param num2: 2nd operand - input
+    :param result: 3rd number - input
+    :param sol1: 1st operand - solution
+    :param sol2: 2nd operand - solution
+    :param sol3: 3rd number - solution
+    :param N: number of digits in each operand
+    :param plus_or_minus: operator
+    :param mid_or_last_sol: last upper bound chosen - median or the last solution (what was the minimum)
+    :param last_lower: last lower bound
+    :param last_upper:last upper bound
+    :param current_min: current minimal num_allowed
+    :param flag_solved: 1 - no solution, 2 - solved
+    This function returns: lower, upper, mid_or_last_sol
+    """
+    if last_lower == last_upper == -1:
+        if plus_or_minus == 'plus':
+            if num1 + num2 == result:
+                return None, None, None# min found - stop changing limits
+        else:
+            if num1 - num2 == result:
+                return None, None, None  # min found - stop changing limits
+        return 1, 15 * N, ''
+
+    elif current_min == 1 or last_upper < last_lower:
+        return None, None, None
+
+    elif flag_solved == 2:
+        if last_lower == last_upper:
+            return None, None, None
+        if min((last_lower + last_upper) / 2, current_min) == current_min != (last_lower + last_upper) / 2:
+            mid_or_last_sol = 'last'
+        else:
+            mid_or_last_sol = 'mid'
+        return last_lower, min((last_lower + last_upper)/2, current_min - 1), mid_or_last_sol
+
+    elif flag_solved == 1:
+
+        if current_min == last_upper + 1:
+            return None, None, None
+
+        if mid_or_last_sol == 'last':
+            return None, None, None
+
+        elif mid_or_last_sol == '':  # first time running, no solutions -> stop searching
+            return None, None, None
+
+        elif mid_or_last_sol == 'mid':
+            return (last_lower + last_upper) / 2, current_min - 1, mid_or_last_sol
+
+
+def find_solution(j):
+    """
+        This function gets:
+        j - index of an input/output file
+        It returns:
+        flag_solved - 1: no solution, 2: solved
+        run_time: the riddle's execution time
     """
     run_time = 0
 
@@ -515,8 +653,6 @@ def main():
 
     find_all(1, 'minus', 6, 2)
 
-
-
     """
     print str(calculate_avg('minus', 8, 2, 8 * 10 ** 7))
     print str(calculate_avg('minus', 9, 2, 9 * 10 ** 7))
@@ -534,7 +670,6 @@ def main():
     print str(calculate_avg('minus', 20, 2, 20 * 10 ** 7))
     print '1'
     """
-
 
 
 if __name__ == '__main__':

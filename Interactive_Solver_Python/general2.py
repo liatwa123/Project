@@ -9,6 +9,8 @@ from multiprocessing import freeze_support
 import threading
 import math
 
+max_allowed_add = {0: 1, 1: 5, 2: 2, 3: 4, 4: 3, 5: 2, 6: 1, 7: 4, 8: 0, 9: 1}
+max_allowed_remove = {0: 4, 1: 0, 2: 0, 3: 3, 4: 2, 5: 0, 6: 1, 7: 1, 8: 5, 9: 4}
 
 text_define = "DEFINE\n\
 /--digit_bool:=[[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE],[FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE]," \
@@ -46,8 +48,290 @@ arr_trans_remove:=[[{0},{0},{0},{7},{1},{0}],\n\
 [{9},{3,5},{4},{7},{1},{9}]];\n\
 "
 
+"""
+The following functions generate the content of the riddle's NuSMV file
+"""
 
-def create_minus_add_next(N):
+
+def create_plus_add_next(N, num_allowed=-1, lower=-1, upper=-1):
+    text_plus_add_next = "/--next values--/\n\
+        /--constants--/\n\
+        \n\
+        next(plus_or_minus):=plus_or_minus;\n\
+        next(num_allowed):=num_allowed;\n\
+        next(remove_or_add):=remove_or_add;\n"
+
+    for i in range(1, N + 1):
+        text_plus_add_next += "next(dig1_" + str(i) + "_in) := dig1_" + str(i) + "_in;\n"
+        text_plus_add_next += "next(dig2_" + str(i) + "_in) := dig2_" + str(i) + "_in;\n"
+        text_plus_add_next += "next(result_" + str(i) + "_in) := result_" + str(i) + "_in;\n"
+
+    text_plus_add_next += "next(state) := case\n\
+                state = zeros & !is_sol: guess;\n\
+                state = zeros & legal & is_sol: correct;\n\
+                state = guess & next(is_sol): correct;\n\
+                state = guess & !next(is_sol): zeros;\n\
+                state = correct: correct;\n \
+                TRUE: zeros;\n \
+                esac;\n \
+                \n\
+                next(legal) := case\n \
+                state = guess & ("
+    for k in range(1, N + 1):
+        text_plus_add_next += "num_op_dig1_" + str(k) + " != 0 & dig1_" + str(k) + "=dig1_" + str(k) + "_in | "
+        text_plus_add_next += "num_op_dig2_" + str(k) + " != 0 & dig2_" + str(k) + "=dig2_" + str(k) + "_in | "
+        text_plus_add_next += "num_op_dig3_" + str(k) + " != 0 & result_" + str(k) + "=result_" + str(k) + "_in | "
+    text_plus_add_next = text_plus_add_next[:-2]
+    text_plus_add_next += "): FALSE;\n\
+                state = zeros: legal; \n \
+                state = correct: TRUE;\n \
+                state = guess & !("
+    for l in range(1, N + 1):
+        text_plus_add_next += "num_op_dig1_" + str(l) + " != 0 & dig1_" + str(l) + "=dig1_" + str(l) + "_in | "
+        text_plus_add_next += "num_op_dig2_" + str(l) + " != 0 & dig2_" + str(l) + "=dig2_" + str(l) + "_in | "
+        text_plus_add_next += "num_op_dig3_" + str(l) + " != 0 & result_" + str(l) + "=result_" + str(l) + "_in | "
+    text_plus_add_next = text_plus_add_next[:-2]
+    text_plus_add_next += "): TRUE;\n\
+                TRUE: legal;\n \
+                esac;\n \
+                \n \
+                next(is_sol) := case\n \
+                state = zeros: is_sol;\n \
+                state = guess: next(legal) & "
+    for s in range(1, N + 1):
+        text_plus_add_next += "num_op_dig1_" + str(s) + " + num_op_dig2_" + str(s) + " + num_op_dig3_" + str(s) + " + "
+    text_plus_add_next = text_plus_add_next[:-2]
+    text_plus_add_next += " = num_allowed & "
+
+    text_num1 = ""
+    text_num2 = ""
+    text_num3 = ""
+
+    for t in range(1, N + 1):
+        text_num1 += "dig1_" + str(t) + " * " + str(10 ** (N - t)) + " + "
+        text_num2 += "dig2_" + str(t) + " * " + str(10 ** (N - t)) + " + "
+        text_num3 += "result_" + str(t) + " * " + str(10 ** (N - t)) + " + "
+
+    text_num1 = text_num1[:-2]
+    text_num2 = text_num2[:-2]
+    text_num3 = text_num3[:-2]
+
+    text_plus_add_next += text_num1 + " + (" + text_num2 + ") = " + text_num3 + ";\n\
+                state = correct: TRUE;\n \
+                TRUE: TRUE;\n \
+                esac;\n \
+                \n \
+                \n "
+
+    for r in range(1, N + 1):
+        text_plus_add_next += "next(num_op_dig1_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
+                state = zeros & next(state) = correct: 0;\n \
+                state = guess & next(state) = correct: num_op_dig1_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: 0;\n \
+                state = correct: num_op_dig1_" + str(r) + ";\n \
+                TRUE: {0, 1, 2, 3, 4, 5};\n \
+                esac;\n \
+                \n \
+                next(num_op_dig2_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
+                state = zeros & next(state) = correct: 0;\n \
+                state = guess & next(state) = correct: num_op_dig2_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: 0;\n \
+                state = correct: num_op_dig2_" + str(r) + ";\n \
+                TRUE: {0, 1, 2, 3, 4, 5};\n \
+                esac;\n \
+                \n \
+                next(num_op_dig3_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
+                state = zeros & next(state) = correct: 0;\n \
+                state = guess & next(state) = correct: num_op_dig3_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: 0;\n \
+                state = correct: num_op_dig3_" + str(r) + ";\n \
+                TRUE: {0, 1, 2, 3, 4, 5};\n \
+                esac;\n \
+                \n \
+                next(dig1_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: arr_trans_add[dig1_" + str(r) + "_in][next(num_op_dig1_" + str(r) + ")];\n \
+                state = zeros & next(state) = correct: dig1_" + str(r) + "_in;\n \
+                state = guess & next(state) = correct: dig1_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: dig1_" + str(r) + "_in;\n \
+                state = correct: dig1_" + str(r) + ";\n \
+                TRUE: arr_trans_add[dig1_" + str(r) + "_in][next(num_op_dig1_" + str(r) + ")];\n \
+                esac;\n \
+                \n \
+                next(dig2_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: arr_trans_add[dig2_" + str(r) + "_in][next(num_op_dig2_" + str(r) + ")];\n \
+                state = zeros & next(state) = correct: dig2_" + str(r) + "_in;\n \
+                state = guess & next(state) = correct: dig2_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: dig2_" + str(r) + "_in;\n \
+                state = correct: dig2_" + str(r) + ";\n \
+                TRUE: arr_trans_add[dig2_" + str(r) + "_in][next(num_op_dig2_" + str(r) + ")];\n \
+                esac;\n \
+                \n \
+                next(result_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: arr_trans_add[result_" + str(r) + "_in][next(num_op_dig3_" + str(
+            r) + ")];\n \
+                state = zeros & next(state) = correct: result_" + str(r) + "_in;\n \
+                state = guess & next(state) = correct: result_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: result_" + str(r) + "_in;\n \
+                state = correct: result_" + str(r) + ";\n \
+                TRUE: arr_trans_add[result_" + str(r) + "_in][next(num_op_dig3_" + str(r) + ")];\n \
+                esac;\n \
+                \n"
+    if num_allowed != -1:
+        text_plus_add_next += "LTLSPEC\n \
+        G ! (state=correct)\n"
+    else:
+        text_plus_add_next += "LTLSPEC\n \
+        G ! (state=correct & num_allowed >= " + str(lower) + " & num_allowed <= " + str(upper) + ")\n"
+    """
+    text_plus_add_next += "SPEC\n \
+            EF !(state=correct)\n"
+            """
+    return text_plus_add_next
+
+
+def create_plus_remove_next(N, num_allowed=-1, lower=-1, upper=-1):
+    text_plus_remove_next = "/--next values--/\n\
+        /--constants--/\n\
+        \n\
+        next(plus_or_minus):=plus_or_minus;\n\
+        next(num_allowed):=num_allowed;\n\
+        next(remove_or_add):=remove_or_add;\n"
+
+    for i in range(1, N + 1):
+        text_plus_remove_next += "next(dig1_" + str(i) + "_in) := dig1_" + str(i) + "_in;\n"
+        text_plus_remove_next += "next(dig2_" + str(i) + "_in) := dig2_" + str(i) + "_in;\n"
+        text_plus_remove_next += "next(result_" + str(i) + "_in) := result_" + str(i) + "_in;\n"
+
+    text_plus_remove_next += "next(state) := case\n\
+                state = zeros & !is_sol: guess;\n\
+                state = zeros & legal & is_sol: correct;\n\
+                state = guess & next(is_sol): correct;\n\
+                state = guess & !next(is_sol): zeros;\n\
+                state = correct: correct;\n \
+                TRUE: zeros;\n \
+                esac;\n \
+                \n\
+                next(legal) := case\n \
+                state = guess & ("
+    for k in range(1, N + 1):
+        text_plus_remove_next += "num_op_dig1_" + str(k) + " != 0 & dig1_" + str(k) + "=dig1_" + str(k) + "_in | "
+        text_plus_remove_next += "num_op_dig2_" + str(k) + " != 0 & dig2_" + str(k) + "=dig2_" + str(k) + "_in | "
+        text_plus_remove_next += "num_op_dig3_" + str(k) + " != 0 & result_" + str(k) + "=result_" + str(k) + "_in | "
+    text_plus_remove_next = text_plus_remove_next[:-2]
+    text_plus_remove_next += "): FALSE;\n\
+                state = zeros: legal; \n \
+                state = correct: TRUE;\n \
+                state = guess & !("
+    for l in range(1, N + 1):
+        text_plus_remove_next += "num_op_dig1_" + str(l) + " != 0 & dig1_" + str(l) + "=dig1_" + str(l) + "_in | "
+        text_plus_remove_next += "num_op_dig2_" + str(l) + " != 0 & dig2_" + str(l) + "=dig2_" + str(l) + "_in | "
+        text_plus_remove_next += "num_op_dig3_" + str(l) + " != 0 & result_" + str(l) + "=result_" + str(l) + "_in | "
+    text_plus_remove_next = text_plus_remove_next[:-2]
+    text_plus_remove_next += "): TRUE;\n\
+                TRUE: legal;\n \
+                esac;\n \
+                \n \
+                next(is_sol) := case\n \
+                state = zeros: is_sol;\n \
+                state = guess: next(legal) & "
+    for s in range(1, N + 1):
+        text_plus_remove_next += "num_op_dig1_" + str(s) + " + num_op_dig2_" + str(s) + " + num_op_dig3_" + str(s) + " + "
+    text_plus_remove_next = text_plus_remove_next[:-2]
+    text_plus_remove_next += " = num_allowed & "
+
+    text_num1 = ""
+    text_num2 = ""
+    text_num3 = ""
+
+    for t in range(1, N + 1):
+        text_num1 += "dig1_" + str(t) + " * " + str(10 ** (N - t)) + " + "
+        text_num2 += "dig2_" + str(t) + " * " + str(10 ** (N - t)) + " + "
+        text_num3 += "result_" + str(t) + " * " + str(10 ** (N - t)) + " + "
+
+    text_num1 = text_num1[:-2]
+    text_num2 = text_num2[:-2]
+    text_num3 = text_num3[:-2]
+
+    text_plus_remove_next += text_num1 + " + (" + text_num2 + ") = " + text_num3 + ";\n\
+                state = correct: TRUE;\n \
+                TRUE: TRUE;\n \
+                esac;\n \
+                \n \
+                \n "
+
+    for r in range(1, N + 1):
+        text_plus_remove_next += "next(num_op_dig1_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
+                state = zeros & next(state) = correct: 0;\n \
+                state = guess & next(state) = correct: num_op_dig1_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: 0;\n \
+                state = correct: num_op_dig1_" + str(r) + ";\n \
+                TRUE: {0, 1, 2, 3, 4, 5};\n \
+                esac;\n \
+                \n \
+                next(num_op_dig2_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
+                state = zeros & next(state) = correct: 0;\n \
+                state = guess & next(state) = correct: num_op_dig2_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: 0;\n \
+                state = correct: num_op_dig2_" + str(r) + ";\n \
+                TRUE: {0, 1, 2, 3, 4, 5};\n \
+                esac;\n \
+                \n \
+                next(num_op_dig3_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
+                state = zeros & next(state) = correct: 0;\n \
+                state = guess & next(state) = correct: num_op_dig3_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: 0;\n \
+                state = correct: num_op_dig3_" + str(r) + ";\n \
+                TRUE: {0, 1, 2, 3, 4, 5};\n \
+                esac;\n \
+                \n \
+                next(dig1_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: arr_trans_remove[dig1_" + str(r) + "_in][next(num_op_dig1_" + str(r) + ")];\n \
+                state = zeros & next(state) = correct: dig1_" + str(r) + "_in;\n \
+                state = guess & next(state) = correct: dig1_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: dig1_" + str(r) + "_in;\n \
+                state = correct: dig1_" + str(r) + ";\n \
+                TRUE: arr_trans_remove[dig1_" + str(r) + "_in][next(num_op_dig1_" + str(r) + ")];\n \
+                esac;\n \
+                \n \
+                next(dig2_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: arr_trans_remove[dig2_" + str(r) + "_in][next(num_op_dig2_" + str(r) + ")];\n \
+                state = zeros & next(state) = correct: dig2_" + str(r) + "_in;\n \
+                state = guess & next(state) = correct: dig2_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: dig2_" + str(r) + "_in;\n \
+                state = correct: dig2_" + str(r) + ";\n \
+                TRUE: arr_trans_remove[dig2_" + str(r) + "_in][next(num_op_dig2_" + str(r) + ")];\n \
+                esac;\n \
+                \n \
+                next(result_" + str(r) + ") := case\n \
+                state = zeros & next(state) = guess: arr_trans_remove[result_" + str(r) + "_in][next(num_op_dig3_" + str(
+            r) + ")];\n \
+                state = zeros & next(state) = correct: result_" + str(r) + "_in;\n \
+                state = guess & next(state) = correct: result_" + str(r) + ";\n \
+                state = guess & next(state) = zeros: result_" + str(r) + "_in;\n \
+                state = correct: result_" + str(r) + ";\n \
+                TRUE: arr_trans_remove[result_" + str(r) + "_in][next(num_op_dig3_" + str(r) + ")];\n \
+                esac;\n \
+                \n"
+    if num_allowed != -1:
+        text_plus_remove_next += "LTLSPEC\n \
+         G ! (state=correct)\n"
+    else:
+        text_plus_remove_next += "LTLSPEC\n \
+         G ! (state=correct & num_allowed >= " + str(lower) + " & num_allowed <= " + str(upper) + ")\n"
+    """
+    text_plus_remove_next += "SPEC\n \
+            EF !(state=correct)\n"
+    """
+    return text_plus_remove_next
+
+
+def create_minus_add_next(N, num_allowed=-1, lower=-1, upper=-1):
     text_minus_add_next = "/--next values--/\n\
     /--constants--/\n\
     \n\
@@ -173,8 +457,12 @@ def create_minus_add_next(N):
             esac;\n \
             \n"
 
-    text_minus_add_next += "LTLSPEC\n \
-    G ! (state=correct)\n"
+    if num_allowed != -1:
+        text_minus_add_next += "LTLSPEC\n \
+         G ! (state=correct)\n"
+    else:
+        text_minus_add_next += "LTLSPEC\n \
+         G ! (state=correct & num_allowed >= " + str(lower) + " & num_allowed <= " + str(upper) + ")\n"
     """
     text_minus_add_next += "SPEC\n \
         EF !(state=correct)\n"
@@ -182,7 +470,7 @@ def create_minus_add_next(N):
     return text_minus_add_next
 
 
-def create_minus_remove_next(N):
+def create_minus_remove_next(N, num_allowed=-1, lower=-1, upper=-1):
     text_minus_remove_next = "/--next values--/\n\
         /--constants--/\n\
         \n\
@@ -309,8 +597,12 @@ def create_minus_remove_next(N):
                 esac;\n \
                 \n"
 
-    text_minus_remove_next += "LTLSPEC\n \
-        G ! (state=correct)\n"
+    if num_allowed != -1:
+        text_minus_remove_next += "LTLSPEC\n \
+         G ! (state=correct)\n"
+    else:
+        text_minus_remove_next += "LTLSPEC\n \
+         G ! (state=correct & num_allowed >= " + str(lower) + " & num_allowed <= " + str(upper) + ")\n"
     """
     text_minus_remove_next += "SPEC\n \
         EF !(state=correct)\n"
@@ -318,278 +610,85 @@ def create_minus_remove_next(N):
     return text_minus_remove_next
 
 
-def create_plus_add_next(N):
-    text_plus_add_next = "/--next values--/\n\
-        /--constants--/\n\
-        \n\
-        next(plus_or_minus):=plus_or_minus;\n\
-        next(num_allowed):=num_allowed;\n\
-        next(remove_or_add):=remove_or_add;\n"
-
-    for i in range(1, N + 1):
-        text_plus_add_next += "next(dig1_" + str(i) + "_in) := dig1_" + str(i) + "_in;\n"
-        text_plus_add_next += "next(dig2_" + str(i) + "_in) := dig2_" + str(i) + "_in;\n"
-        text_plus_add_next += "next(result_" + str(i) + "_in) := result_" + str(i) + "_in;\n"
-
-    text_plus_add_next += "next(state) := case\n\
-                state = zeros & !is_sol: guess;\n\
-                state = zeros & legal & is_sol: correct;\n\
-                state = guess & next(is_sol): correct;\n\
-                state = guess & !next(is_sol): zeros;\n\
-                state = correct: correct;\n \
-                TRUE: zeros;\n \
-                esac;\n \
-                \n\
-                next(legal) := case\n \
-                state = guess & ("
-    for k in range(1, N + 1):
-        text_plus_add_next += "num_op_dig1_" + str(k) + " != 0 & dig1_" + str(k) + "=dig1_" + str(k) + "_in | "
-        text_plus_add_next += "num_op_dig2_" + str(k) + " != 0 & dig2_" + str(k) + "=dig2_" + str(k) + "_in | "
-        text_plus_add_next += "num_op_dig3_" + str(k) + " != 0 & result_" + str(k) + "=result_" + str(k) + "_in | "
-    text_plus_add_next = text_plus_add_next[:-2]
-    text_plus_add_next += "): FALSE;\n\
-                state = zeros: legal; \n \
-                state = correct: TRUE;\n \
-                state = guess & !("
-    for l in range(1, N + 1):
-        text_plus_add_next += "num_op_dig1_" + str(l) + " != 0 & dig1_" + str(l) + "=dig1_" + str(l) + "_in | "
-        text_plus_add_next += "num_op_dig2_" + str(l) + " != 0 & dig2_" + str(l) + "=dig2_" + str(l) + "_in | "
-        text_plus_add_next += "num_op_dig3_" + str(l) + " != 0 & result_" + str(l) + "=result_" + str(l) + "_in | "
-    text_plus_add_next = text_plus_add_next[:-2]
-    text_plus_add_next += "): TRUE;\n\
-                TRUE: legal;\n \
-                esac;\n \
-                \n \
-                next(is_sol) := case\n \
-                state = zeros: is_sol;\n \
-                state = guess: next(legal) & "
-    for s in range(1, N + 1):
-        text_plus_add_next += "num_op_dig1_" + str(s) + " + num_op_dig2_" + str(s) + " + num_op_dig3_" + str(s) + " + "
-    text_plus_add_next = text_plus_add_next[:-2]
-    text_plus_add_next += " = num_allowed & "
-
-    text_num1 = ""
-    text_num2 = ""
-    text_num3 = ""
-
-    for t in range(1, N + 1):
-        text_num1 += "dig1_" + str(t) + " * " + str(10 ** (N - t)) + " + "
-        text_num2 += "dig2_" + str(t) + " * " + str(10 ** (N - t)) + " + "
-        text_num3 += "result_" + str(t) + " * " + str(10 ** (N - t)) + " + "
-
-    text_num1 = text_num1[:-2]
-    text_num2 = text_num2[:-2]
-    text_num3 = text_num3[:-2]
-
-    text_plus_add_next += text_num1 + " + (" + text_num2 + ") = " + text_num3 + ";\n\
-                state = correct: TRUE;\n \
-                TRUE: TRUE;\n \
-                esac;\n \
-                \n \
-                \n "
-
-    for r in range(1, N + 1):
-        text_plus_add_next += "next(num_op_dig1_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
-                state = zeros & next(state) = correct: 0;\n \
-                state = guess & next(state) = correct: num_op_dig1_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: 0;\n \
-                state = correct: num_op_dig1_" + str(r) + ";\n \
-                TRUE: {0, 1, 2, 3, 4, 5};\n \
-                esac;\n \
-                \n \
-                next(num_op_dig2_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
-                state = zeros & next(state) = correct: 0;\n \
-                state = guess & next(state) = correct: num_op_dig2_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: 0;\n \
-                state = correct: num_op_dig2_" + str(r) + ";\n \
-                TRUE: {0, 1, 2, 3, 4, 5};\n \
-                esac;\n \
-                \n \
-                next(num_op_dig3_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
-                state = zeros & next(state) = correct: 0;\n \
-                state = guess & next(state) = correct: num_op_dig3_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: 0;\n \
-                state = correct: num_op_dig3_" + str(r) + ";\n \
-                TRUE: {0, 1, 2, 3, 4, 5};\n \
-                esac;\n \
-                \n \
-                next(dig1_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: arr_trans_add[dig1_" + str(r) + "_in][next(num_op_dig1_" + str(r) + ")];\n \
-                state = zeros & next(state) = correct: dig1_" + str(r) + "_in;\n \
-                state = guess & next(state) = correct: dig1_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: dig1_" + str(r) + "_in;\n \
-                state = correct: dig1_" + str(r) + ";\n \
-                TRUE: arr_trans_add[dig1_" + str(r) + "_in][next(num_op_dig1_" + str(r) + ")];\n \
-                esac;\n \
-                \n \
-                next(dig2_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: arr_trans_add[dig2_" + str(r) + "_in][next(num_op_dig2_" + str(r) + ")];\n \
-                state = zeros & next(state) = correct: dig2_" + str(r) + "_in;\n \
-                state = guess & next(state) = correct: dig2_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: dig2_" + str(r) + "_in;\n \
-                state = correct: dig2_" + str(r) + ";\n \
-                TRUE: arr_trans_add[dig2_" + str(r) + "_in][next(num_op_dig2_" + str(r) + ")];\n \
-                esac;\n \
-                \n \
-                next(result_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: arr_trans_add[result_" + str(r) + "_in][next(num_op_dig3_" + str(
-            r) + ")];\n \
-                state = zeros & next(state) = correct: result_" + str(r) + "_in;\n \
-                state = guess & next(state) = correct: result_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: result_" + str(r) + "_in;\n \
-                state = correct: result_" + str(r) + ";\n \
-                TRUE: arr_trans_add[result_" + str(r) + "_in][next(num_op_dig3_" + str(r) + ")];\n \
-                esac;\n \
-                \n"
-
-    text_plus_add_next += "LTLSPEC\n \
-        G ! (state=correct)\n"
+def limits(remove_or_add, num1, num2, result, N, plus_or_minus, mid_or_last_sol='', last_lower=-1, last_upper=-1,
+           sol1=0, sol2=0, sol3=0, current_min=0, flag_solved=0):
     """
-    text_plus_add_next += "SPEC\n \
-            EF !(state=correct)\n"
-            """
-    return text_plus_add_next
-
-
-def create_plus_remove_next(N):
-    text_plus_remove_next = "/--next values--/\n\
-        /--constants--/\n\
-        \n\
-        next(plus_or_minus):=plus_or_minus;\n\
-        next(num_allowed):=num_allowed;\n\
-        next(remove_or_add):=remove_or_add;\n"
-
-    for i in range(1, N + 1):
-        text_plus_remove_next += "next(dig1_" + str(i) + "_in) := dig1_" + str(i) + "_in;\n"
-        text_plus_remove_next += "next(dig2_" + str(i) + "_in) := dig2_" + str(i) + "_in;\n"
-        text_plus_remove_next += "next(result_" + str(i) + "_in) := result_" + str(i) + "_in;\n"
-
-    text_plus_remove_next += "next(state) := case\n\
-                state = zeros & !is_sol: guess;\n\
-                state = zeros & legal & is_sol: correct;\n\
-                state = guess & next(is_sol): correct;\n\
-                state = guess & !next(is_sol): zeros;\n\
-                state = correct: correct;\n \
-                TRUE: zeros;\n \
-                esac;\n \
-                \n\
-                next(legal) := case\n \
-                state = guess & ("
-    for k in range(1, N + 1):
-        text_plus_remove_next += "num_op_dig1_" + str(k) + " != 0 & dig1_" + str(k) + "=dig1_" + str(k) + "_in | "
-        text_plus_remove_next += "num_op_dig2_" + str(k) + " != 0 & dig2_" + str(k) + "=dig2_" + str(k) + "_in | "
-        text_plus_remove_next += "num_op_dig3_" + str(k) + " != 0 & result_" + str(k) + "=result_" + str(k) + "_in | "
-    text_plus_remove_next = text_plus_remove_next[:-2]
-    text_plus_remove_next += "): FALSE;\n\
-                state = zeros: legal; \n \
-                state = correct: TRUE;\n \
-                state = guess & !("
-    for l in range(1, N + 1):
-        text_plus_remove_next += "num_op_dig1_" + str(l) + " != 0 & dig1_" + str(l) + "=dig1_" + str(l) + "_in | "
-        text_plus_remove_next += "num_op_dig2_" + str(l) + " != 0 & dig2_" + str(l) + "=dig2_" + str(l) + "_in | "
-        text_plus_remove_next += "num_op_dig3_" + str(l) + " != 0 & result_" + str(l) + "=result_" + str(l) + "_in | "
-    text_plus_remove_next = text_plus_remove_next[:-2]
-    text_plus_remove_next += "): TRUE;\n\
-                TRUE: legal;\n \
-                esac;\n \
-                \n \
-                next(is_sol) := case\n \
-                state = zeros: is_sol;\n \
-                state = guess: next(legal) & "
-    for s in range(1, N + 1):
-        text_plus_remove_next += "num_op_dig1_" + str(s) + " + num_op_dig2_" + str(s) + " + num_op_dig3_" + str(s) + " + "
-    text_plus_remove_next = text_plus_remove_next[:-2]
-    text_plus_remove_next += " = num_allowed & "
-
-    text_num1 = ""
-    text_num2 = ""
-    text_num3 = ""
-
-    for t in range(1, N + 1):
-        text_num1 += "dig1_" + str(t) + " * " + str(10 ** (N - t)) + " + "
-        text_num2 += "dig2_" + str(t) + " * " + str(10 ** (N - t)) + " + "
-        text_num3 += "result_" + str(t) + " * " + str(10 ** (N - t)) + " + "
-
-    text_num1 = text_num1[:-2]
-    text_num2 = text_num2[:-2]
-    text_num3 = text_num3[:-2]
-
-    text_plus_remove_next += text_num1 + " + (" + text_num2 + ") = " + text_num3 + ";\n\
-                state = correct: TRUE;\n \
-                TRUE: TRUE;\n \
-                esac;\n \
-                \n \
-                \n "
-
-    for r in range(1, N + 1):
-        text_plus_remove_next += "next(num_op_dig1_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
-                state = zeros & next(state) = correct: 0;\n \
-                state = guess & next(state) = correct: num_op_dig1_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: 0;\n \
-                state = correct: num_op_dig1_" + str(r) + ";\n \
-                TRUE: {0, 1, 2, 3, 4, 5};\n \
-                esac;\n \
-                \n \
-                next(num_op_dig2_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
-                state = zeros & next(state) = correct: 0;\n \
-                state = guess & next(state) = correct: num_op_dig2_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: 0;\n \
-                state = correct: num_op_dig2_" + str(r) + ";\n \
-                TRUE: {0, 1, 2, 3, 4, 5};\n \
-                esac;\n \
-                \n \
-                next(num_op_dig3_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: {0, 1, 2, 3, 4, 5};\n \
-                state = zeros & next(state) = correct: 0;\n \
-                state = guess & next(state) = correct: num_op_dig3_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: 0;\n \
-                state = correct: num_op_dig3_" + str(r) + ";\n \
-                TRUE: {0, 1, 2, 3, 4, 5};\n \
-                esac;\n \
-                \n \
-                next(dig1_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: arr_trans_remove[dig1_" + str(r) + "_in][next(num_op_dig1_" + str(r) + ")];\n \
-                state = zeros & next(state) = correct: dig1_" + str(r) + "_in;\n \
-                state = guess & next(state) = correct: dig1_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: dig1_" + str(r) + "_in;\n \
-                state = correct: dig1_" + str(r) + ";\n \
-                TRUE: arr_trans_remove[dig1_" + str(r) + "_in][next(num_op_dig1_" + str(r) + ")];\n \
-                esac;\n \
-                \n \
-                next(dig2_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: arr_trans_remove[dig2_" + str(r) + "_in][next(num_op_dig2_" + str(r) + ")];\n \
-                state = zeros & next(state) = correct: dig2_" + str(r) + "_in;\n \
-                state = guess & next(state) = correct: dig2_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: dig2_" + str(r) + "_in;\n \
-                state = correct: dig2_" + str(r) + ";\n \
-                TRUE: arr_trans_remove[dig2_" + str(r) + "_in][next(num_op_dig2_" + str(r) + ")];\n \
-                esac;\n \
-                \n \
-                next(result_" + str(r) + ") := case\n \
-                state = zeros & next(state) = guess: arr_trans_remove[result_" + str(r) + "_in][next(num_op_dig3_" + str(
-            r) + ")];\n \
-                state = zeros & next(state) = correct: result_" + str(r) + "_in;\n \
-                state = guess & next(state) = correct: result_" + str(r) + ";\n \
-                state = guess & next(state) = zeros: result_" + str(r) + "_in;\n \
-                state = correct: result_" + str(r) + ";\n \
-                TRUE: arr_trans_remove[result_" + str(r) + "_in][next(num_op_dig3_" + str(r) + ")];\n \
-                esac;\n \
-                \n"
-    text_plus_remove_next += "LTLSPEC\n \
-        G ! (state=correct)\n"
+    This function gets:
+    :param remove_or_add: remove / add matchsticks
+    :param num1: 1st operand - input
+    :param num2: 2nd operand - input
+    :param result: 3rd number - input
+    :param sol1: 1st operand - solution
+    :param sol2: 2nd operand - solution
+    :param sol3: 3rd number - solution
+    :param N: number of digits in each operand
+    :param plus_or_minus: operator
+    :param mid_or_last_sol: last upper bound chosen - median or the last solution (what was the minimum)
+    :param last_lower: last lower bound
+    :param last_upper:last upper bound
+    :param current_min: current minimal num_allowed
+    :param flag_solved: 1 - no solution, 2 - solved
+    This function returns: lower, upper, mid_or_last_sol
     """
-    text_plus_remove_next += "SPEC\n \
-            EF !(state=correct)\n"
-    """
-    return text_plus_remove_next
+    if last_lower == last_upper == -1:
+        max_sum = 0
+        if plus_or_minus == 'plus':
+            if num1 + num2 == result:
+                return None, None, None# min found - stop changing limits
+        else:
+            if num1 - num2 == result:
+                return None, None, None  # min found - stop changing limits
+
+        if remove_or_add == 'add':
+            # calculate the max number for add
+            for k in range(1, N + 1):
+                max_sum += max_allowed_add[num1 % 10] + max_allowed_add[num2 % 10] + max_allowed_add[result % 10]
+                num1 = num1 / 10
+                num2 = num2 / 10
+                result = result / 10
+
+        else:
+            for k in range(1, N + 1):
+                max_sum += max_allowed_remove[num1 % 10] + max_allowed_remove[num2 % 10] + max_allowed_remove[
+                    result % 10]
+                num1 = num1 / 10
+                num2 = num2 / 10
+                result = result / 10
+
+        if max_sum == 0:
+            return None, None, None
+        return 1, max_sum, ''
+
+    elif current_min == 1 or last_upper < last_lower:
+        return None, None, None
+
+    elif flag_solved == 2:
+        if last_lower == last_upper:
+            return None, None, None
+        if min((last_lower + last_upper) / 2, current_min) == current_min != (last_lower + last_upper) / 2:
+            mid_or_last_sol = 'last'
+        else:
+            mid_or_last_sol = 'mid'
+        return last_lower, min((last_lower + last_upper)/2, current_min - 1), mid_or_last_sol
+
+    elif flag_solved == 1:
+
+        if current_min == last_upper + 1:
+            return None, None, None
+
+        if mid_or_last_sol == 'last':
+            return None, None, None
+
+        elif mid_or_last_sol == '':  # first time running, no solutions -> stop searching
+            return None, None, None
+
+        elif mid_or_last_sol == 'mid':
+            return (last_lower + last_upper) / 2, current_min - 1, mid_or_last_sol
 
 
-def read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, remove_or_add, N):
+
+
+def read_math_riddle(j, dig1, dig2, result, plus_or_minus, remove_or_add, N, num_allowed=-1, lower=-1, upper=-1):
     """
     This function gets:
     j - index of an input/output file
@@ -597,23 +696,30 @@ def read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, remove_o
     dig2 - operand 2
     result - the 3rd number
     plus_or_minus - operator, must be 'plus' or 'minus'
-    num_allowed - number of matchsticks required for solving the riddle
+    If the riddle is not an optimization problem: num_allowed - number of matchsticks required for solving the riddle
     remove_or_add - operation: must be 'add' or 'remove'
     N - number of digits per operand
+    If the riddle is an optimization problem: lower, upper - search limits for the minimal solution
     It checks if the input equation is valid.
     If yes - it writes a model file and runs it
     Else - returns -1
     """
-    if check_valid(dig1, dig2, result, plus_or_minus, num_allowed, remove_or_add, N):
-        return write_model(j, dig1, dig2, result, plus_or_minus, num_allowed, remove_or_add, N)
+    if num_allowed != -1:
+        if check_valid(dig1, dig2, result, plus_or_minus, num_allowed, remove_or_add, N):
+            return write_model(j, dig1, dig2, result, plus_or_minus, remove_or_add, N, num_allowed)
+        else:
+            return -1
     else:
-        return -1
+        return write_model(j, dig1, dig2, result, plus_or_minus, remove_or_add, N, -1, lower, upper)
 
 
-def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, remove_or_add, N):
+def write_model(j, num1, num2, num3, plus_or_minus, remove_or_add, N, num_allowed=-1, lower=-1, upper=-1):
     """
-        this function gets the user's input and writes a model according to these values.
+        This function gets the user's input and writes a model according to these values.
+        If this is a normal riddle: num_allowed must be entered.
+        If this is an optimization riddle: lower and upper (search limits) must be entered.
     """
+
     text_var = "MODULE main\n\
     \n\
     /--state variables--/ \n\
@@ -682,10 +788,10 @@ def write_model(j, num1, num2, num3, plus_or_minus, num_allowed, remove_or_add, 
 /--initial values: user input--/\n\
 init(plus_or_minus):=" + plus_or_minus + ";\n\
 init(remove_or_add):=" + remove_or_add + ";\n\
-init(num_allowed):=" + str(num_allowed) + ";\n\
 init(legal):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n\
 init(is_sol):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n"
-
+    if num_allowed != -1:
+        text_minus_add_init += "init(num_allowed) := " + str(num_allowed) + ";\n"
     text_minus_remove_init = "ASSIGN\n\
 /--initial values: user input--/\n"
     num1_str = str(num1)
@@ -715,9 +821,10 @@ init(is_sol):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num
 /--initial values: user input--/\n\
 init(plus_or_minus):=" + plus_or_minus + ";\n\
 init(remove_or_add):=" + remove_or_add + ";\n\
-init(num_allowed):=" + str(num_allowed) + ";\n\
 init(legal):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n\
 init(is_sol):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n"
+    if num_allowed != -1:
+        text_minus_remove_init += "init(num_allowed) := " + str(num_allowed) + ";\n"
 
     text_plus_add_init = "ASSIGN\n\
 /--initial values: user input--/\n"
@@ -748,9 +855,10 @@ init(is_sol):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num
 /--initial values: user input--/\n\
 init(plus_or_minus):=" + plus_or_minus + ";\n\
 init(remove_or_add):=" + remove_or_add + ";\n\
-init(num_allowed):=" + str(num_allowed) + ";\n\
 init(legal):=" + text_num1 + " + ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n\
 init(is_sol):=" + text_num1 + " + ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n"
+    if num_allowed != -1:
+        text_plus_add_init += "init(num_allowed) := " + str(num_allowed) + ";\n"
 
     text_plus_remove_init = "ASSIGN\n\
 /--initial values: user input--/\n"
@@ -781,15 +889,17 @@ init(is_sol):=" + text_num1 + " + ( " + text_num2 + " ) = " + text_num3 + "& num
 /--initial values: user input--/\n\
 init(plus_or_minus):=" + plus_or_minus + ";\n\
 init(remove_or_add):=" + remove_or_add + ";\n\
-init(num_allowed):=" + str(num_allowed) + ";\n\
 init(legal):=" + text_num1 + " + ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n\
 init(is_sol):=" + text_num1 + " + ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n"
+    if num_allowed != -1:
+        text_plus_remove_init += "init(num_allowed) := " + str(num_allowed) + ";\n"
 
     os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-'
              r''
              r'2.6.0-win64\bin')
     if plus_or_minus == 'minus' and remove_or_add == 'add':
-        text_minus_add_next = create_minus_add_next(N)
+        text_minus_add_next = create_minus_add_next(N, num_allowed, lower, upper)
+        open('minus_add' + str(j) + ".smv", 'w').close()
         code = '''
 j = ''' + str(j) + '''
 text_var = """''' + str(text_var) + '''"""
@@ -808,7 +918,8 @@ f.close()
         return build_time
 
     elif plus_or_minus == 'minus' and remove_or_add == 'remove':
-        text_minus_remove_next = create_minus_remove_next(N)
+        open('minus_remove' + str(j) + ".smv", 'w').close()
+        text_minus_remove_next = create_minus_remove_next(N, num_allowed, lower, upper)
         code = '''
 j = ''' + str(j) + '''
 text_var = """''' + str(text_var) + '''"""
@@ -827,7 +938,8 @@ f.close()
         return build_time
 
     elif plus_or_minus == 'plus' and remove_or_add == 'add':
-        text_plus_add_next = create_plus_add_next(N)
+        open('plus_add' + str(j) + ".smv", 'w').close()
+        text_plus_add_next = create_plus_add_next(N, num_allowed, lower, upper)
         code = '''
 j = ''' + str(j) + '''
 text_var = """''' + str(text_var) + '''"""
@@ -846,7 +958,8 @@ f.close()
         return build_time
 
     elif plus_or_minus == 'plus' and remove_or_add == 'remove':
-        text_plus_remove_next = create_plus_remove_next(N)
+        open('plus_remove' + str(j) + ".smv", 'w').close()
+        text_plus_remove_next = create_plus_remove_next(N, num_allowed, lower, upper)
         code = '''
 j = ''' + str(j) + '''
 text_var = """''' + str(text_var) + '''"""
@@ -893,8 +1006,7 @@ def check_num_allowed(num1, num2, result, remove_or_add, num_allowed, N):
     True if the max allowed matchsticks for 'add'/'remove' >= num_allowed
     False otherwise
     """
-    max_allowed_add = {0: 1, 1: 5, 2: 2, 3: 4, 4: 3, 5: 2, 6: 1, 7: 4, 8: 0, 9: 1}
-    max_allowed_remove = {0: 4, 1: 0, 2: 0, 3: 3, 4: 2, 5: 0, 6: 1, 7: 1, 8: 5, 9: 4}
+
     if remove_or_add == 'add':
         # calculate the max number for add
         max_sum = 0
@@ -929,6 +1041,7 @@ def run_model(file_model, j):
        """
 
     f = open(str(file_model), 'a')
+    open('output' + str(j) + '.txt', 'w').close()
     output_f = open('output' + str(j) + '.txt', 'a')
     subprocess.Popen("ptime.exe NuSMV -bmc -bmc_length 10 " + str(file_model), stdout=output_f, stderr=output_f)
     output_f.close()
@@ -963,7 +1076,7 @@ def solve_equation(j, plus_or_minus, num_allowed, remove_or_add, N):
 
     flag_solved = 0
     run_time = -1
-    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, remove_or_add, N)
+    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, remove_or_add, N, num_allowed)
     if times != -1:
         flag_solved, run_time = find_solution(j)
     return times, flag_solved, run_time
@@ -985,21 +1098,64 @@ def solve_equation_input(j, dig1, dig2, result, plus_or_minus, num_allowed, remo
     It returns:
     times - if this parameter equals -1: invalid riddle input
     flag_solved - 1 represents 'no-solution', 2 represents 'solved'
+    run_time - the riddle's execution time
     """
 
     flag_solved = 0
     run_time = -1
-    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, num_allowed, remove_or_add, N)
+    times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, remove_or_add, N, num_allowed)
     if times != -1:
         flag_solved, run_time = find_solution(j)
     return times, flag_solved, run_time
+
+
+def solve_equation_opt_input(j, dig1, dig2, result, plus_or_minus, remove_or_add, N):
+    """
+        This function gets:
+        j - index of an input/output file
+        dig1 - operand 1
+        dig2 - operand 2
+        result - the 3rd number
+        plus_or_minus - operator, must be 'plus' or 'minus'
+        N - number of digits per operand
+        remove_or_add - operation: remove or add matchsticks (must be 'remove' or 'add')
+        It checks if the input equation is valid.
+        If yes - it writes a model file and runs it
+        It returns:
+        times - if this parameter equals -1: invalid riddle input
+        flag_solved - 1 represents 'no-solution', 2 represents 'solved'
+        run_time - the riddle's execution time
+        sol1, sol2, sol3, current_min - the operands and the minimal number of add/remove operations
+        """
+    flag_solved = 0
+    flag_solved1 = 0  # draft for computations of the minimal num_allowed
+    run_time = -1
+    total = 0
+    times = 0
+    sol1, sol2, sol3, current_min = (dig1, dig2, result, 0)
+    lower, upper, mid_or_last_sol = limits(remove_or_add, dig1, dig2, result, N, plus_or_minus)
+    if (lower, upper, mid_or_last_sol) != (None, None, None):
+        flag_solved = 1
+    while (lower, upper, mid_or_last_sol) != (None, None, None):
+        times = read_math_riddle(j, dig1, dig2, result, plus_or_minus, remove_or_add, N, -1, lower, upper)
+        flag_solved1, run_time = find_solution(j)
+        total += run_time
+        if flag_solved1 == 2:
+            flag_solved = 2
+            sol1, sol2, sol3, current_min = find_info(j, True)
+        lower, upper, mid_or_last_sol = limits(remove_or_add, dig1, dig2, result, N, plus_or_minus,
+                                                                 mid_or_last_sol, lower, upper,
+                                                                 sol1, sol2, sol3, current_min, flag_solved1)
+    return times, flag_solved, run_time, sol1, sol2, sol3, current_min
 
 
 def find_solution(j):
     """
         This function gets:
         j - index of an input/output file
-        It returns the riddle's execution time
+        It returns:
+        flag_solved - 1: no solution, 2: solved
+        run_time: the riddle's execution time
     """
     run_time = 0
 
@@ -1020,11 +1176,14 @@ def find_solution(j):
         return 1, run_time
 
 
-def find_info(j):
+def find_info(j, find_min=False):
     """
         This function gets:
         j - index of an input/output file
-        It returns the riddle's execution time
+        find_min - True: optimization riddle, False otherwise
+        It returns:
+        The correct equation - normal riddle
+        The correct equation and the minimal number of matchsticks for the operation(add/remove) - optimization riddle
     """
     f = open('output' + str(j) + '.txt', 'r')
     text = f.read()
@@ -1040,6 +1199,7 @@ def find_info(j):
     dig2 = []
     list_result = []
     result = []
+    num_allowed = 0
     for row in rows:
         if 'dig1' in row and 'specification' not in row and 'in' not in row and 'op' not in row:
             st, val = row.split(' = ')
@@ -1068,7 +1228,13 @@ def find_info(j):
                 txt, ind = st.split('_')
                 result[int(ind) - 1] = int(val)
 
+        elif 'num_allowed' in row and '>' not in row:
+            st, val = row.split(' = ')
+            num_allowed = int(val)
+
     num_dig1, num_dig2, num_result = to_numbers(dig1, dig2, result)
+    if find_min:
+        return num_dig1, num_dig2, num_result, num_allowed
     return num_dig1, num_dig2, num_result
 
 
@@ -1161,3 +1327,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
