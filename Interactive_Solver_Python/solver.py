@@ -366,11 +366,16 @@ def optimal_output(dig1, dig2, result, plus_or_minus, num_digits, operation, num
 def math_general_in_out(j, num_digits, operation):
     """
     This function gets:
-    :param j:
-    :param num_digits:
-    :param operation:
-    It
-    :return:
+    :param j: Index of the input / output file
+    :param num_digits: Number of digits per operand
+    :param operation: add/remove/move matchsticks
+
+    It receives input from the user (normal riddle):
+    The operands, the operator (plus/minus), the number of matchsticks to add/remove/move
+
+    It prints the input on the screen
+    It solves the normal mathematical riddle and prints the solution
+
     """
     dig1, dig2, result, plus_or_minus, num_allowed = math_general_input(num_digits, operation)
     if operation == 'ADD' or operation == 'REMOVE':
@@ -394,7 +399,22 @@ def math_general_in_out(j, num_digits, operation):
         print colored("""                                NO SOLUTION                               """, 'red')
 
 
-def optimal_in_out(j, num_digits, operation):
+def math_optimal_in_out(j, num_digits, operation):
+    """
+    This function gets:
+    :param j: Index of the input / output file
+    :param num_digits: Number of digits per operand
+    :param operation: add/remove/move matchsticks
+
+    It receives input from the user (optimization riddle):
+    The operands and the operator (plus/minus)
+
+    It prints the input on the screen
+
+    It solves the mathematical optimization riddle and prints the solution with the minimal number of operations
+     (add/remove/move) on the screen
+
+    """
     dig1, dig2, result, plus_or_minus = math_optimal_input(num_digits, operation)
     if operation == 'ADD' or operation == 'REMOVE':
         times, flag_solved, run_time, dig1, dig2, result, num_allowed = general2.solve_equation_opt_input(j, int(dig1), int(dig2), int(result),
@@ -419,7 +439,17 @@ def optimal_in_out(j, num_digits, operation):
         optimal_output(dig1, dig2, result, plus_or_minus, num_digits, operation, num_allowed)
 
 
-def solve(operation, j, normal_or_optimal):
+def math_solve(operation, j, normal_or_optimal):
+    """
+    This function gets:
+    :param operation: add/remove/move matchsticks
+    :param j: The index of the input/output files
+    :param normal_or_optimal: 'O' - optimization riddle, 'N' - normal math riddle
+
+    It receives user input - number of digits pe operand
+
+    It solves the math riddle (normal / optimization), the input and output (solution) are printed on the screen
+    """
     num_digits = 0
 
     if operation == 'ADD':
@@ -432,12 +462,22 @@ def solve(operation, j, normal_or_optimal):
     if normal_or_optimal == 'N':
         math_general_in_out(j, num_digits, operation)
     else:  # normal_or_optimal == 'O'
-        optimal_in_out(j, num_digits, operation)
+        math_optimal_in_out(j, num_digits, operation)
 
 
 def menu_math(j):
     """
-    User menu for solving mathematical equations riddles
+    User menu for solving mathematical equations riddles - infinite loop (until the user enters EXIT as an operation)
+
+    It gets j - the initial input/output file's index
+
+    It receives input from the user - the operation(add/remove/move), the riddle type (normal/optimization) and the
+    riddle's parameters
+
+    It prints the input riddle on the screen
+    It solves the riddle (considering its type) and prints the solution
+
+    It returns the last input/output file's index
     """
     print """Welcome to our matchstick riddles solver!
 You can solve: mathematical equations"""
@@ -453,7 +493,7 @@ Exit - enter 'EXIT'
 Enter your decision here: """)
         if operation == 'ADD' or operation == 'REMOVE' or operation == 'MOVE':
             normal_or_optimal = normal_or_optimal_input()
-            solve(operation, j, normal_or_optimal)
+            math_solve(operation, j, normal_or_optimal)
 
         elif operation == 'EXIT':
             print 'Bye'
@@ -463,6 +503,12 @@ Enter your decision here: """)
 
 
 def normal_or_optimal_input():
+    """
+    This function receives input from the user:
+    'O' - solving an optimization riddle
+    'N' - solving a normal riddle
+    It returns the user's input
+    """
     while True:
         normal_or_optimal = raw_input("""ENTER 'N' IF YOU WANT TO SOLVE A NORMAL RIDDLE.
 ENTER 'O' IF YOU WANT TO ENTER LESS INPUT PARAMETERS - THE SOLVER WILL RETURN AN OPTIMAL OUTPUT. """)
@@ -687,7 +733,6 @@ def create_arrays_from_input(dir_arr):
 def print_structure():
     """
     This function prints the basic structure of the input, not including matchsticks' directions
-    :return:
     """
     im = Image.open('./sum_con.jpg')
     a = np.asarray(im)
@@ -707,6 +752,19 @@ def print_structure():
 
 
 def menu_sum(j):
+    """
+    User menu for solving sum of matchstick heads riddles - infinite loop
+    (until the user enters N - does not want to continue solving these riddles)
+
+    It gets j - the initial input/output file's index
+
+    It receives input from the user - the matchsticks' directions
+
+    It prints the input riddle on the screen
+    It solves the riddle and prints the solution
+
+    It returns the last input/output file's index
+    """
     print """
     
     WELCOME TO OUR RIDDLES SOLVER!
@@ -1048,6 +1106,12 @@ def print_sq(matchsticks, title, input_mat=None):
 
 
 def cont_run_rid():
+    """
+    This function receives input from the user -
+    'N' - does not want to continue solving the current riddle type (math / sum / square / shape)
+    'Y' - otherwise
+    It returns the user's answer
+    """
     cont = ''
     while True:
         cont = raw_input("DO YOU WANT TO CONTINUE SOLVING THIS TYPE OF RIDDLES? ENTER Y / N: ")
@@ -1056,21 +1120,21 @@ def cont_run_rid():
     return cont
 
 
-def rand_or_manual():
-    r_or_m = ''
-    print """
-THERE ARE TWO OPTIONS:
-GENERATE A RANDOM NEW RIDDLE - ENTER 1
-INSERT YOUR INPUT MANUALLY - ENTER 2
-    """
-    while True:
-        r_or_m = raw_input("ENTER YOUR CHOICE - 1 OR 2: ")
-        if r_or_m == '1' or r_or_m == '2':
-            break
-    return r_or_m
-
-
 def menu_sqr(j):
+    """
+    User menu for solving square riddles - infinite loop (until the user enters N - does not want to continue solving
+    this type of riddles)
+
+    It gets j - the initial input/output file's index
+
+    It receives input from the user - the riddle type (normal/optimization) and the
+    riddle's parameters
+
+    It prints the input riddle on the screen
+    It solves the riddle (considering its type) and prints the solution
+
+    It returns the last input/output file's index
+    """
     print """
 
         WELCOME TO OUR RIDDLES SOLVER!
@@ -1110,6 +1174,15 @@ def menu_sqr(j):
 
 
 def solve_sq(j, normal_or_optimal):
+    """
+        This function gets:
+        :param j: The index of the input/output files
+        :param normal_or_optimal: 'O' - optimization riddle, 'N' - normal squares riddle
+
+        It receives user input - riddle's parameters, considering its type (optimization / normal)
+
+        It solves the squares riddle (normal / optimization), the input and output (solution) are printed on the screen
+        """
     if normal_or_optimal == 'N':
         sq_in_out(j)
     else:  # optimal output
@@ -1117,6 +1190,17 @@ def solve_sq(j, normal_or_optimal):
 
 
 def sq_in_out(j):
+    """
+     This function gets:
+     :param j: Index of the input / output file
+
+     It receives input from the user (normal riddle):
+     The existing squares, the number of final squares, the number of matchsticks to move
+
+     It prints the input on the screen
+     It solves the normal squares riddle and prints the solution
+
+     """
     num_sqr_end = num_sqr_end_input()
     num_allowed = num_allowed_sq_input()
 
@@ -1158,6 +1242,12 @@ def sq_in_out(j):
 
 
 def opt_par_input():
+    """
+    This function receives input from the user - which parameter should be optimized while solving the squares riddle
+    '1' - minimal number of matchsticks to move (the number of final squares is constant)
+    '2' - minimal number of final squares (the number of matchsticks to move is constant)
+    It returns the user's answer - the optimized parameter
+    """
     while True:
         print """
 ENTER THE PARAMETER THAT YOU WANT TO OPTIMIZE:
@@ -1172,6 +1262,20 @@ ENTER THE PARAMETER THAT YOU WANT TO OPTIMIZE:
 
 
 def sq_optimal_in_out(j):
+    """
+     This function gets:
+     :param j: Index of the input / output file
+
+     It receives input from the user (optimization riddle):
+     The optimized parameter (num_allowed / num_sqr_end)
+     The second (constant) parameter's value
+     The initial existing squares
+     It prints the input on the screen
+
+     It solves the squares optimization riddle and prints the solution with the minimal number of: squares / matchstick
+     'move' operations (considering the user's previous choice) on the screen
+
+     """
     opt_parameter = opt_par_input()
     num_allowed, num_sqr_end = (-1, -1)
     if opt_parameter == 'num_sqr_end':
@@ -1230,6 +1334,12 @@ def sq_optimal_in_out(j):
 
 
 def tri_or_sq_input():
+    """
+    This function receives input from the user -
+    'T' - basic area unit: 1-match-length triangle
+    'S' - basic area unit: 1-match-length square
+    It returns the user's answer
+    """
     while True:
         tri_or_sq = raw_input("ENTER 'T' - TRIANGLE OR 'S' - SQUARE: ")
         if tri_or_sq == 'S' or tri_or_sq == 'T':
@@ -1239,6 +1349,12 @@ def tri_or_sq_input():
 
 
 def num_angles_input():
+    """
+        This function receives input from the user -
+        The total number of angles (an angle can be also 180 deg) in the shape
+        (1 - match - length edges)
+        It returns the user's answer
+        """
     while True:
         num_ang = raw_input("ENTER THE TOTAL NUMBER OF ANGLES: ")
         if num_ang.isdigit() and int(num_ang) >= 3:
@@ -1246,6 +1362,15 @@ def num_angles_input():
 
 
 def shape_sq_input():
+    """
+        This function receives input from the user -
+        The total number of angles (an angle can be also 180 deg) in the shape
+        (1 - match - length edges)
+        manual shape input / random shape input / a shape which is a part of a series of polygons
+        The angles (if the input is manual) - can be 90, 180, 270
+        It returns the user's shape: a 2D array:
+        format example - [[1, 90, 2], [2, 180, 3], [3, 90, 4], [4, 90, 5], [5, 180,6], [6, 90, 1]]
+    """
     count_edges = 1
     shape = []
     num_angles = num_angles_input()
@@ -1268,6 +1393,14 @@ def shape_sq_input():
 
 
 def man_rnd_con_input():
+    """
+        This function receives input from the user -
+        'M' - manual input
+        'R' - random input
+        'C' - constant input (available for shape riddles: a shape which is a part of a series)
+
+        It returns the user's answer
+    """
     print """
 NOW, YOU CAN CHOOSE:
 MANUAL INPUT - ENTER 'M'
@@ -1282,6 +1415,15 @@ CONSTANT INPUT - ENTER 'C'
 
 
 def shape_tri_input():
+    """
+            This function receives input from the user -
+            The total number of angles (an angle can be also 180 deg) in the shape
+            (1 - match - length edges)
+            manual shape input / random shape input / a shape which is a part of a series of polygons
+            The angles (if the input is manual) - can be 60, 120, 180, 240, 300
+            It returns the user's shape: a 2D array:
+            format example - [[1, 60, 2], [2, 60, 3], [3, 60, 1]]
+    """
     count_edges = 1
     shape = []
     num_angles = num_angles_input()
@@ -1304,6 +1446,11 @@ def shape_tri_input():
 
 
 def polygon_input():
+    """
+        General polygon input function:
+        The user enters the shape type (basic area unit: square / triangle) and gets a shape (2D array) for the riddle
+        This function returns the shape type and the polygon for the riddle
+    """
     original = []
     tri_or_sq = tri_or_sq_input()
     if tri_or_sq == 'S':
@@ -1314,6 +1461,11 @@ def polygon_input():
 
 
 def num_allowed_shape_input():
+    """
+            This function receives input from the user -
+            The total number of matchsticks for division
+            It returns the user's input
+        """
     while True:
         num_allowed_s = raw_input("ENTER THE NUMBER OF MATCHSTICKS FOR DIVISION: ")
         if num_allowed_s.isdigit():
@@ -1321,6 +1473,13 @@ def num_allowed_shape_input():
 
 
 def draw(original, title, color='yellow'):
+    """
+    This function gets:
+    :param original: the shape for division
+    :param title: 'THE INPUT' / 'THE SOLUTION'
+    :param color: relevant only for printing a half of the shape (output), default - yellow
+    It prints the shape by calculating its vertices
+    """
     font = {'family': 'serif',
             'color': 'darkred',
             'weight': 'bold',
@@ -1343,6 +1502,15 @@ def draw(original, title, color='yellow'):
 
 
 def print_shape(original, title, shape1=None, shape2=None):
+    """
+    This function gets:
+    :param original: the shape for division
+    :param title: 'THE INPUT' / 'THE SOLUTION'
+    :param shape1: relevant only for printing a half of the shape (output)
+    :param shape2: relevant only for printing the other half of the shape (output)
+    If this is the input: it prints the original shape by calculating its vertices
+    If this is the output: it prints the original shape and a half of it by calculating their vertices
+    """
     def foo1(values):
         return values[0]
 
@@ -1388,6 +1556,19 @@ def print_shape(original, title, shape1=None, shape2=None):
 
 
 def menu_shape(j):
+    """
+     User menu for solving shape division riddles - infinite loop (until the user enters N - does not want to continue solving
+     this type of riddles)
+
+     It gets j - the initial input/output file's index
+
+     It receives input from the user - the riddle's parameters
+
+     It prints the input riddle on the screen
+     It solves the riddle (considering its type) and prints the solution
+
+     It returns the last input/output file's index
+     """
     print """
 
             WELCOME TO OUR RIDDLES SOLVER!
@@ -1447,6 +1628,14 @@ def menu_shape(j):
 
 
 def main_option_input():
+    """
+        This function receives input from the user -
+        '1' - mathematical equation riddles
+        '2' - square riddles
+        '3' - sum of matchstick heads riddles
+        '4' - shape division riddles
+        It returns the user's answer
+    """
     option = ""
     while True:
         option = raw_input("ENTER YOUR CHOICE HERE (0, 1, 2, 3 OR 4): ")
@@ -1456,6 +1645,9 @@ def main_option_input():
 
 
 def menu_all():
+    """
+    General menu for solving all the riddle types
+    """
     j = 0
     while True:
         print """
