@@ -1,7 +1,10 @@
+import random
 from termcolor import colored
 import general_move
 import general2
+import areanew_proj
 import mathead_code_proj
+import check_close
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import sqr_code_proj
@@ -29,73 +32,6 @@ digits_dict = {'minus': '        \n' + ' __     \n' + '        ',
                7: ' __     \n' + '   |    \n' + '   |    ',
                8: ' __     \n' + '|__|    \n' + '|__|    ',
                9: ' __     \n' + '|__|    \n' + ' __|    '}
-
-
-def print_match_cons_sum(arr_rows, arr_cols, title):
-    """
-    This function gets:
-    :param arr_rows: an array of 24 integers, each integer represents a matchstick direction:
-    1 - the matchstick points to row 1
-    2 - the matchstick points to row 2,
-    3 - the matchstick points to row 3,
-    4 - the matchstick points to row 4
-
-    :param arr_cols: an array of 24 integers, each integer represents a matchstick direction:
-    1 - the matchstick points to col 1
-    2 - the matchstick points to col 2,
-    3 - the matchstick points to col 3,
-    4 - the matchstick points to col 4
-
-    :param title: the configuration's title: input / solution
-    It prints the matchsticks configuration
-    """
-    font = {'family': 'serif',
-            'color': 'darkred',
-            'weight': 'bold',
-            'size': 26,
-            }
-
-    rows = 4
-    cols = 7
-    fig = plt.figure(figsize=(18, 18))
-    plt.title(title, fontdict=font)
-    plt.axis('off')
-    for i in range(1, rows * cols + 1):
-        if i <= 21 or i == 23 or i == 25 or i == 27:
-            if (i % 7) % 2 == 0 and i % 7 != 0:
-                img = mpimg.imread('./match2.jpg')
-            else:
-                img = mpimg.imread('./match5.jpg')
-        else:
-            img = mpimg.imread('./white.jpg')
-        fig.add_subplot(rows, cols, i)
-        plt.axis('off')
-        if i % 7 == 2:
-            if arr_cols[i - 2] != 1:
-                img = np.fliplr(img)
-
-        elif i % 7 == 4:
-            if arr_cols[i - 3] != 2:
-                img = np.fliplr(img)
-
-        elif i % 7 == 6:
-            if arr_cols[i - 4] != 3:
-                img = np.fliplr(img)
-
-        elif i != 22 and i % 7 == 1:
-            if arr_rows[i + 2] == i / 7 + 2:
-                img = ndimage.rotate(img, 180)
-        elif i != 24 and i % 7 == 3:
-            if arr_rows[i + 1] == i / 7 + 2:
-                img = ndimage.rotate(img, 180)
-        elif i != 26 and i % 7 == 5:
-            if arr_rows[i] == i / 7 + 2:
-                img = ndimage.rotate(img, 180)
-        elif i != 28 and i % 7 == 0:
-            if arr_rows[i - 1] == i / 7 + 1:
-                img = ndimage.rotate(img, 180)
-        plt.imshow(img)
-    plt.show()
 
 
 def operand_input(num_digits, i):
@@ -150,22 +86,41 @@ You entered an invalid string. Your input must be 'minus' or 'plus'!
 def equation_input(num_digits):
     """
     This function gets the number of digits per operand - num_digits.
-    It receives an operand input from the user.
+
+    There are 2 options:
+        Manual input - the function receives an operand input from the user.
+        Random input - the function randomly chooses legal operands, according to the number of digits per operand.
+
     It receives a string as an input for the riddle's operator. The operator must be 'minus' or 'plus'.
+
     It checks that the operands are natural numbers (including 0) and each operand includes maximum (num_digits) digits.
-    It checks that the operand string equals 'plus' or 'minus'.
+    It checks that the operator string equals 'plus' or 'minus'.
+
     If the inputs are valid - it returns the equation for the riddle.
     Else - it continues receiving inputs.
     """
+    dig1 = 0
+    dig2 = 0
+    result = 0
 
-    # first operand input
-    dig1 = operand_input(num_digits, 1)
+    man_rnd_con = man_rnd_con_input()
+    while man_rnd_con == 'C':
+        print """Currently unavailable. Type 'M' or 'R' instead."""
+        man_rnd_con = man_rnd_con_input()
 
-    # second operand input
-    dig2 = operand_input(num_digits, 2)
+    if man_rnd_con == 'M':
+        # first operand input
+        dig1 = operand_input(num_digits, 1)
 
-    # result input
-    result = operand_input(num_digits, 3)
+        # second operand input
+        dig2 = operand_input(num_digits, 2)
+
+        # result input
+        result = operand_input(num_digits, 3)
+    elif man_rnd_con == 'R':
+        dig1 = random.randint(0, 10 ** int(num_digits) - 1)
+        dig2 = random.randint(0, 10 ** int(num_digits) - 1)
+        result = random.randint(0, 10 ** int(num_digits) - 1)
 
     plus_or_minus = operator_input()
 
@@ -174,7 +129,22 @@ def equation_input(num_digits):
 
 def equation_print(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, operation):
     """
-    This function prints a riddle's equation. (The equation may be an input or an output)
+    This function prints a riddle's equation. (The equation may be an input or an output - solution: satisfied equation)
+
+    Input options:
+        If the riddle is a normal one (the number of matchsticks to add/remove/move is given and different than -1):
+        the equation will be printed with the number of matchsticks and the operation (add/remove/move)
+
+        If the riddle is an optimization problem (the number of matchsticks to add/remove/move equals -1):
+        only the equation will be printed
+
+    Output options:
+        If the riddle is a normal one: the satisfied equation will be printed with the constant number of matchsticks
+        and the operation (add/remove/move)
+
+        If the riddle is an optimization problem: the satisfied equation will be printed with the minimal number of
+        matchsticks and the operation (add/remove/move)
+
     """
     st11, st12, st13 = print_number(num_digits, dig1).split('\n')
     st21, st22, st23 = print_number(num_digits, dig2).split('\n')
@@ -184,8 +154,9 @@ def equation_print(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, o
     print colored(st11 + op1 + st21 + eq1 + st31, 'yellow')
     print colored(st12 + op2 + st22 + eq2 + st32, 'yellow')
     print colored(st13 + op3 + st23 + eq3 + st33, 'yellow')
-    print colored("""
-                                   NUMBER OF MATCHSTICKS TO """ + operation + """: """ + num_allowed, 'yellow')
+    if num_allowed != -1:  # not an input for an optimization problem
+        print colored("""
+                                   NUMBER OF MATCHSTICKS TO """ + operation + """: """ + str(num_allowed), 'yellow')
 
 
 def print_number(num_digits, num):
@@ -293,6 +264,7 @@ def num_allowed_input(num_digits, operation):
     """
     This function gets num_digits - the number of digits per operand, and operation - add, move or remove.
     It receives input from the user - the number of matchsticks required for solving the riddle.
+    (This function is used only in the normal riddles, not in the optimization riddles)
     """
     while True:
         num_allowed = raw_input("""Now you need to enter the number of matchsticks to """ + operation + """.
@@ -316,11 +288,12 @@ You entered an invalid string. Your input must be an integer!
                 """
 
 
-def general_input(num_digits, operation):
+def math_general_input(num_digits, operation):
     """
     This function gets num_digits - the number of digits per operand, and operation - add, move or remove.
     It receives input from the user - the riddle's equation and the number of matchsticks required for solving the riddle.
     It prints the input by 7-segment format.
+    This function is used only for the normal riddles, not the optimization riddles
     """
     dig1, dig2, result, plus_or_minus = equation_input(num_digits)
     num_allowed = num_allowed_input(num_digits, operation)
@@ -334,12 +307,32 @@ def general_input(num_digits, operation):
     return dig1, dig2, result, plus_or_minus, num_allowed
 
 
-def general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, operation):
+def math_optimal_input(num_digits, operation):
+    """
+        This function gets num_digits - the number of digits per operand, and operation - add, move or remove.
+        It receives input from the user - the riddle's equation.
+        It prints the input by 7-segment format.
+        This function is used only for the optimization riddles, not the normal riddles
+    """
+    dig1, dig2, result, plus_or_minus = equation_input(num_digits)
+    print """
+
+    ---------------------------------------------------------------------------------------------------------
+                                                 YOUR INPUT IS:
+                """
+    equation_print(dig1, dig2, result, plus_or_minus, num_digits, -1, operation)
+    print """---------------------------------------------------------------------------------------------------------"""
+    return dig1, dig2, result, plus_or_minus
+
+
+def math_general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, operation):
     """
     This function gets num_digits - the number of digits per operand
                        operation - add, move or remove
                        the output equation
-    It prints the output equation on the screen.
+    It prints the output equation on the screen with the constant number of matchsticks and the operation
+    (add/remove/move).
+    This function is used only for the normal riddles, not the optimization riddles
     """
     print """
 
@@ -350,13 +343,104 @@ def general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, o
     print """---------------------------------------------------------------------------------------------------------"""
 
 
-def menu_math():
+def optimal_output(dig1, dig2, result, plus_or_minus, num_digits, operation, num_allowed):
+    """
+    This function gets num_digits - the number of digits per operand
+                       operation - add, move or remove
+                       the output equation
+    It prints the output equation on the screen with the minimal number of matchsticks and the operation
+    (add/remove/move).
+    This function is used only for the optimization riddles, not the normal riddles
+    """
+    print """
+
+    ---------------------------------------------------------------------------------------------------------
+                                                 YOUR OUTPUT IS:
+                """
+    equation_print(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, operation)
+
+
+    print """---------------------------------------------------------------------------------------------------------"""
+
+
+def math_general_in_out(j, num_digits, operation):
+    """
+    This function gets:
+    :param j:
+    :param num_digits:
+    :param operation:
+    It
+    :return:
+    """
+    dig1, dig2, result, plus_or_minus, num_allowed = math_general_input(num_digits, operation)
+    if operation == 'ADD' or operation == 'REMOVE':
+        times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
+                                                                 plus_or_minus, int(num_allowed), operation.lower(),
+                                                                 int(num_digits))
+    else:
+        times, flag_solved, run_time = general_move.solve_equation_input(j, int(dig1), int(dig2), int(result),
+                                                                     plus_or_minus, int(num_allowed),
+                                                                     int(num_digits))
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 2:
+        if operation == 'ADD' or operation == 'REMOVE':
+            dig1, dig2, result = general2.find_info(j)
+        else:
+            dig1, dig2, result = general_move.find_info(j)
+        math_general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, operation)
+    else:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+
+def optimal_in_out(j, num_digits, operation):
+    dig1, dig2, result, plus_or_minus = math_optimal_input(num_digits, operation)
+    if operation == 'ADD' or operation == 'REMOVE':
+        times, flag_solved, run_time, dig1, dig2, result, num_allowed = general2.solve_equation_opt_input(j, int(dig1), int(dig2), int(result),
+                                                                     plus_or_minus, operation.lower(),
+                                                                     int(num_digits))
+    else:
+        times, flag_solved, run_time, dig1, dig2, result, num_allowed = general_move.solve_equation_opt_input(j, int(dig1),
+                                                                                                          int(dig2),
+                                                                                                          int(result),
+                                                                                                          plus_or_minus,
+                                                                                                          int(num_digits))
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 0 and plus_or_minus == 'plus' and dig1 + dig2 != result:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 0 and plus_or_minus == 'minus' and dig1 - dig2 != result:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    else:
+        optimal_output(dig1, dig2, result, plus_or_minus, num_digits, operation, num_allowed)
+
+
+def solve(operation, j, normal_or_optimal):
+    num_digits = 0
+
+    if operation == 'ADD':
+        num_digits = add()
+    elif operation == 'REMOVE':
+        num_digits = remove()
+    elif operation == 'MOVE':
+        num_digits = move()
+
+    if normal_or_optimal == 'N':
+        math_general_in_out(j, num_digits, operation)
+    else:  # normal_or_optimal == 'O'
+        optimal_in_out(j, num_digits, operation)
+
+
+def menu_math(j):
     """
     User menu for solving mathematical equations riddles
     """
     print """Welcome to our matchstick riddles solver!
 You can solve: mathematical equations"""
-    j = 0
     while True:
         j += 1
         operation = raw_input("""
@@ -367,61 +451,101 @@ Remove matchsticks - enter 'REMOVE'
 Move matchsticks - enter 'MOVE'
 Exit - enter 'EXIT' 
 Enter your decision here: """)
-
-        if operation == 'ADD':
-            num_digits = add()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                         plus_or_minus, int(num_allowed), 'add',
-                                                                         int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general2.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'ADD')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
-
-        elif operation == 'REMOVE':
-            num_digits = remove()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                         plus_or_minus, int(num_allowed), 'remove',
-                                                                         int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general2.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'REMOVE')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
-
-        elif operation == 'MOVE':
-            num_digits = move()
-            dig1, dig2, result, plus_or_minus, num_allowed = general_input(num_digits, operation)
-            times, flag_solved, run_time = general_move.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                             plus_or_minus, int(num_allowed),
-                                                                             int(num_digits))
-            if flag_solved == 1:
-                print colored("""                                NO SOLUTION                               """, 'red')
-            elif flag_solved == 2:
-                dig1, dig2, result = general_move.find_info(j)
-                general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, 'MOVE')
-            else:
-                print colored("""                                NO SOLUTION                               """, 'red')
+        if operation == 'ADD' or operation == 'REMOVE' or operation == 'MOVE':
+            normal_or_optimal = normal_or_optimal_input()
+            solve(operation, j, normal_or_optimal)
 
         elif operation == 'EXIT':
             print 'Bye'
-            break
+            return j
         else:
             print 'Error! Invalid operation.'
 
 
+def normal_or_optimal_input():
+    while True:
+        normal_or_optimal = raw_input("""ENTER 'N' IF YOU WANT TO SOLVE A NORMAL RIDDLE.
+ENTER 'O' IF YOU WANT TO ENTER LESS INPUT PARAMETERS - THE SOLVER WILL RETURN AN OPTIMAL OUTPUT. """)
+        if normal_or_optimal == 'N' or normal_or_optimal == 'O':
+            return normal_or_optimal
 """
 -----------------------------------------------------------------------------------------------------------
                             SUM OF MATCHSTICK HEADS RIDDLES GUI FUNCTIONS
 -----------------------------------------------------------------------------------------------------------
 """
+
+
+def print_match_cons_sum(arr_rows, arr_cols, title):
+    """
+    This function gets:
+    :param arr_rows: an array of 24 integers, each integer represents a matchstick direction:
+    1 - the matchstick points to row 1
+    2 - the matchstick points to row 2,
+    3 - the matchstick points to row 3,
+    4 - the matchstick points to row 4
+
+    :param arr_cols: an array of 24 integers, each integer represents a matchstick direction:
+    1 - the matchstick points to col 1
+    2 - the matchstick points to col 2,
+    3 - the matchstick points to col 3,
+    4 - the matchstick points to col 4
+
+    :param title: the configuration's title: input / solution
+    It prints the matchsticks configuration
+    """
+    font = {'family': 'serif',
+            'color': 'darkred',
+            'weight': 'bold',
+            'size': 26,
+            }
+
+    rows = 4
+    cols = 7
+    fig = plt.figure(figsize=(6, 6))
+    plt.title(title, fontdict=font)
+    plt.axis('off')
+    for i in range(1, rows * cols + 1):
+        if i <= 21 or i == 23 or i == 25 or i == 27:
+            if (i % 7) % 2 == 0 and i % 7 != 0:
+                img = mpimg.imread('./match2.jpg')
+            else:
+                img = mpimg.imread('./match5.jpg')
+        else:
+            img = mpimg.imread('./white.jpg')
+        fig.add_subplot(rows, cols, i)
+        plt.axis('off')
+        if i % 7 == 2:
+            if arr_cols[i - 2] != 1:
+                img = np.fliplr(img)
+
+        elif i % 7 == 4:
+            if arr_cols[i - 3] != 2:
+                img = np.fliplr(img)
+
+        elif i % 7 == 6:
+            if arr_cols[i - 4] != 3:
+                img = np.fliplr(img)
+
+        elif i != 22 and i % 7 == 1:
+            if arr_rows[i + 2] == i / 7 + 2:
+                img = ndimage.rotate(img, 180)
+        elif i != 24 and i % 7 == 3:
+            if arr_rows[i + 1] == i / 7 + 2:
+                img = ndimage.rotate(img, 180)
+        elif i != 26 and i % 7 == 5:
+            if arr_rows[i] == i / 7 + 2:
+                img = ndimage.rotate(img, 180)
+        elif i != 28 and i % 7 == 0:
+            if arr_rows[i - 1] == i / 7 + 1:
+                img = ndimage.rotate(img, 180)
+        plt.imshow(img)
+    plt.subplots_adjust(left=0.1,
+                        bottom=0.14,
+                        right=0.9,
+                        top=0.79,
+                        wspace=0,
+                        hspace=0.05)
+    plt.show()
 
 
 def matchsticks_input():
@@ -582,8 +706,7 @@ def print_structure():
     """
 
 
-def menu_sum():
-    j = 0
+def menu_sum(j):
     print """
     
     WELCOME TO OUR RIDDLES SOLVER!
@@ -601,6 +724,9 @@ def menu_sum():
     """
     print_structure()
     while True:
+        cont = cont_run_rid()  # continue solving this type of riddles - 'Y' or 'N'
+        if cont == 'N':
+            return j
         j += 1
         match_rows, match_cols, match_dis = matchsticks_input()
         print_match_cons_sum(match_rows, match_cols, 'THE INPUT\n')
@@ -921,8 +1047,30 @@ def print_sq(matchsticks, title, input_mat=None):
     plt.show()
 
 
-def menu_sqr():
-    j = 0
+def cont_run_rid():
+    cont = ''
+    while True:
+        cont = raw_input("DO YOU WANT TO CONTINUE SOLVING THIS TYPE OF RIDDLES? ENTER Y / N: ")
+        if cont == 'Y' or cont == 'N':
+            break
+    return cont
+
+
+def rand_or_manual():
+    r_or_m = ''
+    print """
+THERE ARE TWO OPTIONS:
+GENERATE A RANDOM NEW RIDDLE - ENTER 1
+INSERT YOUR INPUT MANUALLY - ENTER 2
+    """
+    while True:
+        r_or_m = raw_input("ENTER YOUR CHOICE - 1 OR 2: ")
+        if r_or_m == '1' or r_or_m == '2':
+            break
+    return r_or_m
+
+
+def menu_sqr(j):
     print """
 
         WELCOME TO OUR RIDDLES SOLVER!
@@ -953,53 +1101,404 @@ def menu_sqr():
         """
 
     while True:
-        num_sqr_end = num_sqr_end_input()
+        cont = cont_run_rid()  # continue solving this type of riddles - 'Y' or 'N'
+        if cont == 'N':
+            return j
+        normal_or_optimal = normal_or_optimal_input()
+        solve_sq(j, normal_or_optimal)
+        j += 1
+
+
+def solve_sq(j, normal_or_optimal):
+    if normal_or_optimal == 'N':
+        sq_in_out(j)
+    else:  # optimal output
+        sq_optimal_in_out(j)
+
+
+def sq_in_out(j):
+    num_sqr_end = num_sqr_end_input()
+    num_allowed = num_allowed_sq_input()
+
+    arr_sq_1 = sq1_input()
+    arr_sq_2 = sq2_input()
+    sq_3 = sq3_input()
+    sq_1_bool, sq_2_bool, sq_3_bool, matchsticks = to_bool(arr_sq_1, arr_sq_2, sq_3)
+
+    num_sqr_1_beg = sum(sq_1_bool)
+    num_sqr_2_beg = sum(sq_2_bool)
+    num_sqr_3_beg = sum([sq_3_bool])
+    num_sqr_beg = num_sqr_1_beg + num_sqr_2_beg + num_sqr_3_beg
+
+    valid = sqr_code_proj.check_valid(num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, matchsticks, sq_1_bool,
+                sq_2_bool, sq_3_bool, num_sqr_end,
+                num_allowed)
+    if valid:
+        print_sq(matchsticks, 'THE INPUT\n')
+        times, flag_solved, run_time = sqr_code_proj.solve_rid_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, matchsticks,
+                    sq_1_bool, sq_2_bool, sq_3_bool, num_sqr_end, num_allowed)
+        if flag_solved == 1:
+            print colored("""                                NO SOLUTION                               """, 'red')
+
+        elif flag_solved == 2:
+            matchsticks2 = sqr_code_proj.find_info(j)
+            print_sq(matchsticks2, 'THE SOLUTION\n', matchsticks)
+
+        else:
+            print colored("""                                NO SOLUTION                               """, 'red')
+
+    else:
+        print """------------------------------------ERROR - INVALID INPUT----------------------------------------------
+                                        SOMETHING IS WRONG WITH THE SQUARES INPUT. 
+                                        MAYBE YOU HAVE FORGOTTEN SOME EXISTING SQUARES...
+                                        MAYBE THE INTEGER PARAMETERS' VALUES ARE INVALID... 
+                                        ENTER YOUR INPUT AGAIN.
+    -------------------------------------------------------------------------------------------------------
+        """
+
+
+def opt_par_input():
+    while True:
+        print """
+ENTER THE PARAMETER THAT YOU WANT TO OPTIMIZE:
+1 - THE NUMBER OF MATCHSTICKS TO MOVE
+2 - THE NUMBER OF TOTAL SQUARES IN THE END OF THE EXECUTION PROCESS
+        """
+        option = raw_input("ENTER YOUR DECISION HERE: ")
+        if option == '1':
+            return 'num_allowed'
+        elif option == '2':
+            return 'num_sqr_end'
+
+
+def sq_optimal_in_out(j):
+    opt_parameter = opt_par_input()
+    num_allowed, num_sqr_end = (-1, -1)
+    if opt_parameter == 'num_sqr_end':
         num_allowed = num_allowed_sq_input()
 
-        arr_sq_1 = sq1_input()
-        arr_sq_2 = sq2_input()
-        sq_3 = sq3_input()
-        sq_1_bool, sq_2_bool, sq_3_bool, matchsticks = to_bool(arr_sq_1, arr_sq_2, sq_3)
+    elif opt_parameter == 'num_allowed':
+        num_sqr_end = num_sqr_end_input()
 
-        num_sqr_1_beg = sum(sq_1_bool)
-        num_sqr_2_beg = sum(sq_2_bool)
-        num_sqr_3_beg = sum([sq_3_bool])
-        num_sqr_beg = num_sqr_1_beg + num_sqr_2_beg + num_sqr_3_beg
+    arr_sq_1 = sq1_input()
+    arr_sq_2 = sq2_input()
+    sq_3 = sq3_input()
+    sq_1_bool, sq_2_bool, sq_3_bool, matchsticks = to_bool(arr_sq_1, arr_sq_2, sq_3)
 
-        valid = sqr_code_proj.check_valid(num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, num_sqr_end,
-                                          num_allowed,
-                                          matchsticks, sq_1_bool, sq_2_bool, sq_3_bool)
+    num_sqr_1_beg = sum(sq_1_bool)
+    num_sqr_2_beg = sum(sq_2_bool)
+    num_sqr_3_beg = sum([sq_3_bool])
+    num_sqr_beg = num_sqr_1_beg + num_sqr_2_beg + num_sqr_3_beg
+
+    valid = sqr_code_proj.check_valid(num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, matchsticks, sq_1_bool,
+                                      sq_2_bool, sq_3_bool, num_sqr_end,
+                                      num_allowed, True, opt_parameter)
+    if valid:
+        print_sq(matchsticks, 'THE INPUT\n')
+        times, flag_solved, run_time, matchsticks2, current_min = sqr_code_proj.solve_rid_opt_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, matchsticks,
+                        sq_1_bool, sq_2_bool, sq_3_bool, num_sqr_end, num_allowed)
+        if flag_solved == 1:
+            print colored("""                                NO SOLUTION                               """, 'red')
+
+        elif flag_solved == 0 and opt_parameter == 'num_allowed' and num_sqr_end != num_sqr_beg:
+            print colored("""                                NO SOLUTION                               """, 'red')
+
+        elif flag_solved == 0 and opt_parameter == 'num_sqr_end' and num_allowed != 0:
+
+            print colored("""                                NO SOLUTION                               """, 'red')
+
+        elif flag_solved == 2:
+            print_sq(matchsticks2, 'THE SOLUTION\n', matchsticks)
+
+        else:
+            print_sq(matchsticks2, 'THE SOLUTION\n', matchsticks)
+
+    else:
+        print """------------------------------------ERROR - INVALID INPUT----------------------------------------------
+                                        SOMETHING IS WRONG WITH THE SQUARES INPUT. 
+                                        YOU HAVE FORGOTTEN SOME EXISTING SQUARES...
+                                        ENTER YOUR INPUT AGAIN.
+    -------------------------------------------------------------------------------------------------------
+        """
+
+
+"""
+-----------------------------------------------------------------------------------------------------------
+                            SHAPE DIVISION RIDDLES GUI FUNCTIONS
+-----------------------------------------------------------------------------------------------------------
+"""
+
+
+def tri_or_sq_input():
+    while True:
+        tri_or_sq = raw_input("ENTER 'T' - TRIANGLE OR 'S' - SQUARE: ")
+        if tri_or_sq == 'S' or tri_or_sq == 'T':
+            return tri_or_sq
+        else:
+            print "ERROR - INVALID INPUT"
+
+
+def num_angles_input():
+    while True:
+        num_ang = raw_input("ENTER THE TOTAL NUMBER OF ANGLES: ")
+        if num_ang.isdigit() and int(num_ang) >= 3:
+            return int(num_ang)
+
+
+def shape_sq_input():
+    count_edges = 1
+    shape = []
+    num_angles = num_angles_input()
+    man_rnd_con = man_rnd_con_input()
+    if man_rnd_con == 'M':
+        while True:
+            ang = raw_input("ENTER AN ANGLE - 90, 180, 270: ")
+            if ang.isdigit() and 0 < int(ang) < 360 and int(ang) % 90 == 0:
+                shape.append([count_edges, int(ang), count_edges + 1])
+                if count_edges == num_angles:
+                    shape[count_edges - 1][2] = 1
+                    return shape
+                count_edges += 1
+            else:
+                print "ERROR - INVALID ANGLE INPUT"
+
+    elif man_rnd_con == 'C':
+        shape = areanew_proj.create_shape2(num_angles)
+        return shape
+
+
+def man_rnd_con_input():
+    print """
+NOW, YOU CAN CHOOSE:
+MANUAL INPUT - ENTER 'M'
+RANDOM INPUT - ENTER 'R'
+CONSTANT INPUT - ENTER 'C'
+    """
+    while True:
+        man_rnd_con = raw_input("CHOOSE THE DESIRED OPTION: ")
+        if man_rnd_con == 'M' or man_rnd_con == 'R' or man_rnd_con == 'C':
+            break
+    return man_rnd_con
+
+
+def shape_tri_input():
+    count_edges = 1
+    shape = []
+    num_angles = num_angles_input()
+    man_rnd_con = man_rnd_con_input()
+    if man_rnd_con == 'M':
+        while True:
+            ang = raw_input("ENTER AN ANGLE - 60, 120, 180, 240, 300: ")
+            if ang.isdigit() and 0 < int(ang) < 360 and int(ang) % 60 == 0:
+                shape.append([count_edges, int(ang), count_edges + 1])
+                if count_edges == num_angles:
+                    shape[count_edges - 1][2] = 1
+                    return shape
+                count_edges += 1
+            else:
+                print "ERROR - INVALID ANGLE INPUT"
+
+    elif man_rnd_con == 'C':
+        shape = areanew_proj.create_shape(num_angles)
+        return shape
+
+
+def polygon_input():
+    original = []
+    tri_or_sq = tri_or_sq_input()
+    if tri_or_sq == 'S':
+        original = shape_sq_input()
+    elif tri_or_sq == 'T':
+        original = shape_tri_input()
+    return original, tri_or_sq
+
+
+def num_allowed_shape_input():
+    while True:
+        num_allowed_s = raw_input("ENTER THE NUMBER OF MATCHSTICKS FOR DIVISION: ")
+        if num_allowed_s.isdigit():
+            return int(num_allowed_s)
+
+
+def draw(original, title, color='yellow'):
+    font = {'family': 'serif',
+            'color': 'darkred',
+            'weight': 'bold',
+            'size': 18,
+            }
+    plt.title(title, fontdict=font)
+    list_points = check_close.list_points(original, areanew_proj.build_dir(original))
+    x_values = [x for x, y in list_points]
+    y_values = [y for x, y in list_points]
+    plt.plot(x_values, y_values, 'wo', zorder=2)
+    for i in range(0, len(x_values) - 1, 1):
+        if color == 'yellow':
+            plt.plot(x_values[i:i + 2], y_values[i:i + 2], 'y-', zorder=1)
+        elif color == 'black':
+            plt.plot(x_values[i:i + 2], y_values[i:i + 2], 'k-', zorder=1)
+        else:
+            plt.plot(x_values[i:i + 2], y_values[i:i + 2], color[0] + '-', zorder=1)
+    plt.axis('equal')
+    plt.axis('off')
+
+
+def print_shape(original, title, shape1=None, shape2=None):
+    def foo1(values):
+        return values[0]
+
+    def foo2(values):
+        for i in range(1, len(values)):
+            values[i - 1] = values[i]
+
+    def foo3(values, c):
+        values[len(values) - 1] = c
+
+    draw(original, title)
+
+    k = 0  # index of [1, ang, m]
+    sh = 1  # default, can be 1 or 2
+
+    if shape1 or shape2:
+
+        for i in range(0, len(shape1)):
+
+            if shape1[i][0] == 1:
+                sh = 1
+                k = i
+            elif shape2[i][0] == 1:
+                sh = 2
+                k = i
+
+        if sh == 1:
+            for r in range(k):
+                a = foo1(shape1)
+                foo2(shape1)
+                foo3(shape1, a)
+            draw(shape1, title, 'cyan')
+
+        elif sh == 2:
+            for r in range(k):
+                a = foo1(shape2)
+                foo2(shape2)
+                foo3(shape2, a)
+            draw(shape2, title, 'cyan')
+
+    plt.show()
+    print '1'
+
+
+def menu_shape(j):
+    print """
+
+            WELCOME TO OUR RIDDLES SOLVER!
+
+            HERE YOU CAN SOLVE SHAPE DIVISION RIDDLES.
+
+            ------------------------------------------ RIDDLE DEFINITION: -----------------------------------------------
+
+            GIVEN AN INITIAL MATCHSTICKS POLYGON AND X - A NUMBER OF MATCHSTICKS TO ADD.
+            A SOLUTION IS - THE ORIGINAL POLYGON, DIVIDED BY X MATCHSTICKS INTO 2 IDENTICAL POLYGONS.
+            LEGAL POLYGONS:
+            BASIC AREA UNIT: 1-MATCH-LENGTH TRIANGLE (LEGAL ANGLES 60, 120, 180, 240, 300)
+            BASIC AREA UNIT: 1-MATCH-LENGTH SQUARE (LEGAL ANGLES 90, 180, 270)
+
+            -------------------------------------------------------------------------------------------------------------
+
+            YOU NEED TO INSERT THE POLYGON'S ANGLES.
+            THEN, YOU NEED TO CHOOSE X - THE NUMBER OF MATCHSTICKS FOR THE DIVISION.
+
+            THIS PROGRAM ADDS X MATCHSTICKS (IF POSSIBLE) IN ORDER TO DIVIDE THE POLYGON. 
+            FOR EACH INPUT, A CORRECT OUTPUT - SOLUTION - WILL BE PRINTED.
+
+            """
+    while True:
+        cont = cont_run_rid()
+        if cont == 'N':
+            return j
+
+        polygon, tri_or_sq = polygon_input()
+        num_allowed = num_allowed_shape_input()
+        valid = areanew_proj.check_valid(polygon, num_allowed)
+
         if valid:
-            print_sq(matchsticks, 'THE INPUT\n')
-            times, flag_solved, run_time = sqr_code_proj.solve_rid_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg,
-                                                                         num_sqr_3_beg, num_sqr_end,
-                                                                         num_allowed,
-                                                                         matchsticks, sq_1_bool, sq_2_bool, sq_3_bool)
+
+            print_shape(polygon, 'THE INPUT\n')
+            times, flag_solved, run_time, shape1, shape2 = areanew_proj.solve_rid_input(j, polygon, num_allowed,
+                                                                                        tri_or_sq)
             if flag_solved == 1:
                 print colored("""                                NO SOLUTION                               """, 'red')
 
             elif flag_solved == 2:
-                matchsticks2 = sqr_code_proj.find_info(j)
-                print_sq(matchsticks2, 'THE SOLUTION\n', matchsticks)
+                print_shape(polygon, 'THE SOLUTION\n', shape1, shape2)
+                print shape1, shape2
 
             else:
                 print colored("""                                NO SOLUTION                               """, 'red')
 
         else:
             print """------------------------------------ERROR - INVALID INPUT----------------------------------------------
-                                    SOMETHING IS WRONG WITH THE SQUARES INPUT. 
-                                    YOU HAVE FORGOTTEN SOME EXISTING SQUARES...
-                                    ENTER YOUR INPUT AGAIN.
--------------------------------------------------------------------------------------------------------
-    """
+                                            
+                                            YOUR SHAPE IS NOT A POLYGON.
+                                    
+        -------------------------------------------------------------------------------------------------------
+            """
 
         j += 1
 
 
+def main_option_input():
+    option = ""
+    while True:
+        option = raw_input("ENTER YOUR CHOICE HERE (0, 1, 2, 3 OR 4): ")
+        if option.isdigit() and 0 <= int(option) <= 4:
+            break
+    return option
+
+
+def menu_all():
+    j = 0
+    while True:
+        print """
+    
+WELCOME TO OUR RIDDLES SOLVER!
+HERE YOU CAN SOLVE SEVERAL TYPES OF MATCHSTICK RIDDLES.
+
+CHOOSE THE RIDDLES THAT YOU WANT TO SOLVE:
+*************************************************************************
+*                                                                       *
+*                       THE AVAILABLE RIDDLES ARE:                      *
+*                                                                       *
+*************************************************************************
+*                                                                       *
+*                MATHEMATICAL RIDDLES (ENTER '1')                       *
+*                SQUARE RIDDLES  (ENTER '2')                            *
+*                SUM OF MATCHSTICK HEADS RIDDLES  (ENTER '3')           *
+*                SHAPE DIVISION RIDDLES (ENTER '4')                     *
+*                                                                       *
+*************************************************************************    
+
+IF YOU WANT TO EXIT, ENTER '0'.
+    """
+        option = main_option_input()  # must be 0, 1, 2 or 3
+        if option == '1':
+            j = menu_math(j)
+            continue
+        elif option == '2':
+            j = menu_sqr(j)
+            continue
+        elif option == '3':
+            j = menu_sum(j)
+            continue
+        elif option == '4':
+            j = menu_shape(j)
+            continue
+        else:
+            print 'Bye'
+            break
+
+
 def main():
-    # menu_math()
-    # menu_sum()
-    menu_sqr()
+    menu_all()
 
 
 if __name__ == '__main__':
