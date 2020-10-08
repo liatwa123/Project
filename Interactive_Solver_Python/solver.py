@@ -83,7 +83,7 @@ You entered an invalid string. Your input must be 'minus' or 'plus'!
                                          """
 
 
-def equation_input(num_digits):
+def equation_input(num_digits, man_rnd_con):
     """
     This function gets the number of digits per operand - num_digits.
 
@@ -103,10 +103,9 @@ def equation_input(num_digits):
     dig2 = 0
     result = 0
 
-    man_rnd_con = man_rnd_con_input()
-    while man_rnd_con == 'C':
-        print """Currently unavailable. Type 'M' or 'R' instead."""
-        man_rnd_con = man_rnd_con_input()
+
+    if man_rnd_con == 'C':
+        dig1, dig2, result = (-1, -1, -1)
 
     if man_rnd_con == 'M':
         # first operand input
@@ -288,14 +287,14 @@ You entered an invalid string. Your input must be an integer!
                 """
 
 
-def math_general_input(num_digits, operation):
+def math_general_input(num_digits, operation, man_rnd_con):
     """
     This function gets num_digits - the number of digits per operand, and operation - add, move or remove.
     It receives input from the user - the riddle's equation and the number of matchsticks required for solving the riddle.
     It prints the input by 7-segment format.
     This function is used only for the normal riddles, not the optimization riddles
     """
-    dig1, dig2, result, plus_or_minus = equation_input(num_digits)
+    dig1, dig2, result, plus_or_minus = equation_input(num_digits, man_rnd_con)
     num_allowed = num_allowed_input(num_digits, operation)
     print """
 
@@ -307,14 +306,14 @@ def math_general_input(num_digits, operation):
     return dig1, dig2, result, plus_or_minus, num_allowed
 
 
-def math_optimal_input(num_digits, operation):
+def math_optimal_input(num_digits, operation, man_rnd_con):
     """
         This function gets num_digits - the number of digits per operand, and operation - add, move or remove.
         It receives input from the user - the riddle's equation.
         It prints the input by 7-segment format.
         This function is used only for the optimization riddles, not the normal riddles
     """
-    dig1, dig2, result, plus_or_minus = equation_input(num_digits)
+    dig1, dig2, result, plus_or_minus = equation_input(num_digits, man_rnd_con)
     print """
 
     ---------------------------------------------------------------------------------------------------------
@@ -359,11 +358,10 @@ def optimal_output(dig1, dig2, result, plus_or_minus, num_digits, operation, num
                 """
     equation_print(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, operation)
 
-
     print """---------------------------------------------------------------------------------------------------------"""
 
 
-def math_general_in_out(j, num_digits, operation):
+def math_general_in_out(j, num_digits, operation, man_rnd_con):
     """
     This function gets:
     :param j: Index of the input / output file
@@ -377,15 +375,15 @@ def math_general_in_out(j, num_digits, operation):
     It solves the normal mathematical riddle and prints the solution
 
     """
-    dig1, dig2, result, plus_or_minus, num_allowed = math_general_input(num_digits, operation)
+    dig1, dig2, result, plus_or_minus, num_allowed = math_general_input(num_digits, operation, man_rnd_con)
     if operation == 'ADD' or operation == 'REMOVE':
         times, flag_solved, run_time = general2.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                 plus_or_minus, int(num_allowed), operation.lower(),
-                                                                 int(num_digits))
+                                                                     plus_or_minus, int(num_allowed), operation.lower(),
+                                                                     int(num_digits))
     else:
         times, flag_solved, run_time = general_move.solve_equation_input(j, int(dig1), int(dig2), int(result),
-                                                                     plus_or_minus, int(num_allowed),
-                                                                     int(num_digits))
+                                                                         plus_or_minus, int(num_allowed),
+                                                                         int(num_digits))
     if flag_solved == 1:
         print colored("""                                NO SOLUTION                               """, 'red')
 
@@ -399,7 +397,7 @@ def math_general_in_out(j, num_digits, operation):
         print colored("""                                NO SOLUTION                               """, 'red')
 
 
-def math_optimal_in_out(j, num_digits, operation):
+def math_optimal_in_out(j, num_digits, operation, man_rnd_con):
     """
     This function gets:
     :param j: Index of the input / output file
@@ -415,17 +413,24 @@ def math_optimal_in_out(j, num_digits, operation):
      (add/remove/move) on the screen
 
     """
-    dig1, dig2, result, plus_or_minus = math_optimal_input(num_digits, operation)
+    dig1, dig2, result, plus_or_minus = math_optimal_input(int(num_digits), operation, man_rnd_con)
     if operation == 'ADD' or operation == 'REMOVE':
-        times, flag_solved, run_time, dig1, dig2, result, num_allowed = general2.solve_equation_opt_input(j, int(dig1), int(dig2), int(result),
-                                                                     plus_or_minus, operation.lower(),
-                                                                     int(num_digits))
-    else:
-        times, flag_solved, run_time, dig1, dig2, result, num_allowed = general_move.solve_equation_opt_input(j, int(dig1),
+        times, flag_solved, run_time, dig1, dig2, result, num_allowed = general2.solve_equation_opt_input(j, int(dig1),
                                                                                                           int(dig2),
                                                                                                           int(result),
                                                                                                           plus_or_minus,
-                                                                                                          int(num_digits))
+                                                                                                          operation.lower(),
+                                                                                                          int(
+                                                                                                              num_digits))
+    else:
+        times, flag_solved, run_time, dig1, dig2, result, num_allowed = general_move.solve_equation_opt_input(j,
+                                                                                                              int(dig1),
+                                                                                                              int(dig2),
+                                                                                                              int(
+                                                                                                                  result),
+                                                                                                              plus_or_minus,
+                                                                                                              int(
+                                                                                                                  num_digits))
     if flag_solved == 1:
         print colored("""                                NO SOLUTION                               """, 'red')
 
@@ -439,12 +444,93 @@ def math_optimal_in_out(j, num_digits, operation):
         optimal_output(dig1, dig2, result, plus_or_minus, num_digits, operation, num_allowed)
 
 
-def math_solve(operation, j, normal_or_optimal):
+def math_normal_generate_in_out(j, num_digits, operation):
+    plus_or_minus = operator_input()
+    times, flag_solved, run_time, dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = (0, 0, 0, 0, 0, 0, 0, 0,
+                                                                                                0, 0)
+
+    if operation == 'ADD' or operation == 'REMOVE':
+        times, flag_solved, run_time, dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = \
+            general2.solve_equation_gen(j, plus_or_minus, operation.lower(),
+                                        int(num_digits))
+    else:
+        times, flag_solved, run_time, dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = \
+            general_move.solve_equation_gen(j, plus_or_minus, int(num_digits))
+
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 2:
+        print """
+
+            ---------------------------------------------------------------------------------------------------------
+                                                         YOUR INPUT IS:
+                        """
+        equation_print(dig1_or, dig2_or, dig3_or, plus_or_minus, num_digits, num_allowed, operation)
+        print """---------------------------------------------------------------------------------------------------------"""
+
+        math_general_output(dig1, dig2, result, plus_or_minus, num_digits, num_allowed, operation)
+    else:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+
+def math_optimal_generate_in_out(j, num_digits, operation):
+    plus_or_minus = operator_input()
+
+    if operation == 'ADD' or operation == 'REMOVE':
+
+        times, flag_solved, run_time, dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = \
+            general2.solve_equation_gen(j, plus_or_minus, operation.lower(),
+                                        int(num_digits))
+        print """
+
+                    ---------------------------------------------------------------------------------------------------------
+                                                                 YOUR INPUT IS:
+                                """
+        equation_print(dig1_or, dig2_or, dig3_or, plus_or_minus, num_digits, -1, operation)
+        print """---------------------------------------------------------------------------------------------------------"""
+
+        times, flag_solved, run_time, dig1, dig2, result, current_min = general2.solve_equation_opt_input(j, dig1_or, dig2_or, dig3_or, plus_or_minus, operation.lower(), int(num_digits))
+
+    else:
+        times, flag_solved, run_time, dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = \
+            general_move.solve_equation_gen(j, plus_or_minus, int(num_digits))
+        print """
+
+                     ---------------------------------------------------------------------------------------------------------
+                                                                  YOUR INPUT IS:
+                                 """
+        equation_print(dig1_or, dig2_or, dig3_or, plus_or_minus, num_digits, -1, operation)
+        print """---------------------------------------------------------------------------------------------------------"""
+
+        times, flag_solved, run_time, dig1, dig2, result, current_min = general_move.solve_equation_opt_input(j, dig1_or,
+                                                                                                          dig2_or,
+                                                                                                          dig3_or,
+                                                                                                          plus_or_minus,
+                                                                                                          int(num_digits))
+
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 2:
+
+        math_general_output(dig1, dig2, result, plus_or_minus, num_digits, current_min, operation)
+
+
+def math_generate_in_out(j, num_digits, operation, normal_or_optimal):
+    if normal_or_optimal == 'N':
+        math_normal_generate_in_out(j, num_digits, operation)
+    elif normal_or_optimal == 'O':
+        math_optimal_generate_in_out(j, num_digits, operation)
+
+
+def math_solve(operation, j, normal_or_optimal, man_rnd_con):
     """
     This function gets:
     :param operation: add/remove/move matchsticks
     :param j: The index of the input/output files
     :param normal_or_optimal: 'O' - optimization riddle, 'N' - normal math riddle
+    :param generate: True - algorithmically generate input for the riddle, False - manual / random input
 
     It receives user input - number of digits pe operand
 
@@ -459,10 +545,13 @@ def math_solve(operation, j, normal_or_optimal):
     elif operation == 'MOVE':
         num_digits = move()
 
-    if normal_or_optimal == 'N':
-        math_general_in_out(j, num_digits, operation)
-    else:  # normal_or_optimal == 'O'
-        math_optimal_in_out(j, num_digits, operation)
+    if man_rnd_con == 'M' or man_rnd_con == 'R':
+        if normal_or_optimal == 'N':
+            math_general_in_out(j, num_digits, operation, man_rnd_con)
+        else:  # normal_or_optimal == 'O'
+            math_optimal_in_out(j, num_digits, operation, man_rnd_con)
+    else:
+        math_generate_in_out(j, num_digits, operation, normal_or_optimal)
 
 
 def menu_math(j):
@@ -493,7 +582,8 @@ Exit - enter 'EXIT'
 Enter your decision here: """)
         if operation == 'ADD' or operation == 'REMOVE' or operation == 'MOVE':
             normal_or_optimal = normal_or_optimal_input()
-            math_solve(operation, j, normal_or_optimal)
+            man_rnd_con = man_rnd_con_input()
+            math_solve(operation, j, normal_or_optimal, man_rnd_con)
 
         elif operation == 'EXIT':
             print 'Bye'
@@ -514,6 +604,8 @@ def normal_or_optimal_input():
 ENTER 'O' IF YOU WANT TO ENTER LESS INPUT PARAMETERS - THE SOLVER WILL RETURN AN OPTIMAL OUTPUT. """)
         if normal_or_optimal == 'N' or normal_or_optimal == 'O':
             return normal_or_optimal
+
+
 """
 -----------------------------------------------------------------------------------------------------------
                             SUM OF MATCHSTICK HEADS RIDDLES GUI FUNCTIONS
@@ -751,6 +843,46 @@ def print_structure():
     """
 
 
+def sum_in_out(j):
+    match_rows, match_cols, match_dis = matchsticks_input()
+    print_match_cons_sum(match_rows, match_cols, 'THE INPUT\n')
+    times, flag_solved, run_time = mathead_code_proj.solve_rid_input(j, match_rows, match_cols, match_dis)
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 2:
+        arr_rows, arr_cols, arr_dis = mathead_code_proj.find_info(j)
+        print_match_cons_sum(arr_rows, arr_cols, 'THE SOLUTION\n')
+
+    else:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+
+def sum_generated_in_out(j):
+    times, flag_solved, run_time, arr_rows, arr_cols, arr_dis, old_rows, old_cols, old_dis = \
+        mathead_code_proj.solve_rid_input_gen(j)
+
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 2:
+        print """
+YOU NEED TO MOVE THE MATCHSTICKS TO GET 6 MATCHSTICK HEADS IN EACH ROW, COLUMN AND DIAGONAL. 
+THE INITIAL CONSTRUCTION APPEARS ON THE SCREEN NOW."""
+        print_match_cons_sum(old_rows, old_cols, "THE INPUT")
+
+        print_match_cons_sum(arr_rows, arr_cols, "THE OUTPUT")
+    else:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+
+def solve_sum(j, gen='N'):
+    if gen == 'N':
+        sum_in_out(j)
+    elif gen == 'Y':
+        sum_generated_in_out(j)
+
+
 def menu_sum(j):
     """
     User menu for solving sum of matchstick heads riddles - infinite loop
@@ -786,19 +918,8 @@ def menu_sum(j):
         if cont == 'N':
             return j
         j += 1
-        match_rows, match_cols, match_dis = matchsticks_input()
-        print_match_cons_sum(match_rows, match_cols, 'THE INPUT\n')
-        times, flag_solved, run_time = mathead_code_proj.solve_rid_input(j, match_rows, match_cols, match_dis)
-        if flag_solved == 1:
-            print colored("""                                NO SOLUTION                               """, 'red')
-
-        elif flag_solved == 2:
-            arr_rows, arr_cols, arr_dis = mathead_code_proj.find_info(j)
-            print_match_cons_sum(arr_rows, arr_cols, 'THE SOLUTION\n')
-
-        else:
-            print colored("""                                NO SOLUTION                               """, 'red')
-
+        gen = gen_input()
+        solve_sum(j, gen)
 
 """
 -----------------------------------------------------------------------------------------------------------
@@ -1120,6 +1241,13 @@ def cont_run_rid():
     return cont
 
 
+def gen_input():
+    while True:
+        gen = raw_input("""DO YOU WANT THE INPUT TO BE AUTOMATICALLY GENERATED? ENTER Y / N: """)
+        if gen == 'Y' or gen == 'N':
+            return gen
+
+
 def menu_sqr(j):
     """
     User menu for solving square riddles - infinite loop (until the user enters N - does not want to continue solving
@@ -1169,11 +1297,12 @@ def menu_sqr(j):
         if cont == 'N':
             return j
         normal_or_optimal = normal_or_optimal_input()
-        solve_sq(j, normal_or_optimal)
+        gen = gen_input()
+        solve_sq(j, normal_or_optimal, gen)
         j += 1
 
 
-def solve_sq(j, normal_or_optimal):
+def solve_sq(j, normal_or_optimal, gen='N'):
     """
         This function gets:
         :param j: The index of the input/output files
@@ -1183,10 +1312,66 @@ def solve_sq(j, normal_or_optimal):
 
         It solves the squares riddle (normal / optimization), the input and output (solution) are printed on the screen
         """
+    if gen == 'N':
+        if normal_or_optimal == 'N':
+            sq_in_out(j)
+        else:  # optimal output
+            sq_optimal_in_out(j)
+    elif gen == 'Y':
+        sq_gen_in_out(j, normal_or_optimal)
+
+
+def sq_gen_in_out(j, normal_or_optimal):
     if normal_or_optimal == 'N':
-        sq_in_out(j)
-    else:  # optimal output
-        sq_optimal_in_out(j)
+        sq_normal_generate_in_out(j)
+    elif normal_or_optimal == 'O':
+        sq_optimal_generate_in_out(j)
+
+
+def sq_normal_generate_in_out(j):
+
+    times, flag_solved, run_time, matchsticks, bool1, num_sqr_end, num_allowed = \
+            sqr_code_proj.solve_rid_input_gen(j)
+
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 2:
+        print """
+YOU NEED TO MOVE: """ + str(num_allowed) + """ MATCHSTICKS
+TO GET """ + str(num_sqr_end) + """ SQUARES. THE INITIAL CONSTRUCTION APPEARS ON THE SCREEN NOW."""
+        print_sq(bool1, 'THE INPUT')
+
+        print_sq(matchsticks, 'THE SOLUTION', bool1)
+    else:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+
+def sq_optimal_generate_in_out(j):
+    times, flag_solved, run_time, matchsticks, bool1, num_sqr_end, num_allowed = \
+        sqr_code_proj.solve_rid_input_gen(j)
+    num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, sq_1_bool, sq_2_bool, sq_3_bool = \
+        sqr_code_proj.transform_match_to_sq_arrays(bool1)
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 2:
+        par = opt_par_input()
+        if par == 'num_allowed':
+            print """YOU NEED TO MOVE A MINIMAL NUMBER OF MATCHSTICKS
+TO GET """ + str(num_sqr_end) + """ SQUARES. THE INITIAL CONSTRUCTION APPEARS ON THE SCREEN NOW."""
+            print_sq(bool1, 'THE INPUT')
+            times, flag_solved, run_time, matchsticks2, current_min = sqr_code_proj.solve_rid_opt_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, bool1,
+                                              sq_1_bool, sq_2_bool, sq_3_bool, num_sqr_end)
+            print_sq(matchsticks2, 'THE OUTPUT', bool1)
+
+        elif par == 'num_sqr_end':
+            print """YOU NEED TO MOVE """ + str(num_allowed) + """ MATCHSTICKS
+            TO GET A MINIMAL NUMBER OF SQUARES. THE INITIAL CONSTRUCTION APPEARS ON THE SCREEN NOW."""
+            print_sq(bool1, 'THE INPUT')
+            times, flag_solved, run_time, matchsticks2, current_min = sqr_code_proj.solve_rid_opt_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, bool1,
+                                              sq_1_bool, sq_2_bool, sq_3_bool, -1, num_allowed)
+            print_sq(matchsticks2, 'THE OUTPUT', bool1)
 
 
 def sq_in_out(j):
@@ -1215,12 +1400,14 @@ def sq_in_out(j):
     num_sqr_beg = num_sqr_1_beg + num_sqr_2_beg + num_sqr_3_beg
 
     valid = sqr_code_proj.check_valid(num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, matchsticks, sq_1_bool,
-                sq_2_bool, sq_3_bool, num_sqr_end,
-                num_allowed)
+                                      sq_2_bool, sq_3_bool, num_sqr_end,
+                                      num_allowed)
     if valid:
         print_sq(matchsticks, 'THE INPUT\n')
-        times, flag_solved, run_time = sqr_code_proj.solve_rid_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, matchsticks,
-                    sq_1_bool, sq_2_bool, sq_3_bool, num_sqr_end, num_allowed)
+        times, flag_solved, run_time = sqr_code_proj.solve_rid_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg,
+                                                                     num_sqr_3_beg, matchsticks,
+                                                                     sq_1_bool, sq_2_bool, sq_3_bool, num_sqr_end,
+                                                                     num_allowed)
         if flag_solved == 1:
             print colored("""                                NO SOLUTION                               """, 'red')
 
@@ -1299,8 +1486,16 @@ def sq_optimal_in_out(j):
                                       num_allowed, True, opt_parameter)
     if valid:
         print_sq(matchsticks, 'THE INPUT\n')
-        times, flag_solved, run_time, matchsticks2, current_min = sqr_code_proj.solve_rid_opt_input(j, num_sqr_beg, num_sqr_1_beg, num_sqr_2_beg, num_sqr_3_beg, matchsticks,
-                        sq_1_bool, sq_2_bool, sq_3_bool, num_sqr_end, num_allowed)
+        times, flag_solved, run_time, matchsticks2, current_min = sqr_code_proj.solve_rid_opt_input(j, num_sqr_beg,
+                                                                                                    num_sqr_1_beg,
+                                                                                                    num_sqr_2_beg,
+                                                                                                    num_sqr_3_beg,
+                                                                                                    matchsticks,
+                                                                                                    sq_1_bool,
+                                                                                                    sq_2_bool,
+                                                                                                    sq_3_bool,
+                                                                                                    num_sqr_end,
+                                                                                                    num_allowed)
         if flag_solved == 1:
             print colored("""                                NO SOLUTION                               """, 'red')
 
@@ -1405,7 +1600,7 @@ def man_rnd_con_input():
 NOW, YOU CAN CHOOSE:
 MANUAL INPUT - ENTER 'M'
 RANDOM INPUT - ENTER 'R'
-CONSTANT INPUT - ENTER 'C'
+CONSTANT GENERATED INPUT - ENTER 'C'
     """
     while True:
         man_rnd_con = raw_input("CHOOSE THE DESIRED OPTION: ")
@@ -1511,6 +1706,7 @@ def print_shape(original, title, shape1=None, shape2=None):
     If this is the input: it prints the original shape by calculating its vertices
     If this is the output: it prints the original shape and a half of it by calculating their vertices
     """
+
     def foo1(values):
         return values[0]
 

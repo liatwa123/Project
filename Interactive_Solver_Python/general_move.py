@@ -52,7 +52,7 @@ def check_valid(dig1, dig2, result, plus_or_minus):
     return True
 
 
-def find_info(j, find_min=False):
+def find_info(j, find_min=False, find_input=False):
     """
         This function gets:
         j - index of an input/output file
@@ -75,6 +75,12 @@ def find_info(j, find_min=False):
     dig2 = []
     list_result = []
     result = []
+    list_dig1_in = []
+    dig1_in = []
+    list_dig2_in = []
+    dig2_in = []
+    list_result_in = []
+    result_in = []
     num_allowed = 0
     for row in rows:
         if 'digits[0]' in row and 'specification' not in row:
@@ -107,14 +113,49 @@ def find_info(j, find_min=False):
                 ind = ind[:-1]
                 result[int(ind)] = int(val)
 
-        elif 'num_allowed' in row and '>' not in row:
+        if 'init_digs[0]' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+            if st not in list_dig1_in:
+                list_dig1_in.append(st)
+                dig1_in.append(int(val))
+            else:
+                txt, ind = st.split('s[0][')
+                ind = ind[:-1]
+                dig1_in[int(ind)] = int(val)
+
+        elif 'init_digs[1]' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+            if st not in list_dig2_in:
+                list_dig2_in.append(st)
+                dig2_in.append(int(val))
+            else:
+                txt, ind = st.split('s[1][')
+                ind = ind[:-1]
+                dig2_in[int(ind)] = int(val)
+
+        elif 'init_digs[2]' in row and 'specification' not in row:
+            st, val = row.split(' = ')
+            if st not in list_result_in:
+                list_result_in.append(st)
+                result_in.append(int(val))
+            else:
+                txt, ind = st.split('s[2][')
+                ind = ind[:-1]
+                result_in[int(ind)] = int(val)
+
+        elif 'num_allowed' in row and '>' not in row and '!' not in row:
             st, val = row.split(' = ')
             num_allowed = int(val)
 
     num_dig1, num_dig2, num_result = to_numbers(dig1, dig2, result)
-    if find_min:
+    num_dig1_or, num_dig2_or, num_result_or = to_numbers(dig1_in, dig2_in, result_in)
+
+    if not find_min and not find_input:
+        return num_dig1, num_dig2, num_result
+    if find_input:
+        return num_dig1, num_dig2, num_result, num_dig1_or, num_dig2_or, num_result_or, num_allowed
+    if not find_input and find_min:
         return num_dig1, num_dig2, num_result, num_allowed
-    return num_dig1, num_dig2, num_result
 
 
 def to_numbers(li_dig1, li_dig2, li_result):
@@ -155,7 +196,186 @@ def solve_equation_input(j, dig1, dig2, result, plus_or_minus, num_allowed, num_
     if times != -1:
         flag_solved, run_time = find_solution(j)
     return times, flag_solved, run_time
-    pass
+
+
+def solve_equation_gen(j, plus_or_minus, N):
+    flag_solved = 0
+    run_time = -1
+    dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = (0, 0, 0, 0, 0, 0, 0)
+    times = write_gen_model(j, plus_or_minus, N)
+    if times:
+        flag_solved, run_time = find_solution(j)
+        dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = find_info(j, False, True)
+    return times, flag_solved, run_time, dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed
+
+
+def write_gen_model(j, plus_or_minus, N):
+    text_var = """MODULE main
+
+    				/--state variables--/
+    				VAR
+    				num_move:0..""" + str(N * 7 * 3) + """;
+
+    				digits: array 0..2 of array 0..""" + str(N - 1) + """ of 0..9;
+    				init_digs: array 0..2 of array 0..""" + str(N - 1) + """ of 0..9;
+
+    				xor_arr:array 0..2 of array 0..""" + str(N - 1) + """ of array 0..6 of boolean;
+                    init_xor:array 0..2 of array 0..""" + str(N - 1) + """ of array 0..6 of boolean;
+                    
+    				state:{initial, calc_cons, correct, guess};
+
+    				num_match_beg: 0..""" + str(N * 7 * 3) + """;
+    				num_match_end: 0..""" + str(N * 7 * 3) + """;
+    				"""
+
+
+    text_var += """num_allowed:0..""" + str(15 * N) + """;"""
+
+    text_define = """DEFINE
+    				/--7-segment representation array--/
+    				digit_bool:=[[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE],[FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE],[TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE],[FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE],[FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE],[FALSE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE],[TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE],[FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE],[TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE],[FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]];
+    
+    """
+    text_assign = """ASSIGN
+    """
+    for k in range(0, 3):
+        for l in range(0, N):
+            text_assign += """init(init_digs[""" + str(k) + """][""" + str(l) + """]):=digits[""" + str(k) + """][""" + str(l)+ """];
+            """
+
+    for k in range(0, 3):
+        for l in range(0, N):
+            for m in range(0, 7):
+                text_assign += """init(init_xor[""" + str(k) + """][""" + str(l) + """][""" + str(m) + """]) := digit_bool[init_digs[""" + str(k) + """][""" + str(l) + """]][""" + str(m) + """];
+                init(xor_arr[""" + str(k) + """][""" + str(l) + """][""" + str(m) + """]):=digit_bool[init_digs[""" + str(k) + """][""" + str(l) + """]][""" + str(m) + """];
+                """
+
+    text_assign += """init(state):=initial;
+    
+    init(num_match_beg):="""
+    for i in range(0, 3):
+        for j1 in range(0, N):
+            for k in range(0, 7):
+                text_assign += """count(init_xor[""" + str(i) + """][""" + str(j1) + """][""" + str(k) + """]) + """
+    text_assign = text_assign[:-3]
+    text_assign += """;
+    init(num_match_end):=0;
+    init(num_move):=0;"""
+    for k in range(0, 3):
+        for l in range(0, N):
+            text_assign += """next(init_digs[""" + str(k) + """][""" + str(l) + """]):=init_digs[""" + str(k) + """][""" + str(l) + """];
+            next(init_xor[""" + str(k) + """][""" + str(l) + """]):=init_xor[""" + str(k) + """][""" + str(l) + """];"""
+    text_assign += """
+        next(num_allowed):=num_allowed;	
+    	next(state):=case
+    	state = initial: guess;
+    	"""
+    text_num1 = """"""
+    text_num2 = """"""
+    text_num3 = """"""
+    for k in range(1, N + 1):
+        text_num1 += "digits[0][" + str(k - 1) + "] * " + str(10 ** (N - k)) + " + "
+        text_num2 += "digits[1][" + str(k - 1) + "] * " + str(10 ** (N - k)) + " + "
+        text_num3 += "digits[2][" + str(k - 1) + "] * " + str(10 ** (N - k)) + " + "
+
+    text_num1 = text_num1[:-2]
+    text_num2 = text_num2[:-2]
+    text_num3 = text_num3[:-2]
+    if plus_or_minus == 'minus':
+        text_assign += """state = calc_cons & num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ - (""" + text_num2 + """) = """ + text_num3 + """: correct;
+                          state = calc_cons & !(num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ - (""" + text_num2 + """) = """ + text_num3 + """): guess;
+    				      state = correct: correct;
+    				      TRUE: calc_cons;
+    				      esac;
+
+    				      next(num_match_beg):=num_match_beg;
+    				      next(num_match_end):="""
+    elif plus_or_minus == 'plus':
+        text_assign += """state = calc_cons & num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ + (""" + text_num2 + """) = """ + text_num3 + """: correct;
+                                  state = calc_cons & !(num_move = 2*num_allowed & num_match_beg = num_match_end & """ + text_num1 + """ + (""" + text_num2 + """) = """ + text_num3 + """): guess;
+            				      state = correct: correct;
+            				      TRUE: calc_cons;
+            				      esac;
+
+            				      next(num_match_beg):=num_match_beg;
+            				      next(num_match_end):="""
+    for i in range(0, 3):
+        for j1 in range(0, N):
+            for k in range(0, 7):
+                text_assign += """count(digit_bool[digits[""" + str(i) + """][""" + str(j1) + """]][""" + str(
+                    k) + """]) + """
+    text_assign = text_assign[:-3]
+    text_assign += """;
+
+        next(num_move):=case
+    	state = guess: """
+    for i in range(0, 3):
+        for j1 in range(0, N):
+            for k in range(0, 7):
+                text_assign += """count(next(xor_arr[""" + str(i) + """][""" + str(j1) + """][""" + str(
+                    k) + """])) + """
+    text_assign = text_assign[:-3]
+    text_assign += """;
+        TRUE: num_move;
+    	esac;
+
+    	"""
+    for i in range(0, 3):
+        for j1 in range(0, N):
+            for k in range(0, 7):
+                text_assign += """next(xor_arr[""" + str(i) + """][""" + str(j1) + """][""" + str(k) + """]):=case
+                    next(state)=calc_cons:(init_xor[""" + str(i) + """][""" + str(j1) + """][""" + str(
+                    k) + """])xor(digit_bool[digits[""" + str(i) + """][""" + str(j1) + """]][""" + str(k) + """]);
+                    TRUE:xor_arr[""" + str(i) + """][""" + str(j1) + """][""" + str(k) + """];
+                    esac;
+
+                    """
+    for i in range(0, 3):
+        for j1 in range(0, N):
+            text_assign += """
+                next(digits[""" + str(i) + """][""" + str(j1) + """]):=case
+                next(state)=calc_cons | next(state) = correct: digits[""" + str(i) + """][""" + str(j1) + """];
+                TRUE: {0,1,2,3,4,5,6,7,8,9};
+                esac;
+                """
+
+    text_assign += """LTLSPEC
+        G ! (state=correct & num_allowed != 0)"""
+
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-'
+             r''
+             r'2.6.0-win64\bin')
+
+    code = ''''''
+    if plus_or_minus == 'minus':
+        open('minus_move' + str(j) + ".smv", 'w').close()
+        code = '''
+j = ''' + str(j) + '''
+text_var = """''' + str(text_var) + '''"""
+text_define = """''' + str(text_define) + '''"""
+text_assign = """''' + str(text_assign) + '''"""
+f = open('minus_move' + str(j) + '.smv', 'a')
+print >> f, text_var
+print >> f, text_define
+print >> f, text_assign
+f.close()
+            '''
+    elif plus_or_minus == 'plus':
+        open('plus_move' + str(j) + ".smv", 'w').close()
+        code = '''
+j = ''' + str(j) + '''
+text_var = """''' + str(text_var) + '''"""
+text_define = """''' + str(text_define) + '''"""
+text_assign = """''' + str(text_assign) + '''"""
+f = open('plus_move' + str(j) + '.smv', 'a')
+print >> f, text_var
+print >> f, text_define
+print >> f, text_assign
+f.close()
+            '''
+    build_time = timeit.timeit(code, number=1)
+    run_model(plus_or_minus + '_move' + str(j) + '.smv', j)  # runs the model
+    return build_time
 
 
 def write_model(j, num1, num2, num3, plus_or_minus, N, num_allowed=-1, lower=-1, upper=-1):

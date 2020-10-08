@@ -182,9 +182,12 @@ def create_plus_add_next(N, num_allowed=-1, lower=-1, upper=-1):
     if num_allowed != -1:
         text_plus_add_next += "LTLSPEC\n \
         G ! (state=correct)\n"
-    else:
+    elif lower != -1:
         text_plus_add_next += "LTLSPEC\n \
         G ! (state=correct & num_allowed >= " + str(lower) + " & num_allowed <= " + str(upper) + ")\n"
+    else:
+        text_plus_add_next += "LTLSPEC\n \
+                G ! (state=correct & num_allowed != 0)\n"
     """
     text_plus_add_next += "SPEC\n \
             EF !(state=correct)\n"
@@ -321,9 +324,12 @@ def create_plus_remove_next(N, num_allowed=-1, lower=-1, upper=-1):
     if num_allowed != -1:
         text_plus_remove_next += "LTLSPEC\n \
          G ! (state=correct)\n"
-    else:
+    elif lower != -1:
         text_plus_remove_next += "LTLSPEC\n \
          G ! (state=correct & num_allowed >= " + str(lower) + " & num_allowed <= " + str(upper) + ")\n"
+    else:
+        text_plus_remove_next += "LTLSPEC\n \
+                 G ! (state=correct & num_allowed != 0)\n"
     """
     text_plus_remove_next += "SPEC\n \
             EF !(state=correct)\n"
@@ -460,9 +466,12 @@ def create_minus_add_next(N, num_allowed=-1, lower=-1, upper=-1):
     if num_allowed != -1:
         text_minus_add_next += "LTLSPEC\n \
          G ! (state=correct)\n"
-    else:
+    elif lower != -1:
         text_minus_add_next += "LTLSPEC\n \
          G ! (state=correct & num_allowed >= " + str(lower) + " & num_allowed <= " + str(upper) + ")\n"
+    else:
+        text_minus_add_next += "LTLSPEC\n \
+                G ! (state=correct & num_allowed != 0)\n"
     """
     text_minus_add_next += "SPEC\n \
         EF !(state=correct)\n"
@@ -600,9 +609,12 @@ def create_minus_remove_next(N, num_allowed=-1, lower=-1, upper=-1):
     if num_allowed != -1:
         text_minus_remove_next += "LTLSPEC\n \
          G ! (state=correct)\n"
-    else:
+    elif lower != -1:
         text_minus_remove_next += "LTLSPEC\n \
          G ! (state=correct & num_allowed >= " + str(lower) + " & num_allowed <= " + str(upper) + ")\n"
+    else:
+        text_minus_remove_next += "LTLSPEC\n \
+                 G ! (state=correct & num_allowed != 0)\n"
     """
     text_minus_remove_next += "SPEC\n \
         EF !(state=correct)\n"
@@ -684,8 +696,6 @@ def limits(remove_or_add, num1, num2, result, N, plus_or_minus, mid_or_last_sol=
 
         elif mid_or_last_sol == 'mid':
             return (last_lower + last_upper) / 2, current_min - 1, mid_or_last_sol
-
-
 
 
 def read_math_riddle(j, dig1, dig2, result, plus_or_minus, remove_or_add, N, num_allowed=-1, lower=-1, upper=-1):
@@ -980,6 +990,246 @@ f.close()
         print "error"
 
 
+def write_gen_model(j, plus_or_minus, remove_or_add, N):
+    text_var = "MODULE main\n\
+        \n\
+        /--state variables--/ \n\
+        VAR\n"
+    for m in range(1, 4):
+        if m < 3:
+            for i in range(1, N + 1):
+                text_var += "dig" + str(m) + "_" + str(i) + ":0..9;\n"
+                text_var += "dig" + str(m) + "_" + str(i) + "_in:0..9;\n"
+                text_var += "num_op_dig" + str(m) + "_" + str(i) + ":0..5;\n"
+        else:
+            for i in range(1, N + 1):
+                text_var += "result" + "_" + str(i) + ":0..9;\n"
+                text_var += "result" + "_" + str(i) + "_in:0..9;\n"
+                text_var += "num_op_dig" + str(m) + "_" + str(i) + ":0..5;\n"
+
+    text_var += "num_allowed:0.." + str(15 * N) + ";\n"
+    text_var += "plus_or_minus:{plus,minus};\n\
+        remove_or_add:{remove,add};\n\
+        \n\
+        /--legal checks if num_op_dig1, num_op_dig2 and num_op_dig3 are legal, meaning:--/ \n\
+        /--these values are the solution of the riddle--/ \n\
+        /--or: any transformation to different dig1, dig2 and dig3 is available using num_op_dig1, num_op_dig2 and num_op_dig3--/ \n\
+        legal:boolean;\n\
+        is_sol:boolean;\n\
+        state:{zeros, guess, correct};\n"
+    text_define = """
+    
+       DEFINE
+        /--digit_bool:=[[TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE],[FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE],[TRUE,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE],[FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE],[FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE],[FALSE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE],[TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE],[FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE],[TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE],[FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE]];--/
+        
+        /--transformations available from every digit, based on num_op of the digit--/
+        /--the rows are the original digit value, the lists are the transformations and the index of every list is the num_op of the digit--/
+        
+        /--add transformation--/
+        arr_trans_add:=[[{0},{8},{0},{0},{0},{0}],
+        [{1},{7},{4},{3},{9,0},{8}],
+        [{2},{2},{8},{2},{2},{2}],
+        [{3},{9},{8},{3},{3},{3}],
+        [{4},{4},{9},{8},{4},{4}],
+        [{5},{6,9},{8},{5},{5},{5}],
+        [{6},{8},{6},{6},{6},{6}],
+        [{7},{7},{3},{0,9},{8},{7}],
+        [{8},{8},{8},{8},{8},{8}],
+        [{9},{8},{9},{9},{9},{9}]];
+        
+        /--remove transformation--/
+        arr_trans_remove:=[[{0},{0},{0},{7},{1},{0}],
+        [{1},{1},{1},{1},{1},{1}],
+        [{2},{2},{2},{2},{2},{2}],
+        [{3},{3},{7},{1},{3},{3}],
+        [{4},{4},{1},{4},{4},{4}],
+        [{5},{5},{5},{5},{5},{5}],
+        [{6},{5},{6},{6},{6},{6}],
+        [{7},{1},{7},{7},{7},{7}],
+        [{8},{9,0,6},{3,2,5},{4},{7},{1}],
+        [{9},{3,5},{4},{7},{1},{9}]];
+        """
+    text_num1 = ""
+    text_num2 = ""
+    text_num3 = ""
+
+    for k in range(1, N + 1):
+        text_num1 += "dig1_" + str(k) + " * " + str(10 ** (N - k)) + " + "
+        text_num2 += "dig2_" + str(k) + " * " + str(10 ** (N - k)) + " + "
+        text_num3 += "result_" + str(k) + " * " + str(10 ** (N - k)) + " + "
+
+    text_num1 = text_num1[:-2]
+    text_num2 = text_num2[:-2]
+    text_num3 = text_num3[:-2]
+    text_minus_add_init = "ASSIGN\n\
+    /--initial values: user input--/\n"
+
+    for i in range(1, N + 1):
+        text_minus_add_init += "init(dig1_" + str(i) + "_in) := dig1_" + str(i) + ";\n"
+        text_minus_add_init += "init(dig2_" + str(i) + "_in) := dig2_" + str(i) + ";\n"
+        text_minus_add_init += "init(result_" + str(i) + "_in) := result_" + str(i) + ";\n"
+        text_minus_add_init += "init(num_op_dig1_" + str(i) + ") := 0;\n"
+        text_minus_add_init += "init(num_op_dig2_" + str(i) + ") := 0;\n"
+        text_minus_add_init += "init(num_op_dig3_" + str(i) + ") := 0;\n"
+
+    text_minus_add_init += "init(state):=zeros;\n\
+    /--initial values: user input--/\n\
+    init(plus_or_minus):=" + plus_or_minus + ";\n\
+    init(remove_or_add):=" + remove_or_add + ";\n\
+    init(legal):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n\
+    init(is_sol):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n"
+
+    text_minus_remove_init = "ASSIGN\n\
+    /--initial values: user input--/\n"
+
+    for i in range(1, N + 1):
+        text_minus_remove_init += "init(dig1_" + str(i) + "_in) := dig1_" + str(i) + ";\n"
+        text_minus_remove_init += "init(dig2_" + str(i) + "_in) := dig2_" + str(i) + ";\n"
+        text_minus_remove_init += "init(result_" + str(i) + "_in) := result_" + str(i) + ";\n"
+        text_minus_remove_init += "init(num_op_dig1_" + str(i) + ") := 0;\n"
+        text_minus_remove_init += "init(num_op_dig2_" + str(i) + ") := 0;\n"
+        text_minus_remove_init += "init(num_op_dig3_" + str(i) + ") := 0;\n"
+
+    text_minus_remove_init += "init(state):=zeros;\n\
+        /--initial values: user input--/\n\
+        init(plus_or_minus):=" + plus_or_minus + ";\n\
+        init(remove_or_add):=" + remove_or_add + ";\n\
+        init(legal):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n\
+        init(is_sol):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n"
+
+    text_plus_add_init = "ASSIGN\n\
+    /--initial values: user input--/\n"
+
+    for i in range(1, N + 1):
+        text_plus_add_init += "init(dig1_" + str(i) + "_in) := dig1_" + str(i) + ";\n"
+        text_plus_add_init += "init(dig2_" + str(i) + "_in) := dig2_" + str(i) + ";\n"
+        text_plus_add_init += "init(result_" + str(i) + "_in) := result_" + str(i) + ";\n"
+        text_plus_add_init += "init(num_op_dig1_" + str(i) + ") := 0;\n"
+        text_plus_add_init += "init(num_op_dig2_" + str(i) + ") := 0;\n"
+        text_plus_add_init += "init(num_op_dig3_" + str(i) + ") := 0;\n"
+
+    text_plus_add_init += "init(state):=zeros;\n\
+            /--initial values: user input--/\n\
+            init(plus_or_minus):=" + plus_or_minus + ";\n\
+            init(remove_or_add):=" + remove_or_add + ";\n\
+            init(legal):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n\
+            init(is_sol):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n"
+
+    text_plus_remove_init = "ASSIGN\n\
+    /--initial values: user input--/\n"
+
+    for i in range(1, N + 1):
+        text_plus_remove_init += "init(dig1_" + str(i) + "_in) := dig1_" + str(i) + ";\n"
+        text_plus_remove_init += "init(dig2_" + str(i) + "_in) := dig2_" + str(i) + ";\n"
+        text_plus_remove_init += "init(result_" + str(i) + "_in) := result_" + str(i) + ";\n"
+        text_plus_remove_init += "init(num_op_dig1_" + str(i) + ") := 0;\n"
+        text_plus_remove_init += "init(num_op_dig2_" + str(i) + ") := 0;\n"
+        text_plus_remove_init += "init(num_op_dig3_" + str(i) + ") := 0;\n"
+
+    text_plus_remove_init += "init(state):=zeros;\n\
+                /--initial values: user input--/\n\
+                init(plus_or_minus):=" + plus_or_minus + ";\n\
+                init(remove_or_add):=" + remove_or_add + ";\n\
+                init(legal):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n\
+                init(is_sol):=" + text_num1 + " - ( " + text_num2 + " ) = " + text_num3 + "& num_allowed = 0;\n"
+
+    os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-'
+             r''
+             r'2.6.0-win64\bin')
+    if plus_or_minus == 'minus' and remove_or_add == 'add':
+        text_minus_add_next = create_minus_add_next(N)
+        open('minus_add' + str(j) + ".smv", 'w').close()
+        code = '''
+j = ''' + str(j) + '''
+text_var = """''' + str(text_var) + '''"""
+text_define = """''' + str(text_define) + '''"""
+text_minus_add_init = """''' + str(text_minus_add_init) + '''"""
+text_minus_add_next = """''' + str(text_minus_add_next) + '''"""
+f = open('minus_add' + str(j) + '.smv', 'a')
+print >> f, text_var
+print >> f, text_define
+print >> f, text_minus_add_init
+print >> f, text_minus_add_next
+f.close()
+            '''
+        build_time = timeit.timeit(code, number=1)
+        run_model('minus_add' + str(j) + '.smv', j)
+        return build_time
+
+    elif plus_or_minus == 'minus' and remove_or_add == 'remove':
+        open('minus_remove' + str(j) + ".smv", 'w').close()
+        text_minus_remove_next = create_minus_remove_next(N)
+        code = '''
+j = ''' + str(j) + '''
+text_var = """''' + str(text_var) + '''"""
+text_define = """''' + str(text_define) + '''"""
+text_minus_remove_init = """''' + str(text_minus_remove_init) + '''"""
+text_minus_remove_next = """''' + str(text_minus_remove_next) + '''"""
+f = open('minus_remove' + str(j) + '.smv', 'a')
+print >> f, text_var
+print >> f, text_define
+print >> f, text_minus_remove_init
+print >> f, text_minus_remove_next
+f.close()
+                    '''
+        build_time = timeit.timeit(code, number=1)
+        run_model('minus_remove' + str(j) + '.smv', j)
+        return build_time
+
+    elif plus_or_minus == 'plus' and remove_or_add == 'add':
+        open('plus_add' + str(j) + ".smv", 'w').close()
+        text_plus_add_next = create_plus_add_next(N)
+        code = '''
+j = ''' + str(j) + '''
+text_var = """''' + str(text_var) + '''"""
+text_define = """''' + str(text_define) + '''"""
+text_plus_add_init = """''' + str(text_plus_add_init) + '''"""
+text_plus_add_next = """''' + str(text_plus_add_next) + '''"""
+f = open('plus_add' + str(j) + '.smv', 'a')
+print >> f, text_var
+print >> f, text_define
+print >> f, text_plus_add_init
+print >> f, text_plus_add_next
+f.close()
+                                    '''
+        build_time = timeit.timeit(code, number=1)
+        run_model('plus_add' + str(j) + '.smv', j)
+        return build_time
+
+    elif plus_or_minus == 'plus' and remove_or_add == 'remove':
+        open('plus_remove' + str(j) + ".smv", 'w').close()
+        text_plus_remove_next = create_plus_remove_next(N)
+        code = '''
+j = ''' + str(j) + '''
+text_var = """''' + str(text_var) + '''"""
+text_define = """''' + str(text_define) + '''"""
+text_plus_remove_init = """''' + str(text_plus_remove_init) + '''"""
+text_plus_remove_next = """''' + str(text_plus_remove_next) + '''"""
+f = open('plus_remove' + str(j) + '.smv', 'a')
+print >> f, text_var
+print >> f, text_define
+print >> f, text_plus_remove_init
+print >> f, text_plus_remove_next
+f.close()
+                                    '''
+        build_time = timeit.timeit(code, number=1)
+        run_model('plus_remove' + str(j) + '.smv', j)
+        return build_time
+    else:
+        print "error"
+
+
+def solve_equation_gen(j, plus_or_minus, remove_or_add, N):
+    flag_solved = 0
+    run_time = -1
+    dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = (0, 0, 0, 0, 0, 0, 0)
+    times = write_gen_model(j, plus_or_minus, remove_or_add, N)
+    if times:
+        flag_solved, run_time = find_solution(j)
+        dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed = find_info(j, False, True)
+    return times, flag_solved, run_time, dig1, dig2, result, dig1_or, dig2_or, dig3_or, num_allowed
+
+
 def check_valid(dig1, dig2, result, plus_or_minus, num_allowed, remove_or_add, N):
     """
     this function gets a string and returns true if it is a legal mathematical equation.
@@ -1176,14 +1426,17 @@ def find_solution(j):
         return 1, run_time
 
 
-def find_info(j, find_min=False):
+def find_info(j, find_min=False, find_input=False):
     """
         This function gets:
         j - index of an input/output file
         find_min - True: optimization riddle, False otherwise
+        find_input - True: generated riddle, False otherwise
         It returns:
-        The correct equation - normal riddle
-        The correct equation and the minimal number of matchsticks for the operation(add/remove) - optimization riddle
+        The correct equation - !find_min and !find_input
+        The correct equation, the initial operands, the number of matchsticks to add/remove - find_min and find_input
+        The correct equation, the initial operands, the number of matchsticks to add/remove - !find_min and find_input
+        The correct equation, the number of matchsticks to add/remove - find_min and !find_input
     """
     f = open('output' + str(j) + '.txt', 'r')
     text = f.read()
@@ -1195,10 +1448,16 @@ def find_info(j, find_min=False):
     rows = text.split('\n')
     list_dig1 = []
     dig1 = []
+    list_dig1_or = []
+    dig1_or = []
     list_dig2 = []
     dig2 = []
+    list_dig2_or = []
+    dig2_or = []
     list_result = []
     result = []
+    list_result_or = []
+    result_or = []
     num_allowed = 0
     for row in rows:
         if 'dig1' in row and 'specification' not in row and 'in' not in row and 'op' not in row:
@@ -1210,6 +1469,15 @@ def find_info(j, find_min=False):
                 txt, ind = st.split('1_')
                 dig1[int(ind) - 1] = int(val)
 
+        elif 'dig1' in row and 'specification' not in row and 'in' in row and 'op' not in row:
+            st, val = row.split(' = ')
+            if st not in list_dig1_or:
+                list_dig1_or.append(st)
+                dig1_or.append(int(val))
+            else:
+                txt, ind = st.split('1_')
+                dig1_or[int(ind) - 1] = int(val)
+
         elif 'dig2' in row and 'specification' not in row and 'in' not in row and 'op' not in row:
             st, val = row.split(' = ')
             if st not in list_dig2:
@@ -1218,6 +1486,15 @@ def find_info(j, find_min=False):
             else:
                 txt, ind = st.split('2_')
                 dig2[int(ind) - 1] = int(val)
+
+        elif 'dig2' in row and 'specification' not in row and 'in' in row and 'op' not in row:
+            st, val = row.split(' = ')
+            if st not in list_dig2_or:
+                list_dig2_or.append(st)
+                dig2_or.append(int(val))
+            else:
+                txt, ind = st.split('1_')
+                dig2_or[int(ind) - 1] = int(val)
 
         elif 'result' in row and 'specification' not in row and 'might' not in row and 'in' not in row and 'op' not in row:
             st, val = row.split(' = ')
@@ -1228,14 +1505,28 @@ def find_info(j, find_min=False):
                 txt, ind = st.split('_')
                 result[int(ind) - 1] = int(val)
 
-        elif 'num_allowed' in row and '>' not in row:
+        elif 'result' in row and 'specification' not in row and 'might' not in row and 'in' in row and 'op' not in row:
+            st, val = row.split(' = ')
+            if st not in list_result_or:
+                list_result_or.append(st)
+                result_or.append(int(val))
+            else:
+                txt, ind = st.split('1_')
+                result_or[int(ind) - 1] = int(val)
+
+        elif 'num_allowed' in row and '>' not in row and '!' not in row:
             st, val = row.split(' = ')
             num_allowed = int(val)
 
     num_dig1, num_dig2, num_result = to_numbers(dig1, dig2, result)
-    if find_min:
+    num_dig1_or, num_dig2_or, num_result_or = to_numbers(dig1_or, dig2_or, result_or)
+
+    if not find_min and not find_input:
+        return num_dig1, num_dig2, num_result
+    if find_input:
+        return num_dig1, num_dig2, num_result, num_dig1_or, num_dig2_or, num_result_or, num_allowed
+    if not find_input and find_min:
         return num_dig1, num_dig2, num_result, num_allowed
-    return num_dig1, num_dig2, num_result
 
 
 def to_numbers(li_dig1, li_dig2, li_result):
@@ -1321,8 +1612,6 @@ def main():
              r''
              r'2.6.0-win64\bin')
     run_model('minus_add2.smv', 2)
-
-
 
 
 if __name__ == '__main__':
