@@ -67,45 +67,44 @@ Warning: at line 656 expression might result in array subscripting out of bounds
 -- no counterexample found with bound 46
 -- no counterexample found with bound 47
 -- no counterexample found with bound 48
--- no counterexample found with bound 49
--- specification  G !(state = correct)    is false
+-- specification  G !(((((state = initial & !free) & num_allowed != 0) & num_squares_end != 0) &  F state = correct) & num_squares_end != num_squares_beginning)    is false
 -- as demonstrated by the following execution sequence
 Trace Description: BMC Counterexample 
 Trace Type: Counterexample 
   -> State: 1.1 <-
-    num_squares_beginning = 5
-    num_squares_end = 3
-    num_allowed = 4
+    num_squares_beginning = 1
+    num_squares_end = 2
+    num_allowed = 7
     num_move = 0
-    num_squares_1_beg = 5
+    num_squares_1_beg = 0
     num_squares_1_end = 0
     last_in_1 = 0
-    num_squares_2_beg = 0
+    num_squares_2_beg = 1
     num_squares_2_end = 0
     last_in_2 = 0
     num_squares_3_beg = 0
     num_squares_3_end = 0
     last_in_3 = 0
-    matchsticks[0] = TRUE
+    matchsticks[0] = FALSE
     matchsticks[1] = FALSE
     matchsticks[2] = FALSE
-    matchsticks[3] = TRUE
-    matchsticks[4] = TRUE
+    matchsticks[3] = FALSE
+    matchsticks[4] = FALSE
     matchsticks[5] = FALSE
     matchsticks[6] = FALSE
-    matchsticks[7] = TRUE
+    matchsticks[7] = FALSE
     matchsticks[8] = TRUE
-    matchsticks[9] = FALSE
-    matchsticks[10] = TRUE
+    matchsticks[9] = TRUE
+    matchsticks[10] = FALSE
     matchsticks[11] = TRUE
-    matchsticks[12] = TRUE
-    matchsticks[13] = FALSE
-    matchsticks[14] = TRUE
-    matchsticks[15] = TRUE
-    matchsticks[16] = TRUE
+    matchsticks[12] = FALSE
+    matchsticks[13] = TRUE
+    matchsticks[14] = FALSE
+    matchsticks[15] = FALSE
+    matchsticks[16] = FALSE
     matchsticks[17] = FALSE
     matchsticks[18] = TRUE
-    matchsticks[19] = TRUE
+    matchsticks[19] = FALSE
     matchsticks[20] = TRUE
     matchsticks[21] = FALSE
     matchsticks[22] = TRUE
@@ -139,22 +138,60 @@ Trace Type: Counterexample
     free = FALSE
     fin_free = FALSE
     finished_count = FALSE
-    sq_1_bool[0] = TRUE
+    sq_1_bool[0] = FALSE
     sq_1_bool[1] = FALSE
     sq_1_bool[2] = FALSE
-    sq_1_bool[3] = TRUE
-    sq_1_bool[4] = TRUE
+    sq_1_bool[3] = FALSE
+    sq_1_bool[4] = FALSE
     sq_1_bool[5] = FALSE
     sq_1_bool[6] = FALSE
-    sq_1_bool[7] = TRUE
-    sq_1_bool[8] = TRUE
+    sq_1_bool[7] = FALSE
+    sq_1_bool[8] = FALSE
     sq_2_bool[0] = FALSE
     sq_2_bool[1] = FALSE
     sq_2_bool[2] = FALSE
-    sq_2_bool[3] = FALSE
-    sq_3_bool = TRUE
-    num_match_beg = 16
+    sq_2_bool[3] = TRUE
+    sq_3_bool = FALSE
+    num_match_beg = 8
     num_match_end = 0
+    init_sq1[0] = FALSE
+    init_sq1[1] = FALSE
+    init_sq1[2] = FALSE
+    init_sq1[3] = FALSE
+    init_sq1[4] = FALSE
+    init_sq1[5] = FALSE
+    init_sq1[6] = FALSE
+    init_sq1[7] = FALSE
+    init_sq1[8] = FALSE
+    init_sq2[0] = FALSE
+    init_sq2[1] = FALSE
+    init_sq2[2] = FALSE
+    init_sq2[3] = TRUE
+    init_sq3 = FALSE
+    bool1[0] = FALSE
+    bool1[1] = FALSE
+    bool1[2] = FALSE
+    bool1[3] = FALSE
+    bool1[4] = FALSE
+    bool1[5] = FALSE
+    bool1[6] = FALSE
+    bool1[7] = FALSE
+    bool1[8] = TRUE
+    bool1[9] = TRUE
+    bool1[10] = FALSE
+    bool1[11] = TRUE
+    bool1[12] = FALSE
+    bool1[13] = TRUE
+    bool1[14] = FALSE
+    bool1[15] = FALSE
+    bool1[16] = FALSE
+    bool1[17] = FALSE
+    bool1[18] = TRUE
+    bool1[19] = FALSE
+    bool1[20] = TRUE
+    bool1[21] = FALSE
+    bool1[22] = TRUE
+    bool1[23] = TRUE
     falsarr[0] = FALSE
     falsarr[1] = FALSE
     falsarr[2] = FALSE
@@ -179,43 +216,6 @@ Trace Type: Counterexample
     falsarr[21] = FALSE
     falsarr[22] = FALSE
     falsarr[23] = FALSE
-    bool1[0] = TRUE
-    bool1[1] = FALSE
-    bool1[2] = FALSE
-    bool1[3] = TRUE
-    bool1[4] = TRUE
-    bool1[5] = FALSE
-    bool1[6] = FALSE
-    bool1[7] = TRUE
-    bool1[8] = TRUE
-    bool1[9] = FALSE
-    bool1[10] = TRUE
-    bool1[11] = TRUE
-    bool1[12] = TRUE
-    bool1[13] = FALSE
-    bool1[14] = TRUE
-    bool1[15] = TRUE
-    bool1[16] = TRUE
-    bool1[17] = FALSE
-    bool1[18] = TRUE
-    bool1[19] = TRUE
-    bool1[20] = TRUE
-    bool1[21] = FALSE
-    bool1[22] = TRUE
-    bool1[23] = TRUE
-    init_sq2[0] = FALSE
-    init_sq2[1] = FALSE
-    init_sq2[2] = FALSE
-    init_sq2[3] = FALSE
-    init_sq1[0] = TRUE
-    init_sq1[1] = FALSE
-    init_sq1[2] = FALSE
-    init_sq1[3] = TRUE
-    init_sq1[4] = TRUE
-    init_sq1[5] = FALSE
-    init_sq1[6] = FALSE
-    init_sq1[7] = TRUE
-    init_sq1[8] = TRUE
     list_square_3[0] = 0
     list_square_3[1] = 1
     list_square_3[2] = 2
@@ -298,10 +298,8 @@ Trace Type: Counterexample
     list_square_1[8][3] = 23
   -> State: 1.2 <-
     state = calc_cons
-    sq_3_bool = FALSE
-    num_match_end = 16
+    num_match_end = 8
   -> State: 1.3 <-
-    num_squares_1_end = 1
     last_in_1 = 1
     last_in_2 = 1
     last_in_3 = 1
@@ -312,21 +310,18 @@ Trace Type: Counterexample
     last_in_1 = 3
     last_in_2 = 3
   -> State: 1.6 <-
-    num_squares_1_end = 2
     last_in_1 = 4
+    num_squares_2_end = 1
     last_in_2 = 4
   -> State: 1.7 <-
-    num_squares_1_end = 3
     last_in_1 = 5
   -> State: 1.8 <-
     last_in_1 = 6
   -> State: 1.9 <-
     last_in_1 = 7
   -> State: 1.10 <-
-    num_squares_1_end = 4
     last_in_1 = 8
   -> State: 1.11 <-
-    num_squares_1_end = 5
     last_in_1 = 9
   -> State: 1.12 <-
     finished_count = TRUE
@@ -334,115 +329,122 @@ Trace Type: Counterexample
     last_in_1 = 0
     last_in_2 = 0
     last_in_3 = 0
-    matchsticks[1] = TRUE
-    matchsticks[4] = FALSE
-    matchsticks[5] = TRUE
-    matchsticks[7] = FALSE
-    matchsticks[9] = TRUE
-    matchsticks[13] = TRUE
-    matchsticks[16] = FALSE
-    matchsticks[19] = FALSE
+    matchsticks[0] = TRUE
+    matchsticks[3] = TRUE
+    matchsticks[4] = TRUE
+    matchsticks[7] = TRUE
+    matchsticks[8] = FALSE
+    matchsticks[9] = FALSE
+    matchsticks[11] = FALSE
+    matchsticks[13] = FALSE
+    matchsticks[14] = TRUE
+    matchsticks[17] = TRUE
+    matchsticks[20] = FALSE
+    matchsticks[21] = TRUE
+    matchsticks[22] = FALSE
+    matchsticks[23] = FALSE
     state = guess
   -> State: 1.14 <-
-    num_squares_1_end = 0
-    finished_count = FALSE
-    sq_1_bool[0] = FALSE
-    sq_1_bool[3] = FALSE
-    sq_1_bool[7] = FALSE
-    sq_1_bool[8] = FALSE
-    sq_2_bool[0] = TRUE
-    sq_2_bool[3] = TRUE
-  -> State: 1.15 <-
-    num_move = 8
-    xor_arr[1] = TRUE
+    num_move = 14
+    num_squares_2_end = 0
+    xor_arr[0] = TRUE
+    xor_arr[3] = TRUE
     xor_arr[4] = TRUE
-    xor_arr[5] = TRUE
     xor_arr[7] = TRUE
+    xor_arr[8] = TRUE
     xor_arr[9] = TRUE
+    xor_arr[11] = TRUE
     xor_arr[13] = TRUE
-    xor_arr[16] = TRUE
-    xor_arr[19] = TRUE
+    xor_arr[14] = TRUE
+    xor_arr[17] = TRUE
+    xor_arr[20] = TRUE
+    xor_arr[21] = TRUE
+    xor_arr[22] = TRUE
+    xor_arr[23] = TRUE
     state = calc_cons
-  -> State: 1.16 <-
+    finished_count = FALSE
+    sq_1_bool[0] = TRUE
+    sq_1_bool[6] = TRUE
+    sq_2_bool[3] = FALSE
+  -> State: 1.15 <-
+    num_squares_1_end = 1
     last_in_1 = 1
-    num_squares_2_end = 1
     last_in_2 = 1
     last_in_3 = 1
-  -> State: 1.17 <-
+  -> State: 1.16 <-
     last_in_1 = 2
     last_in_2 = 2
-  -> State: 1.18 <-
+  -> State: 1.17 <-
     last_in_1 = 3
     last_in_2 = 3
-  -> State: 1.19 <-
+  -> State: 1.18 <-
     last_in_1 = 4
-    num_squares_2_end = 2
     last_in_2 = 4
-  -> State: 1.20 <-
-    num_squares_1_end = 1
+  -> State: 1.19 <-
     last_in_1 = 5
-  -> State: 1.21 <-
+  -> State: 1.20 <-
     last_in_1 = 6
-  -> State: 1.22 <-
+  -> State: 1.21 <-
+    num_squares_1_end = 2
     last_in_1 = 7
-  -> State: 1.23 <-
+  -> State: 1.22 <-
     last_in_1 = 8
-  -> State: 1.24 <-
+  -> State: 1.23 <-
     last_in_1 = 9
-  -> State: 1.25 <-
+  -> State: 1.24 <-
     finished_count = TRUE
-  -> State: 1.26 <-
+  -> State: 1.25 <-
     state = check_free
-  -> State: 1.27 <-
+  -> State: 1.26 <-
     match_index = 1
-  -> State: 1.28 <-
+  -> State: 1.27 <-
     match_index = 2
-  -> State: 1.29 <-
+  -> State: 1.28 <-
     match_index = 3
-  -> State: 1.30 <-
+  -> State: 1.29 <-
     match_index = 4
-  -> State: 1.31 <-
+  -> State: 1.30 <-
     match_index = 5
-  -> State: 1.32 <-
+  -> State: 1.31 <-
     match_index = 6
-  -> State: 1.33 <-
+  -> State: 1.32 <-
     match_index = 7
-  -> State: 1.34 <-
+  -> State: 1.33 <-
     match_index = 8
-  -> State: 1.35 <-
+  -> State: 1.34 <-
     match_index = 9
-  -> State: 1.36 <-
+  -> State: 1.35 <-
     match_index = 10
-  -> State: 1.37 <-
+  -> State: 1.36 <-
     match_index = 11
-  -> State: 1.38 <-
+  -> State: 1.37 <-
     match_index = 12
-  -> State: 1.39 <-
+  -> State: 1.38 <-
     match_index = 13
-  -> State: 1.40 <-
+  -> State: 1.39 <-
     match_index = 14
-  -> State: 1.41 <-
+  -> State: 1.40 <-
     match_index = 15
-  -> State: 1.42 <-
+  -> State: 1.41 <-
     match_index = 16
-  -> State: 1.43 <-
+  -> State: 1.42 <-
     match_index = 17
-  -> State: 1.44 <-
+  -> State: 1.43 <-
     match_index = 18
-  -> State: 1.45 <-
+  -> State: 1.44 <-
     match_index = 19
-  -> State: 1.46 <-
+  -> State: 1.45 <-
     match_index = 20
-  -> State: 1.47 <-
+  -> State: 1.46 <-
     match_index = 21
-  -> State: 1.48 <-
+  -> State: 1.47 <-
     match_index = 22
-  -> State: 1.49 <-
+  -> State: 1.48 <-
     match_index = 23
-  -> State: 1.50 <-
+  -> State: 1.49 <-
     match_index = 24
     fin_free = TRUE
-  -> State: 1.51 <-
+  -> State: 1.50 <-
     match_index = 0
     state = correct
     fin_free = FALSE
@@ -452,4 +454,4 @@ Copyright(C) 2002, Jem Berkes <jberkes@pc-tools.net>
 
 === NuSMV -bmc -bmc_length 51 sq2.smv ===
 
-Execution time: 21.444 s
+Execution time: 30.538 s
