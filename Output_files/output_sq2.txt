@@ -1,0 +1,454 @@
+*** This is NuSMV 2.6.0 (compiled on Wed Oct 14 15:37:51 2015)
+*** Enabled addons are: compass
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Please report bugs to <Please report bugs to <nusmv-users@fbk.eu>>
+
+*** Copyright (c) 2010-2014, Fondazione Bruno Kessler
+
+*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+*** This version of NuSMV is linked to the MiniSat SAT solver. 
+*** See http://minisat.se/MiniSat.html
+*** Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
+*** Copyright (c) 2007-2010, Niklas Sorensson
+
+Warning: at line 632 expression might result in array subscripting out of bounds.
+
+Warning: at line 625 expression might result in array subscripting out of bounds.
+
+-- no counterexample found with bound 0
+-- no counterexample found with bound 1
+-- no counterexample found with bound 2
+-- no counterexample found with bound 3
+-- no counterexample found with bound 4
+-- no counterexample found with bound 5
+-- no counterexample found with bound 6
+-- no counterexample found with bound 7
+-- no counterexample found with bound 8
+-- no counterexample found with bound 9
+-- no counterexample found with bound 10
+-- no counterexample found with bound 11
+-- no counterexample found with bound 12
+-- no counterexample found with bound 13
+-- no counterexample found with bound 14
+-- no counterexample found with bound 15
+-- no counterexample found with bound 16
+-- no counterexample found with bound 17
+-- no counterexample found with bound 18
+-- no counterexample found with bound 19
+-- no counterexample found with bound 20
+-- no counterexample found with bound 21
+-- no counterexample found with bound 22
+-- no counterexample found with bound 23
+-- no counterexample found with bound 24
+-- no counterexample found with bound 25
+-- no counterexample found with bound 26
+-- no counterexample found with bound 27
+-- no counterexample found with bound 28
+-- no counterexample found with bound 29
+-- no counterexample found with bound 30
+-- no counterexample found with bound 31
+-- no counterexample found with bound 32
+-- no counterexample found with bound 33
+-- no counterexample found with bound 34
+-- no counterexample found with bound 35
+-- no counterexample found with bound 36
+-- no counterexample found with bound 37
+-- no counterexample found with bound 38
+-- no counterexample found with bound 39
+-- no counterexample found with bound 40
+-- no counterexample found with bound 41
+-- no counterexample found with bound 42
+-- no counterexample found with bound 43
+-- no counterexample found with bound 44
+-- no counterexample found with bound 45
+-- no counterexample found with bound 46
+-- no counterexample found with bound 47
+-- no counterexample found with bound 48
+-- no counterexample found with bound 49
+-- specification  G !(state = correct)    is false
+-- as demonstrated by the following execution sequence
+Trace Description: BMC Counterexample 
+Trace Type: Counterexample 
+  -> State: 1.1 <-
+    num_squares_beginning = 5
+    num_squares_end = 3
+    num_allowed = 4
+    num_move = 0
+    num_squares_1_beg = 5
+    num_squares_1_end = 0
+    last_in_1 = 0
+    num_squares_2_beg = 0
+    num_squares_2_end = 0
+    last_in_2 = 0
+    num_squares_3_beg = 0
+    num_squares_3_end = 0
+    last_in_3 = 0
+    matchsticks[0] = TRUE
+    matchsticks[1] = FALSE
+    matchsticks[2] = FALSE
+    matchsticks[3] = TRUE
+    matchsticks[4] = TRUE
+    matchsticks[5] = FALSE
+    matchsticks[6] = FALSE
+    matchsticks[7] = TRUE
+    matchsticks[8] = TRUE
+    matchsticks[9] = FALSE
+    matchsticks[10] = TRUE
+    matchsticks[11] = TRUE
+    matchsticks[12] = TRUE
+    matchsticks[13] = FALSE
+    matchsticks[14] = TRUE
+    matchsticks[15] = TRUE
+    matchsticks[16] = TRUE
+    matchsticks[17] = FALSE
+    matchsticks[18] = TRUE
+    matchsticks[19] = TRUE
+    matchsticks[20] = TRUE
+    matchsticks[21] = FALSE
+    matchsticks[22] = TRUE
+    matchsticks[23] = TRUE
+    match_index = 0
+    xor_arr[0] = FALSE
+    xor_arr[1] = FALSE
+    xor_arr[2] = FALSE
+    xor_arr[3] = FALSE
+    xor_arr[4] = FALSE
+    xor_arr[5] = FALSE
+    xor_arr[6] = FALSE
+    xor_arr[7] = FALSE
+    xor_arr[8] = FALSE
+    xor_arr[9] = FALSE
+    xor_arr[10] = FALSE
+    xor_arr[11] = FALSE
+    xor_arr[12] = FALSE
+    xor_arr[13] = FALSE
+    xor_arr[14] = FALSE
+    xor_arr[15] = FALSE
+    xor_arr[16] = FALSE
+    xor_arr[17] = FALSE
+    xor_arr[18] = FALSE
+    xor_arr[19] = FALSE
+    xor_arr[20] = FALSE
+    xor_arr[21] = FALSE
+    xor_arr[22] = FALSE
+    xor_arr[23] = FALSE
+    state = initial
+    free = FALSE
+    fin_free = FALSE
+    finished_count = FALSE
+    sq_1_bool[0] = TRUE
+    sq_1_bool[1] = FALSE
+    sq_1_bool[2] = FALSE
+    sq_1_bool[3] = TRUE
+    sq_1_bool[4] = TRUE
+    sq_1_bool[5] = FALSE
+    sq_1_bool[6] = FALSE
+    sq_1_bool[7] = TRUE
+    sq_1_bool[8] = TRUE
+    sq_2_bool[0] = FALSE
+    sq_2_bool[1] = FALSE
+    sq_2_bool[2] = FALSE
+    sq_2_bool[3] = FALSE
+    sq_3_bool = FALSE
+    num_match_beg = 16
+    num_match_end = 0
+    falsarr[0] = FALSE
+    falsarr[1] = FALSE
+    falsarr[2] = FALSE
+    falsarr[3] = FALSE
+    falsarr[4] = FALSE
+    falsarr[5] = FALSE
+    falsarr[6] = FALSE
+    falsarr[7] = FALSE
+    falsarr[8] = FALSE
+    falsarr[9] = FALSE
+    falsarr[10] = FALSE
+    falsarr[11] = FALSE
+    falsarr[12] = FALSE
+    falsarr[13] = FALSE
+    falsarr[14] = FALSE
+    falsarr[15] = FALSE
+    falsarr[16] = FALSE
+    falsarr[17] = FALSE
+    falsarr[18] = FALSE
+    falsarr[19] = FALSE
+    falsarr[20] = FALSE
+    falsarr[21] = FALSE
+    falsarr[22] = FALSE
+    falsarr[23] = FALSE
+    bool1[0] = TRUE
+    bool1[1] = FALSE
+    bool1[2] = FALSE
+    bool1[3] = TRUE
+    bool1[4] = TRUE
+    bool1[5] = FALSE
+    bool1[6] = FALSE
+    bool1[7] = TRUE
+    bool1[8] = TRUE
+    bool1[9] = FALSE
+    bool1[10] = TRUE
+    bool1[11] = TRUE
+    bool1[12] = TRUE
+    bool1[13] = FALSE
+    bool1[14] = TRUE
+    bool1[15] = TRUE
+    bool1[16] = TRUE
+    bool1[17] = FALSE
+    bool1[18] = TRUE
+    bool1[19] = TRUE
+    bool1[20] = TRUE
+    bool1[21] = FALSE
+    bool1[22] = TRUE
+    bool1[23] = TRUE
+    init_sq2[0] = FALSE
+    init_sq2[1] = FALSE
+    init_sq2[2] = FALSE
+    init_sq2[3] = FALSE
+    init_sq1[0] = TRUE
+    init_sq1[1] = FALSE
+    init_sq1[2] = FALSE
+    init_sq1[3] = TRUE
+    init_sq1[4] = TRUE
+    init_sq1[5] = FALSE
+    init_sq1[6] = FALSE
+    init_sq1[7] = TRUE
+    init_sq1[8] = TRUE
+    list_square_3[0] = 0
+    list_square_3[1] = 1
+    list_square_3[2] = 2
+    list_square_3[3] = 6
+    list_square_3[4] = 13
+    list_square_3[5] = 20
+    list_square_3[6] = 23
+    list_square_3[7] = 22
+    list_square_3[8] = 21
+    list_square_3[9] = 17
+    list_square_3[10] = 10
+    list_square_3[11] = 3
+    list_square_2[0][0] = 0
+    list_square_2[0][1] = 3
+    list_square_2[0][2] = 10
+    list_square_2[0][3] = 14
+    list_square_2[0][4] = 15
+    list_square_2[0][5] = 12
+    list_square_2[0][6] = 5
+    list_square_2[0][7] = 1
+    list_square_2[1][0] = 1
+    list_square_2[1][1] = 2
+    list_square_2[1][2] = 6
+    list_square_2[1][3] = 13
+    list_square_2[1][4] = 16
+    list_square_2[1][5] = 15
+    list_square_2[1][6] = 11
+    list_square_2[1][7] = 4
+    list_square_2[2][0] = 7
+    list_square_2[2][1] = 8
+    list_square_2[2][2] = 12
+    list_square_2[2][3] = 19
+    list_square_2[2][4] = 22
+    list_square_2[2][5] = 21
+    list_square_2[2][6] = 17
+    list_square_2[2][7] = 10
+    list_square_2[3][0] = 8
+    list_square_2[3][1] = 9
+    list_square_2[3][2] = 13
+    list_square_2[3][3] = 20
+    list_square_2[3][4] = 22
+    list_square_2[3][5] = 23
+    list_square_2[3][6] = 18
+    list_square_2[3][7] = 11
+    list_square_1[0][0] = 0
+    list_square_1[0][1] = 3
+    list_square_1[0][2] = 4
+    list_square_1[0][3] = 7
+    list_square_1[1][0] = 1
+    list_square_1[1][1] = 4
+    list_square_1[1][2] = 5
+    list_square_1[1][3] = 8
+    list_square_1[2][0] = 5
+    list_square_1[2][1] = 2
+    list_square_1[2][2] = 6
+    list_square_1[2][3] = 9
+    list_square_1[3][0] = 10
+    list_square_1[3][1] = 7
+    list_square_1[3][2] = 11
+    list_square_1[3][3] = 14
+    list_square_1[4][0] = 11
+    list_square_1[4][1] = 8
+    list_square_1[4][2] = 12
+    list_square_1[4][3] = 15
+    list_square_1[5][0] = 12
+    list_square_1[5][1] = 13
+    list_square_1[5][2] = 16
+    list_square_1[5][3] = 9
+    list_square_1[6][0] = 17
+    list_square_1[6][1] = 14
+    list_square_1[6][2] = 18
+    list_square_1[6][3] = 21
+    list_square_1[7][0] = 18
+    list_square_1[7][1] = 15
+    list_square_1[7][2] = 19
+    list_square_1[7][3] = 22
+    list_square_1[8][0] = 19
+    list_square_1[8][1] = 20
+    list_square_1[8][2] = 16
+    list_square_1[8][3] = 23
+  -> State: 1.2 <-
+    state = calc_cons
+    num_match_end = 16
+  -> State: 1.3 <-
+    num_squares_1_end = 1
+    last_in_1 = 1
+    last_in_2 = 1
+    last_in_3 = 1
+  -> State: 1.4 <-
+    last_in_1 = 2
+    last_in_2 = 2
+  -> State: 1.5 <-
+    last_in_1 = 3
+    last_in_2 = 3
+  -> State: 1.6 <-
+    num_squares_1_end = 2
+    last_in_1 = 4
+    last_in_2 = 4
+  -> State: 1.7 <-
+    num_squares_1_end = 3
+    last_in_1 = 5
+  -> State: 1.8 <-
+    last_in_1 = 6
+  -> State: 1.9 <-
+    last_in_1 = 7
+  -> State: 1.10 <-
+    num_squares_1_end = 4
+    last_in_1 = 8
+  -> State: 1.11 <-
+    num_squares_1_end = 5
+    last_in_1 = 9
+  -> State: 1.12 <-
+    finished_count = TRUE
+  -> State: 1.13 <-
+    last_in_1 = 0
+    last_in_2 = 0
+    last_in_3 = 0
+    matchsticks[1] = TRUE
+    matchsticks[4] = FALSE
+    matchsticks[5] = TRUE
+    matchsticks[7] = FALSE
+    matchsticks[9] = TRUE
+    matchsticks[13] = TRUE
+    matchsticks[16] = FALSE
+    matchsticks[19] = FALSE
+    state = guess
+  -> State: 1.14 <-
+    num_squares_1_end = 0
+    finished_count = FALSE
+    sq_1_bool[0] = FALSE
+    sq_1_bool[3] = FALSE
+    sq_1_bool[7] = FALSE
+    sq_1_bool[8] = FALSE
+    sq_2_bool[0] = TRUE
+    sq_2_bool[3] = TRUE
+  -> State: 1.15 <-
+    num_move = 8
+    xor_arr[1] = TRUE
+    xor_arr[4] = TRUE
+    xor_arr[5] = TRUE
+    xor_arr[7] = TRUE
+    xor_arr[9] = TRUE
+    xor_arr[13] = TRUE
+    xor_arr[16] = TRUE
+    xor_arr[19] = TRUE
+    state = calc_cons
+  -> State: 1.16 <-
+    last_in_1 = 1
+    num_squares_2_end = 1
+    last_in_2 = 1
+    last_in_3 = 1
+  -> State: 1.17 <-
+    last_in_1 = 2
+    last_in_2 = 2
+  -> State: 1.18 <-
+    last_in_1 = 3
+    last_in_2 = 3
+  -> State: 1.19 <-
+    last_in_1 = 4
+    num_squares_2_end = 2
+    last_in_2 = 4
+  -> State: 1.20 <-
+    num_squares_1_end = 1
+    last_in_1 = 5
+  -> State: 1.21 <-
+    last_in_1 = 6
+  -> State: 1.22 <-
+    last_in_1 = 7
+  -> State: 1.23 <-
+    last_in_1 = 8
+  -> State: 1.24 <-
+    last_in_1 = 9
+  -> State: 1.25 <-
+    finished_count = TRUE
+  -> State: 1.26 <-
+    state = check_free
+  -> State: 1.27 <-
+    match_index = 1
+  -> State: 1.28 <-
+    match_index = 2
+  -> State: 1.29 <-
+    match_index = 3
+  -> State: 1.30 <-
+    match_index = 4
+  -> State: 1.31 <-
+    match_index = 5
+  -> State: 1.32 <-
+    match_index = 6
+  -> State: 1.33 <-
+    match_index = 7
+  -> State: 1.34 <-
+    match_index = 8
+  -> State: 1.35 <-
+    match_index = 9
+  -> State: 1.36 <-
+    match_index = 10
+  -> State: 1.37 <-
+    match_index = 11
+  -> State: 1.38 <-
+    match_index = 12
+  -> State: 1.39 <-
+    match_index = 13
+  -> State: 1.40 <-
+    match_index = 14
+  -> State: 1.41 <-
+    match_index = 15
+  -> State: 1.42 <-
+    match_index = 16
+  -> State: 1.43 <-
+    match_index = 17
+  -> State: 1.44 <-
+    match_index = 18
+  -> State: 1.45 <-
+    match_index = 19
+  -> State: 1.46 <-
+    match_index = 20
+  -> State: 1.47 <-
+    match_index = 21
+  -> State: 1.48 <-
+    match_index = 22
+  -> State: 1.49 <-
+    match_index = 23
+  -> State: 1.50 <-
+    match_index = 24
+    fin_free = TRUE
+  -> State: 1.51 <-
+    match_index = 0
+    state = correct
+    fin_free = FALSE
+
+ptime 1.0 for Win32, Freeware - http://www.pc-tools.net/
+Copyright(C) 2002, Jem Berkes <jberkes@pc-tools.net>
+
+=== NuSMV -bmc -bmc_length 51 sq3.smv ===
+
+Execution time: 17.774 s
