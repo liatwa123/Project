@@ -9,7 +9,7 @@ This tool can serve as an illustrative example in teaching formal verification.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 #### NuSMV
 
@@ -27,7 +27,7 @@ In this github project, go to the Python_Interactive_Solver folder.
 
 Open a new PyCharm project including all the files in the Python_Interactive_Solver folder.
 
-For each file in the Interactive Python Solver: if chdir method is found, change the directory to your NuSMV bin folder path.
+For each file in the Interactive Python Solver: if chdir method is found, change the directory to your NuSMV bin folder path. If there are import errors (Python packages/libraries missing), move the mouse to the red errors and click 'install package_name.py'. 
 
 ### Prerequisites
 
@@ -51,29 +51,7 @@ Extract the zip file.
 
 After following the steps in Prerequisites and Getting Started:
 
-## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
