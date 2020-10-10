@@ -675,4 +675,4 @@ init(num_squares_1_end):=0;
         
         
         LTLSPEC
-                         G !(state = initial & !free & num_allowed != 0 & num_squares_end != 0 & F state = correct & num_squares_end != num_squares_beginning)
+                          G !(state = initial & !free & num_allowed != 0 & num_squares_end != 0 & num_squares_beginning != 1 & F state = correct & num_squares_end != num_squares_beginning)
