@@ -55,11 +55,21 @@ In order to run the project, click 'Run solver':
 
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/run.jpg?raw=true)
 
-If this option does not apper, click 'Run' and then press 'solver':
+
+
+If this option does not appear, click 'Run' and then press 'solver':
 
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/run2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/run3.jpg?raw=true)
+
+
+Then, you will see a new screen:
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/main_menu.jpg?raw=true)
+
+This is the main menu of the riddles solver. There, you need to enter the number of the riddle that you want to solve. If you do not want to continue solving a specific riddle type, you will return automatically to this menu. If you want to exit from the solver, it is possible only from this menu (option 0).
+
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nav_math.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_add_nor.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_add_opt.jpg?raw=true)
