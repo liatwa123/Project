@@ -72,7 +72,27 @@ Then, you will see a new screen:
 This is the main menu of the riddles solver. There, you need to enter the number of the riddle that you want to solve. If you do not want to continue solving a specific riddle type, you will return automatically to this menu. If you want to exit from the solver, it is possible only from this menu (option 0).
 
 ### Mathematical Riddles
+
+#### Features:
+Solving normal riddles (the user enters all the input)
+
+Solving normal riddles (the computer chooses a random equation)
+
+Finding all possible solutions (for normal riddles, both normal and random input, with move operations only)
+
+Solving optimization riddles (the user enters all the input except for the number of matchsticks to add/remove/move)
+
+Solving optimization riddles (the computer chooses a random equation, the number of matchsticks to add/remove/move should be optimized)
+
+Generating normal riddles and solving them
+
+Generating optimization riddles and solving them
+
+#### The Navigation Menu
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nav_math.jpg?raw=true)
+
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_add_nor.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_add_opt.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_add_nor.jpg?raw=true)
