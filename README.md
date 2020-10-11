@@ -4,7 +4,7 @@ Matchstick riddles are popular puzzles that typically require adding, removing o
 This is an automatic method and tool to efficiently solve several classes of matchstick puzzles by using formal verification methods. 
 The mathstick puzzle is encoded as a transition system and model checking is used to search for a counter example that serves as a solution to the underlying puzzle, or to prove that no solution exists. Our tool
 can also find multiple solutions if more than one solution exists and automatically generate new puzzles. This tool uses different
-algorithms including Linear Temporal Logic (LTL) based on Binary Decision Diagrams and SAT and demonstrate efficient solutions for some challenging mathctick puzzles.
+algorithms including Linear Temporal Logic (LTL) based on Binary Decision Diagrams and SAT and demonstrate efficient solutions for some challenging matchstick puzzles.
 This tool can serve as an illustrative example in teaching formal verification.
 
 ## Getting Started
@@ -106,11 +106,23 @@ In the end of the process, the input will be printed on the screen. (Note: in th
 
 #### Generated input, optimization riddles, add matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_add_opt.jpg?raw=true)
+
+#### Manual input, normal riddles, remove matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_remove_nor.jpg?raw=true)
+
+#### Manual input, optimization riddles, remove matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_remove_opt.jpg?raw=true)
+
+#### Generated input, normal riddles, remove matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_remove_nor.jpg?raw=true)
+
+#### Generated input, optimization riddles, remove matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_remove_opt.jpg?raw=true)
+
+#### Manual input, normal riddles, move matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_move_nor.jpg?raw=true)
+
+#### Generated input, normal riddles, move matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_move_opt.jpg?raw=true)
 
 ### Square Riddles 
