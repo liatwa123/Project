@@ -1648,7 +1648,7 @@ init(num_squares_1_end):=0;
         
         
         LTLSPEC
-                         G !(state = initial & !free & num_allowed != 0 & num_squares_end != 0 & F state = correct & num_squares_end != num_squares_beginning)
+                         G !(state = initial & !free & num_allowed != 0 & num_squares_end != 0 & num_squares_beginning != 1 & F state = correct & num_squares_end != num_squares_beginning)
 """
     os.chdir(r'C:\Users\liatw\OneDrive\Desktop\NuSMV-2.6.0-win64\bin')  # change to your NuSMV bin directory
     open('sq' + str(j) + ".smv", 'w').close()
@@ -1665,7 +1665,7 @@ f.close()'''
 def limits(num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num_squares_3_beg,
            matchsticks,
            sq_1_bool, sq_2_bool, sq_3_bool, num_squares_end=-1, num_allowed=-1, mid_or_last_sol='',
-           last_lower=-1, last_upper=-1, current_min=0, flag_solved=0):
+           last_lower=-1, last_upper=- 1, current_min=0, flag_solved=0):
     if last_lower == last_upper == -1:
         if num_allowed == -1:  # need to find optimal num_allowed, num_squares_end is constant
             if num_squares_beginning == num_squares_end:

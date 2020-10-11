@@ -817,6 +817,33 @@ def find_all(j, plus_or_minus, num_allowed, N):
         flag_solved, run_time = find_solution(j)
 
 
+def input_find_all(j, dig1, dig2, result, plus_or_minus, num_allowed, N):
+    """
+           This function gets:
+           j - an index of an input/output file
+           plus_or_minus - operator, must be 'plus' or 'minus'
+           num_allowed - number of matchsticks required for solving the riddle
+           N - number of digits per operand
+           It checks if the input equation is valid.
+           If yes - it writes a model file and runs it.
+           It finds all the possible solutions for the riddle.
+           """
+    flag_solved = 0
+    times, flag_solved1, run_time = solve_equation_input(j, dig1, dig2, result, plus_or_minus, num_allowed, N)
+
+    if flag_solved1 != 0:
+        flag_solved = flag_solved1
+
+    while flag_solved1 != 1 and flag_solved1 != 0:
+        update_assertion(j, plus_or_minus)
+        j += 1
+        run_model(plus_or_minus + "_move" + str(j) + '.smv', j)
+        flag_solved1, run_time = find_solution(j)
+        if flag_solved1 == 2:
+            flag_solved = flag_solved1
+    return j, flag_solved
+
+
 def update_assertion(j, plus_or_minus):
     """
         This function gets:
@@ -849,10 +876,10 @@ def update_assertion(j, plus_or_minus):
     str_another_sol = str_another_sol[:-2]
 
     for line in lines:
-        if 'G !(state = correct' not in line:
+        if 'G ! (state=correct' not in line:
             model.write(line)
         else:
-            if 'G !(state = correct)' in line:
+            if 'G ! (state=correct)' in line:
                 model.write(line[:-2] + ' & !(' + str_another_sol + '))')
             else:
                 imp, rest = line.split('))')

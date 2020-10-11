@@ -361,6 +361,21 @@ def optimal_output(dig1, dig2, result, plus_or_minus, num_digits, operation, num
     print """---------------------------------------------------------------------------------------------------------"""
 
 
+def all_solutions_move(j, num_digits, man_rnd_con):
+    dig1, dig2, result, plus_or_minus, num_allowed = math_general_input(num_digits, 'MOVE', man_rnd_con)
+    final_j, flag_solved = general_move.input_find_all(j, int(dig1), int(dig2), int(result), plus_or_minus, int(num_allowed), int(num_digits))
+    if flag_solved == 1:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+    elif flag_solved == 2:
+        for i in range(j, final_j):
+            sol1, sol2, sol3 = general_move.find_info(i)
+            math_general_output(sol1, sol2, sol3, plus_or_minus, num_digits, num_allowed, 'MOVE')
+
+    else:
+        print colored("""                                NO SOLUTION                               """, 'red')
+
+
 def math_general_in_out(j, num_digits, operation, man_rnd_con):
     """
     This function gets:
@@ -463,7 +478,7 @@ def math_normal_generate_in_out(j, num_digits, operation):
     elif flag_solved == 2:
         print """
 
-            ---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
                                                          YOUR INPUT IS:
                         """
         equation_print(dig1_or, dig2_or, dig3_or, plus_or_minus, num_digits, num_allowed, operation)
@@ -484,7 +499,7 @@ def math_optimal_generate_in_out(j, num_digits, operation):
                                         int(num_digits))
         print """
 
-                    ---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
                                                                  YOUR INPUT IS:
                                 """
         equation_print(dig1_or, dig2_or, dig3_or, plus_or_minus, num_digits, -1, operation)
@@ -497,7 +512,7 @@ def math_optimal_generate_in_out(j, num_digits, operation):
             general_move.solve_equation_gen(j, plus_or_minus, int(num_digits))
         print """
 
-                     ---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
                                                                   YOUR INPUT IS:
                                  """
         equation_print(dig1_or, dig2_or, dig3_or, plus_or_minus, num_digits, -1, operation)
@@ -545,13 +560,33 @@ def math_solve(operation, j, normal_or_optimal, man_rnd_con):
     elif operation == 'MOVE':
         num_digits = move()
 
-    if man_rnd_con == 'M' or man_rnd_con == 'R':
+    if man_rnd_con == 'M' or man_rnd_con == 'R':  # manual or random input
+
         if normal_or_optimal == 'N':
-            math_general_in_out(j, num_digits, operation, man_rnd_con)
+
+            if operation == 'MOVE':
+
+                find = find_all_or_one_input()  # Y - find all solutions, N - find 1 solution
+                if find == 'N':
+                    math_general_in_out(j, num_digits, operation, man_rnd_con)  # find 1 solution
+                else:
+                    all_solutions_move(j, num_digits, man_rnd_con)  # find all solutions
+
+            else:  # add or remove
+                math_general_in_out(j, num_digits, operation, man_rnd_con)
+
         else:  # normal_or_optimal == 'O'
             math_optimal_in_out(j, num_digits, operation, man_rnd_con)
+
     else:
         math_generate_in_out(j, num_digits, operation, normal_or_optimal)
+
+
+def find_all_or_one_input():
+    while True:
+        find = raw_input("""DO YOU WANT TO FIND ALL THE POSSIBLE SOLUTIONS? Y / N: """)
+        if find == 'Y' or find == 'N':
+            return find
 
 
 def menu_math(j):
