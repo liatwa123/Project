@@ -51,7 +51,12 @@ Extract the zip file.
 
 After following the steps in Prerequisites and Getting Started:
 
+In order to run the project, click 'Run solver':
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/run.jpg?raw=true)
+
+If this option does not apper, click 'Run' and then press 'solver':
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/run2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/run3.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/main_menu.jpg?raw=true)
