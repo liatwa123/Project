@@ -695,7 +695,8 @@ def limits(remove_or_add, num1, num2, result, N, plus_or_minus, mid_or_last_sol=
             return None, None, None
 
         elif mid_or_last_sol == 'mid':
-            return (last_lower + last_upper) / 2, current_min - 1, mid_or_last_sol
+            return last_upper + 1, current_min - 1, mid_or_last_sol
+            #    return (last_lower + last_upper) / 2, current_min - 1, mid_or_last_sol
 
 
 def read_math_riddle(j, dig1, dig2, result, plus_or_minus, remove_or_add, N, num_allowed=-1, lower=-1, upper=-1):

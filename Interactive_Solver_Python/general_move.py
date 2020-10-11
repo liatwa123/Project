@@ -728,7 +728,8 @@ def limits(num1, num2, result, N, plus_or_minus, mid_or_last_sol='', last_lower=
             return None, None, None
 
         elif mid_or_last_sol == 'mid':
-            return (last_lower + last_upper) / 2, current_min - 1, mid_or_last_sol
+            #  return (last_lower + last_upper) / 2, current_min - 1, mid_or_last_sol
+            return last_upper + 1, current_min - 1, mid_or_last_sol
 
 
 def find_solution(j):

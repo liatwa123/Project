@@ -1701,7 +1701,7 @@ def limits(num_squares_beginning, num_squares_1_beg, num_squares_2_beg, num_squa
             return None, None, None
 
         elif mid_or_last_sol == 'mid':
-            return (last_lower + last_upper) / 2, current_min - 1, mid_or_last_sol
+            return last_upper + 1, current_min - 1, mid_or_last_sol
 
 
 def run_model(file_model, j):
