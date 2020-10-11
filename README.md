@@ -51,7 +51,7 @@ Extract the zip file.
 
 After following the steps in Prerequisites and Getting Started:
 
-
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/all_sol_move_out2.jpg?raw=true "Title")
 
 ## Built With
 
