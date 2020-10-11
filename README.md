@@ -71,7 +71,7 @@ Then, you will see a new screen:
 
 This is the main menu of the riddles solver. There, you need to enter the number of the riddle that you want to solve. If you do not want to continue solving a specific riddle type, you will return automatically to this menu. If you want to exit from the solver, it is possible only from this menu (option 0).
 
-### Mathematical Riddles
+### Mathematical Equations Riddles
 
 #### Features:
 Solving normal riddles (the user enters all the input)
@@ -92,10 +92,19 @@ Generating optimization riddles and solving them
 
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nav_math.jpg?raw=true)
 
+When the user chooses to solve mathematical equations riddles, the input variables that must be entered are: the operation (add / remove / move), the riddle’s type (normal / optimization), the input type (manual / random / generated), the number of digits per operand and the operator (+ / -). The rest of the input depends on the options chosen. For example: a user that wants to solve a normal riddle and enter the input manually – will enter all the operands next; A user that wants to generate a normal riddle – does not need to enter any input next.
+In the end of the process, the input will be printed on the screen. (Note: in the generated riddles, the generated input will be printed on the screen too.)
 
+#### Manual input, normal riddles, add matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_add_nor.jpg?raw=true)
+
+#### Manual input, optimization riddles, add matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_add_opt.jpg?raw=true)
+
+#### Generated input, normal riddles, add matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_add_nor.jpg?raw=true)
+
+#### Generated input, optimization riddles, add matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_add_opt.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_remove_nor.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_remove_opt.jpg?raw=true)
