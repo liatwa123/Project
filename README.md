@@ -163,6 +163,8 @@ In order to enter the initial construction, the user needs to enter ‘T’ if a
 
 The output format is the same for all the squares riddles. The green matchsticks represent the new matchsticks’ locations, the grey ones represent the old locations. 
 
+##### IMPORTANT - CLOSE THE WINDOWS TITLED 'THE INPUT' AND 'THE OUTPUT' IN ORDER TO CONTINUE THE EXECUTION OF THE PROGRAM! THE EXECUTION OF THE SOLVER STOPS UNTIL THE USER CLOSES THESE WINDOWS!!!
+
 #### Manual input, normal riddles
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nor_sqr_in1.jpg?raw=true)
 
@@ -228,6 +230,8 @@ In order to enter the initial construction, the user needs to enter the pointing
 
 The output format is the same for all the sum of matchstick heads riddles. The pointing directions are printed.
 
+##### IMPORTANT - CLOSE THE WINDOWS TITLED 'THE INPUT' AND 'THE OUTPUT' IN ORDER TO CONTINUE THE EXECUTION OF THE PROGRAM! THE EXECUTION OF THE SOLVER STOPS UNTIL THE USER CLOSES THESE WINDOWS!!!
+
 #### Manual input
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sum1.jpg?raw=true)
 
@@ -260,6 +264,8 @@ Basic area unit – triangle: the angles must be 60, 120, 180, 240, 300.
 
 #### The input series (3rd input type)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/shapes_series.jpg?raw=true)
+
+##### IMPORTANT - CLOSE THE WINDOWS TITLED 'THE INPUT' AND 'THE OUTPUT' IN ORDER TO CONTINUE THE EXECUTION OF THE PROGRAM! THE EXECUTION OF THE SOLVER STOPS UNTIL THE USER CLOSES THESE WINDOWS!!!
 
 #### Shape Division Riddles – manual input – basic area unit: square
 
