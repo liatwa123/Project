@@ -1482,6 +1482,7 @@ def solve_rid_input(j, original, num_allowed, tri_or_sq):
     run_time = -1
     shape1 = None
     shape2 = None
+    total = 0
     times = read_riddle(j, original, num_allowed, tri_or_sq)
     if times != -1:
         total = 0
@@ -1515,46 +1516,20 @@ def solve_rid_input(j, original, num_allowed, tri_or_sq):
                 total += run_time
                 closed, shape1, shape2 = get_shapes2(j, original)
 
-    return times, flag_solved, run_time, shape1, shape2
+    return times, flag_solved, total, shape1, shape2
 
 
 def main():
-    # write_model_sq(1, [[1,180,2],[2,90,3],[3,180,4],[4,90,5],[5,180,6],[6,270,7],[7,90,8], [8,180,9], [9,270,10], [10,90,11], [11,180,12], [12,90,13],[13,180,14],[14,90,15],[15,180,16],[16,270,17],[17,90,18],[18,180,19],[19,270,20],[20,90,1]], 2)
-    original = []
-    avg_solved = 0
-    avg_no = 0
-    count_sol = 0
-    count_no = 0
-
-    for k in range(14, 22, 8):
+    times, flag_solved, run_time, shape1, shape2 = (-1, -1, -1, [], [])
+    for k in range(14, 86, 8):  # for squares input series: change to (18, 4, 62)
         for j in range(5, 4, -1):
-            original = create_shape(k)
-            bool1 = check_close.build_shape2(original, build_dir(original))
-            total = 0
-            num_m = j
-            write_model_tri(j, original, num_m)
-            flag_solved, run_time = find_solution(j)
-            total += run_time
-            closed = True
-            if flag_solved == 2:
-                closed = get_shapes(j, original)
-            while not closed and flag_solved == 2:
-                flag_solved, run_time = find_solution(j)
-                total += run_time
-                closed = get_shapes(j, original)
+            original = create_shape(k)  # for squares input series: change to create_shape2(k)
 
+            # for squares input series: change from 'T' to 'S'
+            times, flag_solved, run_time, shape1, shape2 = solve_rid_input(k, original, j, 'T')
             if flag_solved == 2:
-                # avg_solved += total / 5.0
-                count_sol += 1
-                print 'solved'
-            else:
-                # avg_no += total / 5.0
-                count_no += 1
-
-            if count_sol >= 1:
-                print total
-                print num_m
                 print k
+                print run_time
 
 
 if __name__ == '__main__':

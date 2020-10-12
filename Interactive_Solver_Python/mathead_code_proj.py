@@ -2049,10 +2049,15 @@ def calculate_avg(index):
     count_solved = 0
     count_no_solution = 0
 
-    for i in range(index, 1200000 + index):
+    for i in range(index, 1200000 + index):    # you can choose a different number than 1200000, this number depends on the
+                                               # ratio between solved and no-solution riddles
+                                               # it also depends on the number of measurements in the average
         times, flag_solved, run_time = solve_rid(i)
+        # times: -1: invalid riddle, otherwise: valid.
+        # flag_solved: 1 - no solution, 2 - solved, 0 - invalid
+        # run_rime: riddle's execution time
 
-        if times != -1:
+        if times != -1:  # the riddle is valid
             avg_build = avg_build + times
             if flag_solved == 2:
                 count_solved += 1
@@ -2060,7 +2065,7 @@ def calculate_avg(index):
             if flag_solved == 1:
                 count_no_solution += 1
                 avg_not_solved_run += run_time
-            if count_solved == 20:
+            if count_solved == 20:  # number of measured solved cases
                 break
     return avg_solved_run / count_solved
 

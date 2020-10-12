@@ -783,10 +783,15 @@ def calculate_avg(plus_or_minus, num_allowed, N, index):
     count_solved = 0
     count_no_solution = 0
 
-    for i in range(index, 120000 + index):
+    for i in range(index, 120000 + index):  # you can choose a different number than 120000, this number depends on the
+                                            # ratio between solved and no-solution riddles
+                                            # it also depends on the number of measurements in the average
         times, flag_solved, run_time = solve_equation(i, plus_or_minus, num_allowed, N)
+        # times: -1: invalid riddle, otherwise: valid.
+        # flag_solved: 1 - no solution, 2 - solved, 0 - invalid
+        # run_rime: riddle's execution time
 
-        if times != -1:
+        if times != -1:  # the riddle is valid
             avg_build = avg_build + times
             if flag_solved == 2:
                 count_solved += 1
@@ -794,8 +799,12 @@ def calculate_avg(plus_or_minus, num_allowed, N, index):
             if flag_solved == 1:
                 count_no_solution += 1
                 avg_not_solved_run = avg_not_solved_run + run_time
-            if count_no_solution == 5:
-                return avg_not_solved_run / count_no_solution
+
+            # number of measured no-solution cases (you can change this row to count_solved, and the number of
+            # measurements is up to your choice)
+            if count_no_solution == 1:
+                return avg_not_solved_run / count_no_solution  # change this to avg_solved_run / count_solved if you want to
+                                                               # calculate the average execution time for solved riddles
     return 0
 
 
