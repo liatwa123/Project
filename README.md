@@ -288,6 +288,20 @@ Basic area unit – triangle: the angles must be 60, 120, 180, 240, 300.
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/series_area_tri2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/series_area_tri3.jpg?raw=true)
 
+## Calculating the time complexity graphs
+
+In the Interactive_Solver_Python folder, there are six relevant files: 
+
+general2.py - this file includes methods controlling the mathematical equations riddles - operations: add/remove
+general_move.py - this file includes methods controlling the mathematical equations riddles - 'move' operation
+sqr_code_proj.py - this file includes methods controlling the square riddles
+mathead_code_proj.py - this file includes methods controlling the sum of matchstick heads riddles
+areanew_proj.py - this file includes methods controlling the shape division riddles
+check_close.py - this file includes methods checking that a given shape is a polygon
+
+#### Mathematical equations riddles - operations: add/remove
+
+The basic method used here is calculate_avg:
 
 ## Built With
 
