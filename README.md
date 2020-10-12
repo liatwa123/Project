@@ -131,6 +131,15 @@ In the end of the process, the input will be printed on the screen. (Note: in th
 #### Generated input, optimization riddles, move matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_move_opt.jpg?raw=true)
 
+#### Move operation - finding all possible solutions:
+
+For finding all the possible solutions (Move operation), the solutions will be printed one after another:
+
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/all_sol_move_in.jpg?raw=true)
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/all_sol_move_out1.jpg?raw=true)
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/all_sol_move_out2.jpg?raw=true)
+
+
 ### Square Riddles
 
 #### Features:
@@ -217,6 +226,8 @@ When the user chooses to solve sum of matchstick heads riddles, the only input t
 In the end of the process, the input will be printed on the screen. (Note: in the generated riddles, the generated input will be printed on the screen too.)
 In order to enter the initial construction, the user needs to enter the pointing direction for each matchstick. The possible directions are: ‘R’ – right, ‘L’ – left, ‘U’ – up, ‘D’ – down.
 
+The output format is the same for all the sum of matchstick heads riddles. The pointing directions are printed.
+
 #### Manual input
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sum1.jpg?raw=true)
 
@@ -229,20 +240,44 @@ In order to enter the initial construction, the user needs to enter the pointing
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sum2.jpg?raw=true)
 
 ### Shape Division Riddles
+
+#### Features:
+
+Solving normal riddles: the user enters all the input
+Solving normal riddles: the computer chooses a random shape
+Solving normal riddles: the user enters the basic area unit, the number of matchsticks for division and the number of angles, the polygon is randomly created 
+Solving normal riddles: the user enters the basic area unit, the number of matchsticks for division and the number of angles, the polygon is a part of a series of polygons. 
+
+##### The Navigation Menu
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nav_area.jpg?raw=true)
+
+When the user chooses to solve shape division riddles, the input variables that must be entered are the basic area unit (triangle / square), the number of angles and the input type (manual input / random shape / a constant shape which is a part of an input series). The rest of the input depends on the option chosen (a user that wants get an input shape automatically will only need to enter the number of matchsticks for division next). 
+In the end of the process, the input will be printed on the screen. (Note: if the shape is automatically calculated, the input will be printed on the screen too.)
+In order to enter the initial shape, the user needs to enter the angles:
+Basic area unit – square: the angles must be: 90, 180, 270.
+Basic area unit – triangle: the angles must be 60, 120, 180, 240, 300.
+
+#### Shape Division Riddles – manual input – basic area unit: square
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_area_sq1.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_area_sq2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_area_sq3.jpg?raw=true)
+
+#### Shape Division Riddles – manual input – basic area unit: triangle
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_area_tri1.jpg?raw=true)
+
+#### Shape Division Riddles – input series – basic area unit: square
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/series_area_sq1.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/series_area_sq2.jpg?raw=true)
+
+#### Shape Division Riddles – input series – basic area unit: triangle
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/series_area_tri1.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/series_area_tri2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/series_area_tri3.jpg?raw=true)
-![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/all_sol_move_in.jpg?raw=true)
-![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/all_sol_move_out1.jpg?raw=true)
-![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/all_sol_move_out2.jpg?raw=true)
-
 
 
 ## Built With
