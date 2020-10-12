@@ -304,7 +304,7 @@ areanew_proj.py - this file includes methods controlling the shape division ridd
 
 check_close.py - this file includes methods checking that a given shape is a polygon
 
-#### Mathematical equations riddles - operations: add/remove
+#### Mathematical Equations riddles - operations: add/remove
 
 The basic method used here is calculate_avg:
 
@@ -349,7 +349,7 @@ In order to generate results for a full graph (execution time as a function of t
                                                                         # digits per operand)
 Finally, run general2.py.
                                            
-#### Mathematical equations riddles - operations: move
+#### Mathematical Equations riddles - operations: move
 
 The basic method used here is calculate_avg:
 
@@ -387,11 +387,109 @@ In order to calculate an average execution time, just change this method's rows 
 
 In order to generate results for a full graph (execution time as a function of the number of matchsticks to add/remove): use this code template in the general_move.py main() method:
 
-    for i in range(0, 14):
+    for i in range(0, 15):
         print str(calculate_avg('minus', i, 1, i * 10 ** 7))  # you may change the operator and the number of digits per operand (1 is the number of                                                                             
                                                                         # digits per operand)
                                                                         
 Finally, run general_move.py. 
+
+#### Square riddles
+
+The basic method used here is calculate_avg:
+
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/avg_method3.jpg?raw=true)
+
+This function gets:
+
+index - starting index for the input/output files
+
+num_allowed - number of matchsticks required for solving the riddle
+
+This function chooses randomly:
+
+The initial number of 1-match-length squares
+
+The initial number of 2-match-length squares
+
+The initial number of 3-match-length squares
+
+The squares locations 
+
+It checks if the construction input is valid.
+
+If yes - it writes a model file and runs it
+
+It calculates the average execution time for solved riddles         
+
+The output file contains the riddle's solution and the execution time. For each riddle, the status is returned (solved / not solved, valid / invalid) with its execution time,  after reading its output file.
+
+The method counts the cases for the solved riddles and for the no - solution riddles and stops adding new cases to the average if a certain number of measurements (solved riddles / no-solution riddles) has been reached.
+
+In order to calculate an average execution time, just change this method's rows as documented. 
+
+In order to generate results for a full graph (execution time as a function of the number of matchsticks to move): use this code template in the sqr_code_proj.py main() method:
+
+    for i in range(0, 11):
+        print str(calculate_avg(i * 10 ** 7, i))  
+                                                                        
+Finally, run sqr_code_proj.py. 
+
+#### Sum of Matchstick Heads riddles
+
+The basic method used here is calculate_avg:
+
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/avg_method4.jpg?raw=true)
+
+This function gets:
+
+index - starting index for the input/output files
+
+This function chooses randomly:
+
+match_rows: integers input array - the rows that the matchsticks point to (must be 1 - 4)
+
+match_cols: integers input array - the columns that the matchsticks point to (must be 1 - 4)
+
+match_dis: integers input array - the diagonals that the matchsticks point to (must be 1 - 2, 0:
+     no diagonal was pointed by this match). This parameter is synchronized with the rows and columns guess.
+
+It checks if the input equation is valid.
+
+If yes - it writes a model file and runs it
+
+It calculates the average execution time for solved riddles         
+
+The output file contains the riddle's solution and the execution time. For each riddle, the status is returned (solved / not solved, valid / invalid) with its execution time,  after reading its output file.
+
+The method counts the cases for the solved riddles and for the no - solution riddles and stops adding new cases to the average if a certain number of measurements (solved riddles / no-solution riddles) has been reached.
+
+In order to calculate an average execution time, just change this method's rows as documented. 
+
+In order to generate results for a full graph (execution time as a function of the number of matchsticks to add/remove): use this code template in the mathead_code_proj.py main() method:
+
+    for i in range(0, 1):
+        print str(calculate_avg(i))  # you may change the operator and the number of digits per operand (1 is the number of                                                                             
+                                                                        # digits per operand)
+                                                                        
+Finally, run mathead_code_proj.py. 
+
+#### Shape Division riddles
+
+In order to get measurements for the shapes input series:
+in areanew_proj.py, in main(), run the following code:
+
+    times, flag_solved, run_time, shape1, shape2 = (-1, -1, -1, [], [])
+    for k in range(14, 86, 8):  # for squares input series: change to (18, 4, 62)
+        for j in range(5, 4, -1):
+            original = create_shape(k)  # for squares input series: change to create_shape2(k)
+
+            # for squares input series: change from 'T' to 'S'
+            times, flag_solved, run_time, shape1, shape2 = solve_rid_input(k, original, j, 'T')
+            if flag_solved == 2:
+                print k
+                print run_time
+                
+Repeat this code several times. 
 
 ## Built With
 
