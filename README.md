@@ -293,15 +293,105 @@ Basic area unit – triangle: the angles must be 60, 120, 180, 240, 300.
 In the Interactive_Solver_Python folder, there are six relevant files: 
 
 general2.py - this file includes methods controlling the mathematical equations riddles - operations: add/remove
+
 general_move.py - this file includes methods controlling the mathematical equations riddles - 'move' operation
+
 sqr_code_proj.py - this file includes methods controlling the square riddles
+
 mathead_code_proj.py - this file includes methods controlling the sum of matchstick heads riddles
+
 areanew_proj.py - this file includes methods controlling the shape division riddles
+
 check_close.py - this file includes methods checking that a given shape is a polygon
 
 #### Mathematical equations riddles - operations: add/remove
 
 The basic method used here is calculate_avg:
+
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/avg_method.jpg?raw=true)
+
+This function gets:
+
+index - starting index for the input/output files
+
+plus_or_minus - operator, must be 'plus' or 'minus'
+
+num_allowed - number of matchsticks required for solving the riddle
+
+N - number of digits per operand
+
+remove_or_add - operation: remove or add matchsticks (must be 'remove' or 'add')
+
+It randomly chooses:
+
+dig1 - operand 1
+
+dig2 - operand 2
+
+result - the 3rd number
+
+It checks if the input equation is valid.
+
+If yes - it writes a model file and runs it
+
+It calculates the average execution time for solved riddles         
+
+The output file contains the riddle's solution and the execution time. For each riddle, the status is returned (solved / not solved, valid / invalid) with its execution time,  after reading its output file.
+
+The method counts the cases for the solved riddles and for the no - solution riddles and stops adding new cases to the average if a certain number of measurements (solved riddles / no-solution riddles) has been reached.
+
+In order to calculate an average execution time, just change this method's rows as documented. 
+
+In order to generate results for a full graph (execution time as a function of the number of matchsticks to add/remove): use this code template in the general2.py main() method:
+
+    for i in range(0, 14):
+        print str(calculate_avg('minus', i, 'remove', 1, i * 10 ** 7))  # you may change the operator, the number of digits per operand and the operation (1 is the number of                                                                             
+                                                                        # digits per operand)
+Finally, run general2.py.
+                                           
+#### Mathematical equations riddles - operations: move
+
+The basic method used here is calculate_avg:
+
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/avg_method2.jpg?raw=true)
+
+This function gets:
+
+index - starting index for the input/output files
+
+plus_or_minus - operator, must be 'plus' or 'minus'
+
+num_allowed - number of matchsticks required for solving the riddle
+
+N - number of digits per operand
+
+It randomly chooses:
+
+dig1 - operand 1
+
+dig2 - operand 2
+
+result - the 3rd number
+
+It checks if the input equation is valid.
+
+If yes - it writes a model file and runs it
+
+It calculates the average execution time for solved riddles         
+
+The output file contains the riddle's solution and the execution time. For each riddle, the status is returned (solved / not solved, valid / invalid) with its execution time,  after reading its output file.
+
+The method counts the cases for the solved riddles and for the no - solution riddles and stops adding new cases to the average if a certain number of measurements (solved riddles / no-solution riddles) has been reached.
+
+In order to calculate an average execution time, just change this method's rows as documented. 
+
+In order to generate results for a full graph (execution time as a function of the number of matchsticks to add/remove): use this code template in the general_move.py main() method:
+
+    for i in range(0, 14):
+        print str(calculate_avg('minus', i, 1, i * 10 ** 7))  # you may change the operator and the number of digits per operand (1 is the number of                                                                             
+                                                                        # digits per operand)
+                                                                        
+Finally, run general_move.py. 
 
 ## Built With
 
