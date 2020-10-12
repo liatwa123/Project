@@ -258,6 +258,9 @@ In order to enter the initial shape, the user needs to enter the angles:
 Basic area unit – square: the angles must be: 90, 180, 270.
 Basic area unit – triangle: the angles must be 60, 120, 180, 240, 300.
 
+#### The input series (3rd input type)
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/shapes_series.jpg?raw=true)
+
 #### Shape Division Riddles – manual input – basic area unit: square
 
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_area_sq1.jpg?raw=true)
