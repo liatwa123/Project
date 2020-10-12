@@ -151,6 +151,7 @@ Generating optimization riddles and solving them (the user chooses which paramet
 When the user chooses to solve squares riddles, the input variables that must be entered are: the riddle’s type (normal / optimization), the input type (manual / generated). The rest of the input depends on the options chosen. For example: a user that wants to solve a normal riddle and enter the input manually – will enter the initial construction, the final number of squares and the number of matchsticks to move next; A user that wants to generate a normal riddle – does not need to enter any input next.
 In the end of the process, the input will be printed on the screen. (Note: in the generated riddles, the generated input will be printed on the screen too.)
 In order to enter the initial construction, the user needs to enter ‘T’ if a square appears, ‘F’ otherwise. 
+
 The output format is the same for all the squares riddles. The green matchsticks represent the new matchsticks’ locations, the grey ones represent the old locations. 
 
 #### Manual input, normal riddles
@@ -202,10 +203,28 @@ The output format is the same for all the squares riddles. The green matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_opt_move3.jpg?raw=true)
 
 ### Sum of Matchstick Heads Riddles
+
+#### Features:
+
+Solving normal riddles (the user enters all the input)
+
+Generating normal riddles and solving them
+
+#### The Navigation Menu
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nav_sum.jpg?raw=true)
+
+When the user chooses to solve sum of matchstick heads riddles, the only input that must be entered is the input type (manual / generated). The rest of the input depends on the option chosen (a user that wants to generate a riddle automatically will not need to enter any input next). 
+In the end of the process, the input will be printed on the screen. (Note: in the generated riddles, the generated input will be printed on the screen too.)
+In order to enter the initial construction, the user needs to enter the pointing direction for each matchstick. The possible directions are: ‘R’ – right, ‘L’ – left, ‘U’ – up, ‘D’ – down.
+
+#### Manual input
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sum1.jpg?raw=true)
+
+#### Manual input, input VS output
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sum2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sum3.jpg?raw=true)
+
+#### Generated input, input VS output
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sum1.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sum2.jpg?raw=true)
 
