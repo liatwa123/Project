@@ -131,27 +131,73 @@ In the end of the process, the input will be printed on the screen. (Note: in th
 #### Generated input, optimization riddles, move matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_move_opt.jpg?raw=true)
 
-### Square Riddles 
+### Square Riddles
+
+#### Features:
+
+Solving normal riddles (the user enters all the input)
+
+Solving optimization riddles (the user enters all the input except for the number of matchsticks to move)
+
+Solving optimization riddles (the user enters all the input except for the number of final squares)
+
+Generating normal riddles and solving them
+
+Generating optimization riddles and solving them (the user chooses which parameter to optimize)
+
+#### The Navigation Menu
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nav_square.jpg?raw=true)
+
+When the user chooses to solve squares riddles, the input variables that must be entered are: the riddle’s type (normal / optimization), the input type (manual / generated). The rest of the input depends on the options chosen. For example: a user that wants to solve a normal riddle and enter the input manually – will enter the initial construction, the final number of squares and the number of matchsticks to move next; A user that wants to generate a normal riddle – does not need to enter any input next.
+In the end of the process, the input will be printed on the screen. (Note: in the generated riddles, the generated input will be printed on the screen too.)
+In order to enter the initial construction, the user needs to enter ‘T’ if a square appears, ‘F’ otherwise. 
+The output format is the same for all the squares riddles. The green matchsticks represent the new matchsticks’ locations, the grey ones represent the old locations. 
+
+#### Manual input, normal riddles
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nor_sqr_in1.jpg?raw=true)
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nor_sqr_in2.jpg?raw=true)
+
+#### Manual input, normal riddles, input VS output
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nor_sqr_in3.jpg?raw=true)
+
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/nor_sqr_in4.jpg?raw=true)
+
+#### Manual input, optimization riddles, the optimized parameter - the number of final squares
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sqr_opt_move1.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sqr_opt_move2.jpg?raw=true)
+
+#### Manual input, optimization riddles, the optimized parameter - the number of final squares, input VS output
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sqr_opt_move3.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sqr_opt_move4.jpg?raw=true)
+
+
+#### Manual input, optimization riddles, the optimized parameter - the number of matchsticks to move
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sqr_opt_sq1.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sqr_opt_sq2.jpg?raw=true)
+
+#### Manual input, optimization riddles, the optimized parameter - the number of matchsticks to move, input VS output
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sqr_opt_sq3.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_sqr_opt_sq4.jpg?raw=true)
+
+#### Generated input, normal riddles
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_nor1.jpg?raw=true)
+
+#### Generated input, normal riddles, input VS output
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_nor2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_nor3.jpg?raw=true)
+
+#### Generated input, optimization riddles, the optimized parameter - the number of final squares
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_opt_sq1.jpg?raw=true)
+
+#### Generated input, optimization riddles, the optimized parameter - the number of final squares, input VS output
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_opt_sq2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_opt_sq3.jpg?raw=true)
+
+#### Generated input, optimization riddles, the optimized parameter - the number of matchsticks to move
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_opt_move1.jpg?raw=true)
+
+#### Generated input, optimization riddles, the optimized parameter - the number of final squares, input VS output
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_opt_move2.jpg?raw=true)
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_sqr_opt_move3.jpg?raw=true)
 
