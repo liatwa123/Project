@@ -122,6 +122,12 @@ In the end of the process, the input will be printed on the screen. (Note: in th
 #### Manual input, normal riddles, move matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_move_nor.jpg?raw=true)
 
+#### Manual input, optimization riddles, move matchsticks
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/man_move_opt.jpg?raw=true)
+
+#### Generated input, normal riddles, move matchsticks
+![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_move_nor.jpg?raw=true)
+
 #### Generated input, optimization riddles, move matchsticks
 ![Alt text](https://github.com/liatwa123/Project-Matchstick-Puzzles/blob/master/Screenshots/gen_move_opt.jpg?raw=true)
 
